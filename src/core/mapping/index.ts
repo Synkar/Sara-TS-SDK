@@ -1,6 +1,41 @@
 import { Session, ISession } from "../../models/Session";
 import { Client } from "../..";
 
+/**
+ * TODO: identificar o melhor lugar para por esse tipo
+ */
+
+enum Type {
+  START, // 0
+  STOP, // 1
+  SWAP, // 2
+}
+
+enum Status {
+  PENDING,
+  ACTIVE,
+  PREEMPTED,
+  SUCCEEDED,
+  ABORTED,
+  REJECTED,
+  PREEMPTING,
+  RECALLING,
+  RECALLED,
+  LOST,
+}
+
+type ResponseMapping = {
+  type: Type;
+  status: Status;
+  response: any | undefined;
+  error: Error | undefined;
+  done: boolean;
+};
+
+type RequestMapping = {
+  type: Type;
+  args: Object;
+};
 export namespace Sara {
   export class Mapping {
     robot: string;
@@ -9,6 +44,32 @@ export namespace Sara {
     keepAlive: NodeJS.Timer;
     peerConnection: RTCPeerConnection;
     track: RTCTrackEvent;
+    dataChannel: RTCDataChannel;
+    dataChannelOpened: boolean = false;
+
+    responses: Record<string, ResponseMapping> = {
+      start: {
+        type: Type.START,
+        status: Status.PENDING,
+        response: {},
+        error: undefined,
+        done: false,
+      },
+      stop: {
+        type: Type.START,
+        status: Status.PENDING,
+        response: {},
+        error: undefined,
+        done: false,
+      },
+      swap: {
+        type: Type.START,
+        status: Status.PENDING,
+        response: {},
+        error: undefined,
+        done: false,
+      },
+    };
 
     constructor(robot: string, session?: ISession) {
       this.robot = robot;
@@ -139,6 +200,33 @@ export namespace Sara {
       };
     };
 
+    private initDataChannel = () => {
+      this.dataChannel =
+        this.peerConnection.createDataChannel("bridge-ros-webrtc");
+      this.dataChannel.onerror = (error) => {
+        console.log("Data Channel Error:", error);
+        this.peerConnection.restartIce();
+        this.dataChannelOpened = false;
+      };
+
+      this.dataChannel.onmessage = (event) => {
+        console.log("Got Data Channel Message:", event.data);
+        const { topic, data } = event.data;
+        if (topic === "/sara/mapping_jobs_bridge/response") {
+        }
+      };
+
+      this.dataChannel.onopen = () => {
+        console.log("data channel open");
+        this.dataChannelOpened = true;
+      };
+
+      this.dataChannel.onclose = () => {
+        console.log("data channel close");
+        this.dataChannelOpened = false;
+      };
+    };
+
     /**
      *
      * @param receiveCallback Function to be called when a message is received
@@ -205,6 +293,66 @@ export namespace Sara {
         .catch((error) => {
           errorCallback(error);
         });
+    };
+
+    private checkDataChannelOpened = async () =>
+      Promise.race([
+        new Promise((_, reject) => {
+          setTimeout(reject, 15000, "Data Channel Timeout");
+        }),
+        new Promise((resolve: Function) => {
+          const keep = setInterval(() => {
+            if (this.dataChannelOpened) {
+              clearInterval(keep);
+              resolve("Deu certo");
+            }
+          }, 100);
+        }),
+      ]);
+
+    private serializeRequestMapping = (requestMapping: RequestMapping) => {
+      return JSON.stringify(requestMapping);
+    };
+
+    private sendRequestTopicMessage = (requestMapping: RequestMapping) => {
+      this.dataChannel.send(
+        JSON.stringify({
+          topic: "/sara/mapping_jobs_bridge/request",
+          data: this.serializeRequestMapping(requestMapping),
+        })
+      );
+    };
+
+    start = async () => {
+      if (this.responses["start"].done) {
+        throw new Error("Action already started");
+      }
+      await this.checkDataChannelOpened();
+
+      this.sendRequestTopicMessage({
+        type: Type.START,
+        args: {},
+      });
+
+      return Promise.race([
+        new Promise((_, reject) => {
+          setTimeout(reject, 4 * 60, "Start action timeout to occurs");
+        }),
+        new Promise((resolve: Function, reject: Function) => {
+          const keep = setInterval(() => {
+            if (this.responses["start"].done) {
+              clearInterval(keep);
+              resolve(this.responses["start"]);
+            }
+          }, 1000);
+        }),
+      ]).then((response: ResponseMapping) => {
+        if (response.error) {
+          throw new Error("Action not succeeded");
+        } else {
+          return response;
+        }
+      });
     };
   }
 }
