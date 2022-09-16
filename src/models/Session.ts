@@ -1,77 +1,23 @@
 import axios, { AxiosResponse } from "axios";
-import { sdk } from "..";
+import { Client, sdk } from "../";
 
 export interface ISession {
   access_key: string;
   secret_key: string;
-  access_token: string;
-  scope: string;
-  attemps: number;
+  access_token?: string;
+  scope?: string;
+  attemps?: number;
   expires_in?: number;
+  token_type?: string;
 }
 
-export const agent = `Typescript-Sara-SDK-${sdk.version}`;
+console.log("Entrou aqui");
 
-export const authToken = async (
-  access_key: string,
-  secret_key: string,
-  scope: string = "",
-  session: Session = null
-) => {
-  const auth_url = `${sdk.AUTH_URL}?client_id=${access_key}`;
-  let body = {};
-  if (scope !== undefined && scope !== "") {
-    body = {
-      grant_type: "client_credentials",
-      scope: scope,
-    };
-  } else {
-    body = {
-      grant_type: "client_credentials",
-    };
-  }
+export const agent = `Typescript-Sara-SDK`;
 
-  const auth = `${access_key}:${secret_key}`;
-
-  const request: Promise<AxiosResponse> = axios
-    .post(auth_url, body, {
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-        "User-Agent": agent,
-        "Accept-Language": "en-US",
-        Authorization: `Basic ${Buffer.from(auth).toString("base64")}`,
-      },
-      timeout: sdk.timeout,
-    })
-    .then((response) => {
-      return response;
-    })
-    .catch((error) => {
-      // TODO: Handle error (not implemented)
-      return error;
-    });
-
-  // TODO: use responseHandler (need to be implemented)
-  const response = await request;
-
-  // TODO: set session (not implemented)
-
-  return response.data;
-};
-
-export const authSession = async (session: Session) => {
+export const authenticate = async (session: ISession) => {
   const auth_url = `${sdk.AUTH_URL}?client_id=${session.access_key}`;
-  let body = {};
-  if (session.scope !== undefined && session.scope !== "") {
-    body = {
-      grant_type: "client_credentials",
-      scope: session.scope,
-    };
-  } else {
-    body = {
-      grant_type: "client_credentials",
-    };
-  }
+  const body = `grant_type=client_credentials&scope=${session.scope}`;
 
   const auth = `${session.access_key}:${session.secret_key}`;
 
@@ -81,7 +27,7 @@ export const authSession = async (session: Session) => {
         "Content-Type": "application/x-www-form-urlencoded",
         "User-Agent": agent,
         "Accept-Language": "en-US",
-        Authorization: `Basic ${Buffer.from(auth).toString("base64")}`,
+        Authorization: `Basic ${btoa(auth)}`,
       },
       timeout: sdk.timeout,
     })
@@ -98,16 +44,17 @@ export const authSession = async (session: Session) => {
 
   // TODO: set session (not implemented)
 
-  return response.data;
+  return new Session({ ...session, ...response.data });
 };
 
 export class Session implements ISession {
   access_key: string;
   secret_key: string;
-  access_token: string;
-  scope: string;
-  attemps: number;
+  access_token?: string;
+  scope?: string = "";
+  attemps?: number = 0;
   expires_in?: number;
+  token_type?: string;
 
   constructor(session: ISession) {
     this.access_key = session.access_key;
@@ -116,10 +63,11 @@ export class Session implements ISession {
     this.scope = session.scope;
     this.attemps = session.attemps;
     this.expires_in = session.expires_in;
+    this.token_type = session.token_type;
   }
 
-  async auth() {
-    const response = await authSession(this);
+  async refreshToken() {
+    const response = await authenticate(this);
     this.access_token = response.access_token;
     this.expires_in = response.expires_in;
     return response;

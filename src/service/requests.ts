@@ -1,5 +1,5 @@
 import { AxiosInstance } from "axios";
-import sdk from "..";
+import { sdk } from "..";
 import { agent, Session } from "../models/Session";
 
 export const fetch = async (
@@ -17,13 +17,13 @@ export const fetch = async (
     url += `${path}/`;
   }
 
-  if (session !== null) {
-    session = new Session(sdk.DEFAULT_SESSION);
+  if (session === null) {
+    //session = new Session(sdk.DEFAULT_SESSION);
   }
 
   const access_time = new Date().getTime();
 
-  if (access_time >= session.expires_in) session.auth();
+  if (access_time >= session.expires_in) session.refreshToken();
 
   const bearer_token = `Bearer ${session.access_token}`;
 
