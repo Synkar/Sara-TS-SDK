@@ -7,7 +7,7 @@ await SaraClient.auth(
   "102i4ad0g87ubju8vlbptskr0km20e94lj602rg7b2hbjdjpbjii"
 );
 
-const mapping = new Sara.Mapping("f8b85a7a-4540-4d46-a2ed-00e6134ee84a");
+const mapping = new Sara.Mapping("eebed4ca-fa3f-41a6-b826-3285c62762da");
 
 /**
 
@@ -16,11 +16,17 @@ mapping.image(function() {
 }, function() {
   // TODO: when map image finished/closed from robot
 })
+*/
+mapping
+  .start()
+  .then((response) => {
+    console.log(response);
+  })
+  .catch((error) => {
+    console.error(error);
+  });
 
-mapping.start().then((response) => {
- // resolve
-});
-
+/*
 mapping.finish().then((response) => {
  // resolve
 });
