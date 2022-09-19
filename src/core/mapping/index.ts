@@ -6,22 +6,22 @@ import { Client } from "../..";
  */
 
 enum Type {
-  START, // 0
-  STOP, // 1
-  SWAP, // 2
+  START = 0, // 0
+  STOP = 1, // 1
+  SWAP = 2, // 2
 }
 
 enum Status {
-  PENDING,
-  ACTIVE,
-  PREEMPTED,
-  SUCCEEDED,
-  ABORTED,
-  REJECTED,
-  PREEMPTING,
-  RECALLING,
-  RECALLED,
-  LOST,
+  PENDING = 0,
+  ACTIVE = 1,
+  PREEMPTED = 2,
+  SUCCEEDED = 3,
+  ABORTED = 4,
+  REJECTED = 5,
+  PREEMPTING = 6,
+  RECALLING = 7,
+  RECALLED = 8,
+  LOST = 9,
 }
 
 type ResponseMapping = {
@@ -30,11 +30,12 @@ type ResponseMapping = {
   response: any | undefined;
   error: Error | undefined;
   done: boolean;
+  running: boolean;
 };
 
 type RequestMapping = {
   type: Type;
-  args: Object;
+  args_json: Object;
 };
 export namespace Sara {
   export class Mapping {
@@ -54,6 +55,7 @@ export namespace Sara {
         response: {},
         error: undefined,
         done: false,
+        running: false,
       },
       stop: {
         type: Type.START,
@@ -61,6 +63,7 @@ export namespace Sara {
         response: {},
         error: undefined,
         done: false,
+        running: false,
       },
       swap: {
         type: Type.START,
@@ -68,6 +71,7 @@ export namespace Sara {
         response: {},
         error: undefined,
         done: false,
+        running: false,
       },
     };
 
@@ -80,6 +84,7 @@ export namespace Sara {
       }
       this.connectSignaling();
       this.initPeerConnection();
+      this.initDataChannel();
     }
 
     private initPeerConnection = () => {
@@ -147,6 +152,7 @@ export namespace Sara {
         }
       };
       this.signalingChannel.onmessage = (msg: any) => {
+        console.log(msg);
         if (!this.peerConnection) {
           return;
         }
@@ -210,9 +216,23 @@ export namespace Sara {
       };
 
       this.dataChannel.onmessage = (event) => {
-        console.log("Got Data Channel Message:", event.data);
+        console.log("Got Data Channel Message:", event);
         const { topic, data } = event.data;
-        if (topic === "/sara/mapping_jobs_bridge/response") {
+        if (topic === "/mapping/response") {
+          // from https://github.com/Synkar/synkar_middlewares_msgs/blob/main/msg/MappingResponse.msg
+
+          const { type, status, response_json } = data;
+          const response = JSON.parse(response_json);
+          // TODO: convert type into key of enum
+          const action_name: string = Type[type].toLowerCase();
+          this.responses[action_name].done = true;
+          this.responses[action_name].status = status;
+          this.responses[action_name].response = response;
+          if (status > 1 && status != 3) {
+            this.responses[action_name].error = new Error(
+              `Action ${action_name} finish not successfully.`
+            );
+          }
         }
       };
 
@@ -238,7 +258,7 @@ export namespace Sara {
     ): Promise<void> {
       Promise.race([
         new Promise((_, reject) => {
-          setTimeout(reject, 2000, "Connection timeout");
+          setTimeout(reject, 5000, "Connection timeout");
         }),
         new Promise((resolve: Function) => {
           const keep = setInterval(() => {
@@ -253,7 +273,7 @@ export namespace Sara {
           console.log("iniciou camera");
           Promise.resolve([])
             .then(function (actions) {
-              const topic = "/sensors/cameras/front_depth/color/image_raw";
+              const topic = "/sensors/cameras/front_depth/color/image_rect";
               actions.push({
                 type: "add_video_track",
                 stream_id: "88f6e326-18e1-43c9-bc09-1261a9832f32",
@@ -298,61 +318,104 @@ export namespace Sara {
     private checkDataChannelOpened = async () =>
       Promise.race([
         new Promise((_, reject) => {
-          setTimeout(reject, 15000, "Data Channel Timeout");
+          setTimeout(reject, 60 * 1000, "Data Channel Timeout");
         }),
         new Promise((resolve: Function) => {
           const keep = setInterval(() => {
             if (this.dataChannelOpened) {
               clearInterval(keep);
-              resolve("Deu certo");
+              resolve("Data Channel Opened");
             }
           }, 100);
         }),
       ]);
 
     private serializeRequestMapping = (requestMapping: RequestMapping) => {
-      return JSON.stringify(requestMapping);
+      return {
+        type: requestMapping.type,
+        args_json: JSON.stringify(requestMapping.args_json),
+      };
     };
 
     private sendRequestTopicMessage = (requestMapping: RequestMapping) => {
       this.dataChannel.send(
         JSON.stringify({
-          topic: "/sara/mapping_jobs_bridge/request",
+          topic: "/mapping/request",
           data: this.serializeRequestMapping(requestMapping),
         })
       );
     };
 
-    start = async () => {
-      if (this.responses["start"].done) {
-        throw new Error("Action already started");
+    private sendAction = async (type: Type, args_json: Object) => {
+      const action: string = Type[type].toLowerCase();
+      if (this.responses[action].done || this.responses[action].running) {
+        throw new Error("Action is already running");
       }
       await this.checkDataChannelOpened();
 
       this.sendRequestTopicMessage({
-        type: Type.START,
-        args: {},
+        type,
+        args_json: args_json,
       });
+      this.responses[action].running = true;
 
       return Promise.race([
         new Promise((_, reject) => {
-          setTimeout(reject, 4 * 60, "Start action timeout to occurs");
+          setTimeout(reject, 10 * 60 * 1000, `${action} action timeout`);
         }),
         new Promise((resolve: Function, reject: Function) => {
           const keep = setInterval(() => {
-            if (this.responses["start"].done) {
+            if (this.responses[action].done) {
               clearInterval(keep);
-              resolve(this.responses["start"]);
+              this.responses[action].done = false;
+              resolve(this.responses[action]);
             }
           }, 1000);
         }),
       ]).then((response: ResponseMapping) => {
+        this.responses[action].running = false;
         if (response.error) {
           throw new Error("Action not succeeded");
         } else {
           return response;
         }
       });
+    };
+
+    start = async () => {
+      console.log(Type[0]);
+
+      return this.sendAction(Type.START, {});
+    };
+
+    stop = async (mapId: string) => {
+      return this.sendAction(Type.STOP, { id: mapId });
+    };
+
+    swap = async (mapId: string) => {
+      return this.sendAction(Type.SWAP, {
+        id: mapId,
+      });
+    };
+
+    cancel = async (type: Type) => {
+      const action: string = Type[type].toLowerCase();
+      if (this.responses[action].done) {
+        throw new Error("Action already started");
+      }
+      if (!this.responses[action].running) {
+        throw new Error("Action not executed yet");
+      }
+      await this.checkDataChannelOpened();
+      this.dataChannel.send(
+        JSON.stringify({
+          topic: "/mapping/cancel",
+          data: this.serializeRequestMapping({
+            type,
+            args_json: {},
+          }),
+        })
+      );
     };
   }
 }
