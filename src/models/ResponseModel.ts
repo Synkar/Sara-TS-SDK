@@ -1,6 +1,14 @@
 export interface IResponseModel {
-  status: String;
-  data: Object;
+  status: number;
+  data: any;
 }
 
-export default IResponseModel;
+export class ResponseModel implements IResponseModel {
+  status: number;
+  data: any;
+
+  constructor(status: number, data: any) {
+    this.status = status;
+    this.data = data;
+  }
+}
