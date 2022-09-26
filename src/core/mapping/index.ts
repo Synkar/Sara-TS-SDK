@@ -5,7 +5,7 @@ import { Client } from "../..";
  * TODO: identificar o melhor lugar para por esse tipo
  */
 
-enum Type {
+export enum Type {
   START = 0, // 0
   STOP = 1, // 1
   SWAP = 2, // 2
@@ -273,7 +273,7 @@ export namespace Sara {
           console.log("iniciou camera");
           Promise.resolve([])
             .then(function (actions) {
-              const topic = "/sensors/cameras/front_depth/color/image_rect";
+              const topic = "/slam/map_image";
               actions.push({
                 type: "add_video_track",
                 stream_id: "88f6e326-18e1-43c9-bc09-1261a9832f32",

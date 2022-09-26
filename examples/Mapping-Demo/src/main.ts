@@ -2,6 +2,8 @@ import "./style.css";
 
 import { Sara, Client as SaraClient } from "sara-sdk-ts";
 
+import { Type } from "sara-sdk-ts/src/core/mapping/";
+
 await SaraClient.auth(
   "7d44jm8d8cc8m5fs5c7sjjcdrk",
   "102i4ad0g87ubju8vlbptskr0km20e94lj602rg7b2hbjdjpbjii"
@@ -17,14 +19,57 @@ mapping.image(function() {
   // TODO: when map image finished/closed from robot
 })
 */
-mapping
-  .start()
-  .then((response) => {
-    console.log(response);
-  })
-  .catch((error) => {
-    console.error(error);
-  });
+
+//TODO: set mapId
+let mapId = "";
+let runningType: Type = Type.START;
+
+const onStart = async () => {
+  runningType = Type.START;
+  return await mapping
+    .start()
+    .then((response) => {
+      console.log(response);
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+};
+
+const onStop = async () => {
+  runningType = Type.STOP;
+  return await mapping
+    .stop(mapId)
+    .then((response) => {
+      console.log(response);
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+};
+
+const onSwap = async () => {
+  runningType = Type.SWAP;
+  return await mapping
+    .swap(mapId)
+    .then((response) => {
+      console.log(response);
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+};
+
+const onCancel = async () => {
+  return await mapping
+    .cancel(runningType)
+    .then((response) => {
+      console.log(response);
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+};
 
 /*
 mapping.finish().then((response) => {
@@ -37,7 +82,12 @@ iam.robots.list().then((response: PaginatedModel<Robot>) => {
 });*/
 
 document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
+  <h1>Sara Mapping Demo</h1>
   <div>
+    <button id="start">Start</button>
+    <button id="stop">Stop</button>
+    <button id="swap">Swap</button>
+    <button id="cancel">Cancel</button>
     <video
       id="mapping-video"
       autoplay="true"
@@ -46,6 +96,11 @@ document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
     ></video>
   </div>
 `;
+
+document.querySelector<HTMLButtonElement>("#start")!.onclick = onStart;
+document.querySelector<HTMLButtonElement>("#stop")!.onclick = onStop;
+document.querySelector<HTMLButtonElement>("#swap")!.onclick = onSwap;
+document.querySelector<HTMLButtonElement>("#cancel")!.onclick = onCancel;
 
 mapping.image(
   (resolve: RTCTrackEvent) => {
