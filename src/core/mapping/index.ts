@@ -35,7 +35,7 @@ type ResponseMapping = {
 
 type RequestMapping = {
   type: Type;
-  args_json: Object;
+  args_json?: Object;
 };
 export namespace Sara {
   export class Mapping {
@@ -47,6 +47,7 @@ export namespace Sara {
     track: RTCTrackEvent;
     dataChannel: RTCDataChannel;
     dataChannelOpened: boolean = false;
+    imageErrorCallback: Function | undefined;
 
     responses: Record<string, ResponseMapping> = {
       start: {
@@ -58,7 +59,7 @@ export namespace Sara {
         running: false,
       },
       stop: {
-        type: Type.START,
+        type: Type.STOP,
         status: Status.PENDING,
         response: {},
         error: undefined,
@@ -66,7 +67,7 @@ export namespace Sara {
         running: false,
       },
       swap: {
-        type: Type.START,
+        type: Type.SWAP,
         status: Status.PENDING,
         response: {},
         error: undefined,
@@ -118,7 +119,6 @@ export namespace Sara {
       };
 
       this.peerConnection.ontrack = (track) => {
-        console.log("Received track");
         this.track = track;
         // @TODO responde image callback.
       };
@@ -128,7 +128,6 @@ export namespace Sara {
       const url = `wss://s83w778yf3.execute-api.us-east-1.amazonaws.com/v1?token=${this.session.access_token}&robotId=${this.robot}`;
       this.signalingChannel = new WebSocket(url);
       this.signalingChannel.onopen = () => {
-        console.log("Signaling channel opened");
         this.track = null;
         this.keepAlive = setInterval(() => {
           this.signalingChannel.send(JSON.stringify({ action: "default" }));
@@ -136,29 +135,31 @@ export namespace Sara {
       };
 
       this.signalingChannel.onclose = () => {
-        console.log("Signaling channel closed");
         this.track = null;
         if (this.keepAlive) {
           clearInterval(this.keepAlive);
           this.keepAlive = null;
+        }
+        if (this.imageErrorCallback) {
+          this.imageErrorCallback("Signaling channel closed");
         }
       };
       this.signalingChannel.onerror = (error) => {
-        console.log(error);
         this.track = null;
         if (this.keepAlive) {
           clearInterval(this.keepAlive);
           this.keepAlive = null;
         }
+        if (this.imageErrorCallback) {
+          this.imageErrorCallback(error);
+        }
       };
       this.signalingChannel.onmessage = (msg: any) => {
-        console.log(msg);
         if (!this.peerConnection) {
           return;
         }
         var dataJson = JSON.parse(msg.data);
         if (dataJson.type === "offer") {
-          console.log("Received WebRTC offer via WebRTC signaling channel");
           const _peerConnection = this.peerConnection;
           const _signalingChannel = this.signalingChannel;
           this.peerConnection.setRemoteDescription(
@@ -210,24 +211,26 @@ export namespace Sara {
       this.dataChannel =
         this.peerConnection.createDataChannel("bridge-ros-webrtc");
       this.dataChannel.onerror = (error) => {
-        console.log("Data Channel Error:", error);
         this.peerConnection.restartIce();
         this.dataChannelOpened = false;
       };
 
       this.dataChannel.onmessage = (event) => {
-        console.log("Got Data Channel Message:", event);
-        const { topic, data } = event.data;
+        const { data, topic } = JSON.parse(event.data);
         if (topic === "/mapping/response") {
           // from https://github.com/Synkar/synkar_middlewares_msgs/blob/main/msg/MappingResponse.msg
 
           const { type, status, response_json } = data;
-          const response = JSON.parse(response_json);
+
+          let response = {};
+          if (response_json) response = JSON.parse(response_json);
           // TODO: convert type into key of enum
           const action_name: string = Type[type].toLowerCase();
-          this.responses[action_name].done = true;
           this.responses[action_name].status = status;
-          this.responses[action_name].response = response;
+          if (status > 1) {
+            this.responses[action_name].done = true;
+            this.responses[action_name].response = response;
+          }
           if (status > 1 && status != 3) {
             this.responses[action_name].error = new Error(
               `Action ${action_name} finish not successfully.`
@@ -237,12 +240,10 @@ export namespace Sara {
       };
 
       this.dataChannel.onopen = () => {
-        console.log("data channel open");
         this.dataChannelOpened = true;
       };
 
       this.dataChannel.onclose = () => {
-        console.log("data channel close");
         this.dataChannelOpened = false;
       };
     };
@@ -254,8 +255,10 @@ export namespace Sara {
      */
     image = async function (
       receiveCallback: Function,
-      errorCallback: Function
+      errorCallback: Function,
+      topic: string = "/slam/map_image"
     ): Promise<void> {
+      this.imageErrorCallback = errorCallback;
       Promise.race([
         new Promise((_, reject) => {
           setTimeout(reject, 5000, "Connection timeout");
@@ -270,10 +273,8 @@ export namespace Sara {
         }),
       ])
         .then(() => {
-          console.log("iniciou camera");
           Promise.resolve([])
             .then(function (actions) {
-              const topic = "/slam/map_image";
               actions.push({
                 type: "add_video_track",
                 stream_id: "88f6e326-18e1-43c9-bc09-1261a9832f32",
@@ -284,14 +285,13 @@ export namespace Sara {
             })
             .then((actions, type = "configure") => {
               var configMessage = { type, actions: actions };
-              //console.log({ action: "webrtcSignal", data: configMessage });
               this.signalingChannel.send(
                 JSON.stringify({ action: "webrtcSignal", data: configMessage })
               );
 
               Promise.race([
                 new Promise((_, reject) => {
-                  setTimeout(reject, 4000, "Track Timeout");
+                  setTimeout(reject, 15 * 1000, "Track Timeout");
                 }),
                 new Promise((resolve: Function) => {
                   const keep = setInterval(() => {
@@ -368,7 +368,7 @@ export namespace Sara {
             if (this.responses[action].done) {
               clearInterval(keep);
               this.responses[action].done = false;
-              resolve(this.responses[action]);
+              resolve(this.responses[action].response);
             }
           }, 1000);
         }),
@@ -383,18 +383,16 @@ export namespace Sara {
     };
 
     start = async () => {
-      console.log(Type[0]);
-
       return this.sendAction(Type.START, {});
     };
 
     stop = async (mapId: string) => {
-      return this.sendAction(Type.STOP, { id: mapId });
+      return this.sendAction(Type.STOP, { mapID: mapId });
     };
 
     swap = async (mapId: string) => {
       return this.sendAction(Type.SWAP, {
-        id: mapId,
+        mapID: mapId,
       });
     };
 
@@ -412,7 +410,6 @@ export namespace Sara {
           topic: "/mapping/cancel",
           data: this.serializeRequestMapping({
             type,
-            args_json: {},
           }),
         })
       );

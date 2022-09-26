@@ -11,8 +11,6 @@ export interface ISession {
   token_type?: string;
 }
 
-console.log("Entrou aqui");
-
 export const agent = `Typescript-Sara-SDK`;
 
 export const authenticate = async (session: ISession) => {
