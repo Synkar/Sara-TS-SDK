@@ -7,7 +7,8 @@
     "list": "tslint --project tsconfig.json --format stylish",
     "build": "tsc",
     "serve": "ts-node src/index.ts",
-    "dev": "nodemon"
+    "dev": "nodemon",
+    "docs": "./node_modules/.bin/typedoc --out dist/docs src/index.ts"
   },
   "keywords": [],
   "author": "",
@@ -19,6 +20,7 @@
     "nodemon": "^2.0.19",
     "ts-node": "^10.9.1",
     "tslint": "^6.1.3",
+    "typedoc": "^0.23.15",
     "typescript": "^4.8.3"
   },
   "dependencies": {

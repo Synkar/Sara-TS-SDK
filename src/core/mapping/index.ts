@@ -250,8 +250,15 @@ export namespace Sara {
 
     /**
      *
-     * @param receiveCallback Function to be called when a message is received
-     * @param closeCallback Function to be called when the connection or image is closed
+     * Connect to a image topic on robot to get image stream.
+     *
+     * @param receiveCallback - Function to be called when a message is received
+     * @param errorCallback - Function to be called when the connection or image is closed
+     * @param topic - Topic to subscribe to
+     *
+     * @returns A Promise that resolves when the connection is established
+     *
+     * @example mapping.image((image: RTCTrackEvent) => {}, (error: any) => {})
      */
     image = async function (
       receiveCallback: Function,
@@ -382,20 +389,54 @@ export namespace Sara {
       });
     };
 
+    /**
+     * Start mapping process
+     *
+     * @returns A Promise that resolves when the mapping process is started
+     *
+     * @example mapping.start().then((response) => { console.log(response) }).catch((error) => { console.log(error) })
+     */
     start = async () => {
       return this.sendAction(Type.START, {});
     };
 
+    /**
+     * Stop mapping process
+     *
+     * @param mapId - Id of the map to be stopped
+     *
+     * @returns A Promise that resolves when the mapping process is stopped
+     *
+     * @example mapping.stop(mapId).then((response) => { console.log(response) }).catch((error) => { console.log(error) })
+     */
     stop = async (mapId: string) => {
       return this.sendAction(Type.STOP, { mapID: mapId });
     };
 
+    /**
+     * Change the map by id
+     *
+     * @param mapId - Id of the map to be changed
+     *
+     * @returns A Promise that resolves when the map is changed
+     *
+     * @example mapping.changeMap(mapId).then((response) => { console.log(response) }).catch((error) => { console.log(error) })
+     */
     swap = async (mapId: string) => {
       return this.sendAction(Type.SWAP, {
         mapID: mapId,
       });
     };
 
+    /**
+     * Cancel the current mapping process
+     *
+     * @param type - Type of the mapping process to be canceled
+     *
+     * @returns A Promise that resolves when the current mapping process is canceled
+     *
+     * @example mapping.cancel(type).then((response) => { console.log(response) }).catch((error) => { console.log(error) })
+     */
     cancel = async (type: Type) => {
       const action: string = Type[type].toLowerCase();
       if (this.responses[action].done) {
