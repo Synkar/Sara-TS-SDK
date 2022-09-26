@@ -22,7 +22,7 @@ mapping.image(function() {
 
 //TODO: set mapId
 let mapId = "";
-let runningType: Type = Type.START;
+let runningType: Type | null = Type.START;
 
 const onStart = async () => {
   runningType = Type.START;
@@ -33,6 +33,9 @@ const onStart = async () => {
     })
     .catch((error) => {
       console.error(error);
+    })
+    .finally(() => {
+      runningType = null;
     });
 };
 
@@ -45,6 +48,9 @@ const onStop = async () => {
     })
     .catch((error) => {
       console.error(error);
+    })
+    .finally(() => {
+      runningType = null;
     });
 };
 
@@ -57,18 +63,23 @@ const onSwap = async () => {
     })
     .catch((error) => {
       console.error(error);
+    })
+    .finally(() => {
+      runningType = null;
     });
 };
 
 const onCancel = async () => {
-  return await mapping
-    .cancel(runningType)
-    .then((response) => {
-      console.log(response);
-    })
-    .catch((error) => {
-      console.error(error);
-    });
+  if (runningType != null) {
+    return await mapping
+      .cancel(runningType)
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }
 };
 
 /*
