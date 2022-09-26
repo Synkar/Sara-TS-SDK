@@ -19,7 +19,7 @@ const log = (message: string) => {
   document.getElementById("logs")!.innerHTML = message;
 };
 
-const onStart = async (ev: MouseEvent) => {
+const onStart = async () => {
   runningType = Type.START;
   console.log("Command: Start");
   log("Start command sent to Robot");
