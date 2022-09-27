@@ -56,12 +56,13 @@ export class SaraExceptions {
 }
 
 export const handleExceptions = (error: AxiosError) => {
+  console.log(error);
   const saraException: SaraExceptions = new SaraExceptions(error.response.data);
   const msg = saraException.data.detail
     ? saraException.data.detail
     : saraException.data.error
     ? saraException.data.error
-    : "Unknown error";
+    : "no detail";
   if (error.response.status === 404) {
     throw new NotFoundException(msg);
   } else if (error.response.status === 401) {

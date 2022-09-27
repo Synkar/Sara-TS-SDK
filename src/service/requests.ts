@@ -1,14 +1,14 @@
-import { AxiosError, AxiosInstance } from "axios";
+import { AxiosError } from "axios";
 import { Client, sdk } from "..";
 import { ResponseModel } from "../models/ResponseModel";
-import { agent, authenticate, Session } from "../models/Session";
+import { agent, Session } from "../models/Session";
 import { handleExceptions, UnknownErrorException } from "../models/Exceptions";
 
 /*
  * This is a helper function to make requests to the API.
  */
 export const fetch = async (
-  method: AxiosInstance,
+  method: any,
   path: String,
   payload: any = null,
   query: string = "",
@@ -36,18 +36,28 @@ export const fetch = async (
   const bearer_token = `Bearer ${session.access_token}`;
 
   try {
-    const request = method({
-      url,
-      data: payload,
-      headers: {
-        "Access-Time": access_time,
-        "Content-Type": "application/x-www-form-urlencoded",
-        "User-Agent": agent,
-        "Accept-Language": "en-US",
-        Authorization: bearer_token,
-      },
-      timeout: sdk.timeout,
-    });
+    let request;
+    if (payload) {
+      request = method(url, payload, {
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+          "User-Agent": agent,
+          "Accept-Language": "en-US",
+          Authorization: bearer_token,
+        },
+        timeout: sdk.timeout,
+      });
+    } else {
+      request = method(url, {
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+          "User-Agent": agent,
+          "Accept-Language": "en-US",
+          Authorization: bearer_token,
+        },
+        timeout: sdk.timeout,
+      });
+    }
 
     const result = await request;
     if (result) {
