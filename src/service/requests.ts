@@ -2,13 +2,7 @@ import { AxiosError, AxiosInstance } from "axios";
 import { Client, sdk } from "..";
 import { ResponseModel } from "../models/ResponseModel";
 import { agent, authenticate, Session } from "../models/Session";
-import {
-  BadRequestException,
-  ForbiddenException,
-  NotFoundException,
-  UnauthorizedException,
-  UnknownErrorException,
-} from "../utils/Exceptions";
+import { handleExceptions, UnknownErrorException } from "../models/Exceptions";
 
 /*
  * This is a helper function to make requests to the API.
@@ -62,18 +56,7 @@ export const fetch = async (
     return new UnknownErrorException("Unknown error");
   } catch (e) {
     const error: AxiosError = e;
-    if (error.response.status === 404) {
-      return new NotFoundException(error.message);
-    } else if (error.response.status === 401) {
-      return new UnauthorizedException(error.message);
-    } else if (error.response.status === 403) {
-      return new ForbiddenException(error.message);
-    } else if (error.response.status === 400) {
-      return new BadRequestException(error.message);
-    } else if (error.response.status === 500) {
-      return new UnknownErrorException(error.message);
-    } else {
-      return new UnknownErrorException(error.message);
-    }
+    const errorHandled = handleExceptions(error);
+    return errorHandled;
   }
 };

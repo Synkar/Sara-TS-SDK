@@ -1,5 +1,15 @@
-import axios, { AxiosResponse } from "axios";
+import axios, { AxiosError, AxiosResponse } from "axios";
 import { Client, sdk } from "../";
+import {
+  NotFoundException,
+  UnauthorizedException,
+  ForbiddenException,
+  BadRequestException,
+  UnknownErrorException,
+  SaraExceptions,
+  handleExceptions,
+} from "./Exceptions";
+import { ResponseModel } from "./ResponseModel";
 
 export interface ISession {
   access_key: string;
@@ -19,30 +29,34 @@ export const authenticate = async (session: ISession) => {
 
   const auth = `${session.access_key}:${session.secret_key}`;
 
-  const request: Promise<AxiosResponse> = axios
-    .post(auth_url, body, {
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-        "User-Agent": agent,
-        "Accept-Language": "en-US",
-        Authorization: `Basic ${btoa(auth)}`,
-      },
-      timeout: sdk.timeout,
-    })
-    .then((response) => {
-      return response;
-    })
-    .catch((error) => {
-      // TODO: Handle error (not implemented)
-      return error;
-    });
+  try {
+    const request: Promise<AxiosResponse> = axios
+      .post(auth_url, body, {
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+          "User-Agent": agent,
+          "Accept-Language": "en-US",
+          Authorization: `Basic ${btoa(auth)}`,
+        },
+        timeout: sdk.timeout,
+      })
+      .then((response) => {
+        return response;
+      })
+      .catch((e) => {
+        throw e;
+      });
 
-  // TODO: use responseHandler (need to be implemented)
-  const response = await request;
+    const result = await request;
 
-  // TODO: set session (not implemented)
+    const response = new ResponseModel(result.status, result.data);
 
-  return new Session({ ...session, ...response.data });
+    return new Session({ ...session, ...response.data });
+  } catch (e) {
+    const error: AxiosError = e;
+    const errorHandled = handleExceptions(error);
+    return errorHandled;
+  }
 };
 
 export class Session implements ISession {
@@ -65,9 +79,13 @@ export class Session implements ISession {
   }
 
   async refreshToken() {
-    const response = await authenticate(this);
-    this.access_token = response.access_token;
-    this.expires_in = response.expires_in;
-    return response;
+    try {
+      const response = await authenticate(this);
+      this.access_token = response.access_token;
+      this.expires_in = response.expires_in;
+      return response;
+    } catch (e) {
+      return e;
+    }
   }
 }
