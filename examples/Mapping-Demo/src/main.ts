@@ -4,17 +4,17 @@ import "./style.css";
 import { Sara, Client as SaraClient } from "sara-sdk-ts";
 
 import { Type } from "sara-sdk-ts/src/core/mapping/";
+const access_key = import.meta.env.VITE_SARA_ACCESS_KEY;
+const secret_key = import.meta.env.VITE_SARA_SECRET_KEY;
+const robot_id = import.meta.env.VITE_SARA_ROBOT_ID;
 
 /*
   Calling the SaraClient auth function to authenticate the user and get the token.
 */
-await SaraClient.auth(
-  "7d44jm8d8cc8m5fs5c7sjjcdrk",
-  "102i4ad0g87ubju8vlbptskr0km20e94lj602rg7b2hbjdjpbjii"
-);
+await SaraClient.auth(access_key, secret_key);
 
 // Creating a new Sara Mapping instance and passing a robotId
-const mapping = new Sara.Mapping("144cdc28-9126-4f59-b32b-307b2ae43fb3");
+const mapping = new Sara.Mapping(robot_id);
 
 // Defining the mapId variable and runningType variable
 let mapId = "map_name";
