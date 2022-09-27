@@ -48,7 +48,7 @@ Second you authenticate with you ACCESS_KEY and SECRET_KEY:
 
 After authentication process complete you can use modules and resources like:
 
-> `Sara.Iam.Users.Create({name: "John", email: "john@email.com"})
+> `Sara.Iam.Users.Create({name: "John", email: "john@email.com"})`
 
 
 ## Project Status
