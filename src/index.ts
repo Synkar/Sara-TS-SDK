@@ -1,3 +1,7 @@
+import * as dotenv from "dotenv";
+
+dotenv.config();
+
 import { ISession, authenticate, Session } from "./models/Session";
 
 export * from "./core";
