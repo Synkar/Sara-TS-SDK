@@ -55,6 +55,18 @@ export class SaraExceptions {
   }
 }
 
+/**
+ * A generic method to handle exceptions from Sara API.
+ * @param error - Is the AxiosError created by the request to the Sara API.
+ *
+ * @throws NotFoundException
+ * @throws BadRequestException
+ * @throws UnauthorizedException
+ * @throws ForbiddenException
+ * @throws InternalServerErrorException
+ * @throws UnknownErrorException
+ *
+ */
 export const handleExceptions = (error: AxiosError) => {
   console.log(error);
   const saraException: SaraExceptions = new SaraExceptions(error.response.data);

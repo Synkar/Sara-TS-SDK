@@ -1,16 +1,11 @@
 import axios, { AxiosError, AxiosResponse } from "axios";
-import { Client, sdk } from "../";
-import {
-  NotFoundException,
-  UnauthorizedException,
-  ForbiddenException,
-  BadRequestException,
-  UnknownErrorException,
-  SaraExceptions,
-  handleExceptions,
-} from "./Exceptions";
+import { sdk } from "../";
+import { handleExceptions } from "./Exceptions";
 import { ResponseModel } from "./ResponseModel";
 
+/**
+ * Session Model Interface
+ */
 export interface ISession {
   access_key: string;
   secret_key: string;
@@ -23,6 +18,24 @@ export interface ISession {
 
 export const agent = `Typescript-Sara-SDK`;
 
+/**
+ * Session Authentication Function
+ * @param session - Session Interface
+ *
+ * @returns A new Session authenticated.
+ *
+ * @throws BadRequestException
+ * @throws UnauthorizedException
+ * @throws ForbiddenException
+ * @throws InternalServerErrorException
+ * @throws UnknownErrorException
+ *
+ * @example
+ * const session = await authenticate({
+ *  access_key: "access_key",
+ *  secret_key: "secret_key",
+ * });
+ */
 export const authenticate = async (session: ISession) => {
   const auth_url = `${sdk.AUTH_URL}?client_id=${session.access_key}`;
   const body = `grant_type=client_credentials&scope=${session.scope}`;
@@ -59,6 +72,9 @@ export const authenticate = async (session: ISession) => {
   }
 };
 
+/**
+ * Session Model Class
+ */
 export class Session implements ISession {
   access_key: string;
   secret_key: string;
@@ -68,6 +84,11 @@ export class Session implements ISession {
   expires_in?: number;
   token_type?: string;
 
+  /**
+   * Creates a new Session instance.
+   *
+   * @param session - Session Interface
+   */
   constructor(session: ISession) {
     this.access_key = session.access_key;
     this.secret_key = session.secret_key;
@@ -78,6 +99,11 @@ export class Session implements ISession {
     this.token_type = session.token_type;
   }
 
+  /**
+   * Refresh the access token.
+   *
+   * @returns A Session re-authenticated.
+   */
   async refreshToken() {
     try {
       const response = await authenticate(this);

@@ -4,8 +4,28 @@ import { ResponseModel } from "../models/ResponseModel";
 import { agent, Session } from "../models/Session";
 import { handleExceptions, UnknownErrorException } from "../models/Exceptions";
 
-/*
+/**
  * This is a helper function to make requests to the API.
+ *
+ * @param method - The Axios function to use on the request.
+ * @param path - The path to make the request to.
+ * @param payload - The data to send on the request.
+ * @param query - The query to send on the request.
+ * @param session - The session to use on the request.
+ * @param version - The version of the API to use.
+ *
+ * @returns A ResponseModel with the response from the API or an exception.
+ *
+ * @throws UnknownErrorException
+ *
+ * @example
+ *
+ * import axios from "axios";
+ *
+ * const response = await request(
+ *  axios.get,
+ *  "iam/users"
+ * );
  */
 export const fetch = async (
   method: any,
