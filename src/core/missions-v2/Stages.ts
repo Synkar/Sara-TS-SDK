@@ -27,7 +27,7 @@ export class Stages {
   }
 
   list = async (filters?: any): Promise<any> => {
-    return await Stages.list(Object.assign({}, filters), this.session);
+    return await Stages.list(filters, this.session);
   };
   retrieve = async (id: string, filters?: any): Promise<StagesRetrieve> => {
     return await get(Stages.resource, id, filters, this.session, "v2");
@@ -47,11 +47,11 @@ export class Stages {
 
   Steps = function (session?: ISession) {
     return new _Steps(session, this.parent.missionLookup, this.parent.lookup);
-  } as any as { new (session?: ISession): any };
+  } as any as { new (session?: ISession): _Steps };
 
   static Steps = _Steps;
 
-  static list = async (filters: any, session?: Session): Promise<any> => {
+  static list = async (filters?: any, session?: Session): Promise<any> => {
     if (!session) {
       session = Client.session;
     }
