@@ -10,7 +10,7 @@ import {
 import { Steps as _Steps } from "./Steps";
 
 export class Stages {
-  private resource: string = "missions/stages";
+  static resource: string = "missions/stages";
   private missionLookup?: string;
   private lookup?: string;
   session: Session;
@@ -27,23 +27,22 @@ export class Stages {
   }
 
   list = async (filters?: any): Promise<any> => {
-    console.log("parentLookup", this.missionLookup);
-    return await getAll(this.resource, filters, this.session, "v2");
+    return await Stages.list(Object.assign({}, filters), this.session);
   };
   retrieve = async (id: string, filters?: any): Promise<StagesRetrieve> => {
-    return await get(this.resource, id, filters, this.session, "v2");
+    return await get(Stages.resource, id, filters, this.session, "v2");
   };
   update = async (
     id: string,
     payload: StagesUpdate
   ): Promise<StagesRetrieve> => {
-    return await patch(this.resource, id, payload, this.session, "v2");
+    return await patch(Stages.resource, id, payload, this.session, "v2");
   };
   create = async (payload: StagesCreate): Promise<StagesRetrieve> => {
-    return await post(this.resource, payload, this.session, "v2");
+    return await post(Stages.resource, payload, this.session, "v2");
   };
   remove = async (id: string): Promise<any> => {
-    return await remove(this.resource, id, this.session, "v2");
+    return await remove(Stages.resource, id, this.session, "v2");
   };
 
   Steps = function (session?: ISession) {
@@ -51,4 +50,11 @@ export class Stages {
   } as any as { new (session?: ISession): any };
 
   static Steps = _Steps;
+
+  static list = async (filters: any, session?: Session): Promise<any> => {
+    if (!session) {
+      session = Client.session;
+    }
+    return await getAll(Stages.resource, filters, session, "v2");
+  };
 }
