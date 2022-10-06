@@ -7,38 +7,48 @@ import {
   StagesUpdate,
 } from "./models/Stages.models";
 
-export namespace Sara {
-  export namespace Missions {
-    export class Stages {
-      private resource: string = "missions/stages";
-      session: Session;
+import { Steps as _Steps } from "./Steps";
 
-      constructor(session?: ISession) {
-        if (session) {
-          this.session = new Session(session!);
-        } else {
-          this.session = Client.session;
-        }
-      }
+export class Stages {
+  private resource: string = "missions/stages";
+  private missionLookup?: string;
+  private lookup?: string;
+  session: Session;
 
-      list = async (filters?: any): Promise<any> => {
-        return await getAll(this.resource, filters, this.session, "v2");
-      };
-      retrieve = async (id: string, filters?: any): Promise<StagesRetrieve> => {
-        return await get(this.resource, id, filters, this.session, "v2");
-      };
-      update = async (
-        id: string,
-        payload: StagesUpdate
-      ): Promise<StagesRetrieve> => {
-        return await patch(this.resource, id, payload, this.session, "v2");
-      };
-      create = async (payload: StagesCreate): Promise<StagesRetrieve> => {
-        return await post(this.resource, payload, this.session, "v2");
-      };
-      remove = async (id: string): Promise<any> => {
-        return await remove(this.resource, id, this.session, "v2");
-      };
+  constructor(lookup?: string, session?: ISession, missionLookup?: string) {
+    this.lookup = lookup;
+    this.Steps.prototype.parent = this;
+    this.missionLookup = missionLookup;
+    if (session) {
+      this.session = new Session(session!);
+    } else {
+      this.session = Client.session;
     }
   }
+
+  list = async (filters?: any): Promise<any> => {
+    console.log("parentLookup", this.missionLookup);
+    return await getAll(this.resource, filters, this.session, "v2");
+  };
+  retrieve = async (id: string, filters?: any): Promise<StagesRetrieve> => {
+    return await get(this.resource, id, filters, this.session, "v2");
+  };
+  update = async (
+    id: string,
+    payload: StagesUpdate
+  ): Promise<StagesRetrieve> => {
+    return await patch(this.resource, id, payload, this.session, "v2");
+  };
+  create = async (payload: StagesCreate): Promise<StagesRetrieve> => {
+    return await post(this.resource, payload, this.session, "v2");
+  };
+  remove = async (id: string): Promise<any> => {
+    return await remove(this.resource, id, this.session, "v2");
+  };
+
+  Steps = function (session?: ISession) {
+    return new _Steps(session, this.parent.missionLookup, this.parent.lookup);
+  } as any as { new (session?: ISession): any };
+
+  static Steps = _Steps;
 }
