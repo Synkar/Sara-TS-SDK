@@ -1,10 +1,6 @@
-import * as dotenv from "dotenv";
-
-dotenv.config();
-
 import { authenticate, Session } from "./models/Session";
 
-export * from "./core";
+import { Missions } from "./core";
 
 /**
  * Define some constants to the sdk.
@@ -15,6 +11,10 @@ export const sdk = {
   version: "1.0.0",
   timeout: 15000,
 };
+
+export namespace Sara {
+  declare var Missions: Missions;
+}
 
 /**
  * Client Class to manage the session.

@@ -4,7 +4,7 @@
   "description": "",
   "main": "src/index.ts",
   "scripts": {
-    "list": "tslint --project tsconfig.json --format stylish",
+    "lint": "tslint --project tsconfig.json --format stylish",
     "build": "tsc",
     "serve": "ts-node src/index.ts",
     "dev": "nodemon",

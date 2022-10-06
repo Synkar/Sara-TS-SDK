@@ -83,7 +83,6 @@ export const fetch = async (
     if (result) {
       return new ResponseModel(result.status, result.data);
     }
-    return new UnknownErrorException("Unknown error");
   } catch (e) {
     const error: AxiosError = e;
     const errorHandled = handleExceptions(error);
