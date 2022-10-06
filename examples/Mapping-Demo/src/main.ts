@@ -1,7 +1,7 @@
 import "./style.css";
 
 // Importing the SDK and the clientSDK
-import { Sara, Client as SaraClient } from "sara-sdk-ts";
+import { Sara } from "sara-sdk-ts";
 
 import { Type } from "sara-sdk-ts/src/core/mapping/";
 const access_key = import.meta.env.VITE_SARA_ACCESS_KEY;
@@ -11,7 +11,7 @@ const robot_id = import.meta.env.VITE_SARA_ROBOT_ID;
 /*
   Calling the SaraClient auth function to authenticate the user and get the token.
 */
-await SaraClient.auth(access_key, secret_key);
+await Sara.auth(access_key, secret_key);
 
 // Creating a new Sara Mapping instance and passing a robotId
 const mapping = new Sara.Mapping(robot_id);

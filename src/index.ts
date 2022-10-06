@@ -1,6 +1,6 @@
 import { authenticate, Session } from "./models/Session";
 
-import { Missions } from "./core";
+import { Missions as _Missions, Mapping as _Mapping } from "./core";
 
 /**
  * Define some constants to the sdk.
@@ -12,14 +12,10 @@ export const sdk = {
   timeout: 15000,
 };
 
-export namespace Sara {
-  declare var Missions: Missions;
-}
-
 /**
- * Client Class to manage the session.
+ * _Client Class to manage the session.
  */
-export class Client {
+class _Client {
   static session: Session;
 
   /**
@@ -42,8 +38,15 @@ export class Client {
       attemps: 0,
     });
 
-    Client.session = session;
+    _Client.session = session;
 
     return session;
   };
 }
+
+export namespace Sara {
+  export const Missions = _Missions;
+  export const Mapping = _Mapping;
+  export const auth = _Client.auth;
+}
+export const Client = _Client;

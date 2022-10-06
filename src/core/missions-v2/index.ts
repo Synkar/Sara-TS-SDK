@@ -24,6 +24,25 @@ export class Missions {
     filters["robot_id"] = robot_id;
     return await getAll(this.resource, filters, this.session, "v2");
   };
+
+  listPaginated = async function* (
+    robot_id: string,
+    filters?: any
+  ): AsyncGenerator<MissionsRetrieve[]> {
+    if (!filters) filters = {};
+    let page: number = filters.page || 1;
+
+    while (true) {
+      filters.page = page;
+      const json = await this.list(robot_id, filters);
+      yield json.results || [];
+      if (!json.next) {
+        break;
+      }
+      page++;
+    }
+  };
+
   retrieve = async (id: string, filters?: any): Promise<MissionsRetrieve> => {
     return await get(this.resource, id, filters, this.session, "v2");
   };
