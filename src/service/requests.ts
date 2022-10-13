@@ -55,6 +55,7 @@ export const fetch = async (
 
   const bearer_token = `Bearer ${session.access_token}`;
 
+  console.log(url);
   try {
     let request;
     if (payload) {

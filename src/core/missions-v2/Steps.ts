@@ -16,6 +16,9 @@ export class Steps {
   ) {
     this.missionLookup = missionLookup;
     this.stageLookup = stageLookup;
+    Steps.resource = `missions/${missionLookup ? missionLookup + "/" : ""}${
+      stageLookup ? "stages/" + stageLookup + "/" : ""
+    }steps`;
     if (session) {
       this.session = new Session(session!);
     } else {

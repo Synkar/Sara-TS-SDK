@@ -17,6 +17,9 @@ export class Stages {
 
   constructor(lookup?: string, session?: ISession, missionLookup?: string) {
     this.lookup = lookup;
+    if (missionLookup) {
+      Stages.resource = `missions/${missionLookup}/stages`;
+    }
     this.Steps.prototype.parent = this;
     this.missionLookup = missionLookup;
     if (session) {
@@ -27,6 +30,7 @@ export class Stages {
   }
 
   list = async (filters?: any): Promise<any> => {
+    console.log("m, s:", this.missionLookup, this.lookup);
     return await Stages.list(filters, this.session);
   };
   retrieve = async (id: string, filters?: any): Promise<StagesRetrieve> => {
