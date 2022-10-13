@@ -3,4 +3,9 @@ module.exports = {
   parser: "@typescript-eslint/parser",
   plugins: ["@typescript-eslint"],
   root: true,
+  rules: {
+    "@typescript-eslint/no-namespace": "off",
+    "no-useless-catch": "off",
+  },
+  ignorePatterns: ["dist/**/*"],
 };

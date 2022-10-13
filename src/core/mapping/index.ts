@@ -43,7 +43,7 @@ type ResponseMapping = {
  */
 type RequestMapping = {
   type: Type;
-  args_json?: Object;
+  args_json?: any;
 };
 
 /**
@@ -58,7 +58,7 @@ export class Mapping {
   track: RTCTrackEvent;
   dataChannel: RTCDataChannel;
   dataChannelOpened = false;
-  imageErrorCallback: Function | undefined;
+  imageErrorCallback: any | undefined;
 
   responses: Record<string, ResponseMapping> = {
     start: {
@@ -294,8 +294,8 @@ export class Mapping {
    * @example mapping.image((image: RTCTrackEvent) => {}, (error: any) => {})
    */
   image = async function (
-    receiveCallback: Function,
-    errorCallback: Function,
+    receiveCallback: any,
+    errorCallback: any,
     topic = "/slam/map_image"
   ): Promise<void> {
     this.imageErrorCallback = errorCallback;
@@ -303,7 +303,7 @@ export class Mapping {
       new Promise((_, reject) => {
         setTimeout(reject, 5000, "Connection timeout");
       }),
-      new Promise((resolve: Function) => {
+      new Promise((resolve: any) => {
         const keep = setInterval(() => {
           if (this.peerConnection && this.keepAlive) {
             clearInterval(keep);
@@ -333,7 +333,7 @@ export class Mapping {
               new Promise((_, reject) => {
                 setTimeout(reject, 15 * 1000, "Track Timeout");
               }),
-              new Promise((resolve: Function) => {
+              new Promise((resolve: any) => {
                 const keep = setInterval(() => {
                   if (this.track) {
                     clearInterval(keep);
@@ -364,7 +364,7 @@ export class Mapping {
       new Promise((_, reject) => {
         setTimeout(reject, 60 * 1000, "Data Channel Timeout");
       }),
-      new Promise((resolve: Function) => {
+      new Promise((resolve: any) => {
         const keep = setInterval(() => {
           if (this.dataChannelOpened) {
             clearInterval(keep);
@@ -410,7 +410,7 @@ export class Mapping {
    *
    * @returns A Promise that returns the response of the action or the error
    */
-  private sendAction = async (type: Type, args_json: Object) => {
+  private sendAction = async (type: Type, args_json: any) => {
     const action: string = Type[type].toLowerCase();
     if (this.responses[action].done || this.responses[action].running) {
       throw new Error("Action is already running");
@@ -427,7 +427,7 @@ export class Mapping {
       new Promise((_, reject) => {
         setTimeout(reject, 10 * 60 * 1000, `${action} action timeout`);
       }),
-      new Promise((resolve: Function, reject: Function) => {
+      new Promise((resolve: any, reject: any) => {
         const keep = setInterval(() => {
           if (this.responses[action].done) {
             clearInterval(keep);
