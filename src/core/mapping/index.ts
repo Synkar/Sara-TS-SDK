@@ -57,7 +57,7 @@ export class Mapping {
   peerConnection: RTCPeerConnection;
   track: RTCTrackEvent;
   dataChannel: RTCDataChannel;
-  dataChannelOpened: boolean = false;
+  dataChannelOpened = false;
   imageErrorCallback: Function | undefined;
 
   responses: Record<string, ResponseMapping> = {
@@ -129,7 +129,7 @@ export class Mapping {
 
     this.peerConnection.onicecandidate = (event: any) => {
       if (event.candidate) {
-        var candidate = {
+        const candidate = {
           sdp_mline_index: event.candidate.sdpMLineIndex,
           sdp_mid: event.candidate.sdpMid,
           candidate: event.candidate.candidate,
@@ -187,7 +187,7 @@ export class Mapping {
       if (!this.peerConnection) {
         return;
       }
-      var dataJson = JSON.parse(msg.data);
+      const dataJson = JSON.parse(msg.data);
       if (dataJson.type === "offer") {
         const _peerConnection = this.peerConnection;
         const _signalingChannel = this.signalingChannel;
@@ -214,7 +214,7 @@ export class Mapping {
           }
         );
       } else if (dataJson.type === "ice_candidate") {
-        var candidate = new RTCIceCandidate({
+        const candidate = new RTCIceCandidate({
           sdpMLineIndex: dataJson.sdp_mline_index,
           candidate: dataJson.candidate,
         });
@@ -296,7 +296,7 @@ export class Mapping {
   image = async function (
     receiveCallback: Function,
     errorCallback: Function,
-    topic: string = "/slam/map_image"
+    topic = "/slam/map_image"
   ): Promise<void> {
     this.imageErrorCallback = errorCallback;
     Promise.race([
@@ -324,7 +324,7 @@ export class Mapping {
             return actions;
           })
           .then((actions, type = "configure") => {
-            var configMessage = { type, actions: actions };
+            const configMessage = { type, actions: actions };
             this.signalingChannel.send(
               JSON.stringify({ action: "webrtcSignal", data: configMessage })
             );

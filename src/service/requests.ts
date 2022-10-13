@@ -31,9 +31,9 @@ export const fetch = async (
   method: any,
   path: string,
   payload: any = null,
-  query: string = "",
+  query = "",
   session: Session = null,
-  version: string = "v1"
+  version = "v1"
 ) => {
   let url = `${sdk.API_URL}/${version}/`;
   if (query !== "") {

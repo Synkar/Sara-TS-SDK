@@ -12,7 +12,7 @@ import {
 import { Stages as _Stages } from "./Stages";
 import { Steps as _Steps } from "./Steps";
 export class Missions {
-  private resource: string = "missions";
+  private resource = "missions";
   private lookup?: string;
   session: Session;
 

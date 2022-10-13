@@ -12,7 +12,7 @@ import {
 export namespace Sara {
   export namespace Missions {
     export class Tags {
-      private resource: string = "missions/tags";
+      private resource = "missions/tags";
       session: Session;
 
       constructor(session?: ISession) {

@@ -17,7 +17,7 @@ await Sara.auth(access_key, secret_key);
 const mapping = new Sara.Mapping(robot_id);
 
 // Defining the mapId variable and runningType variable
-let mapId = "map_name";
+const mapId = "map_name";
 let runningType: Type | undefined = undefined;
 
 // Defining the log function to log the messages on the screen

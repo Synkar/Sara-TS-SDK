@@ -2,7 +2,7 @@
  * @jest-environment jsdom
  */
 
-import { Sara } from "../../src/core/mapping/index";
+// import { Sara } from "../../src/core/mapping/index";
 
 import { Client } from "../../src/index";
 

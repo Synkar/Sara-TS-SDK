@@ -12,7 +12,7 @@ import {
 import { Steps as _Steps } from "./Steps";
 
 export class Stages {
-  static resource: string = "missions/stages";
+  static resource = "missions/stages";
   private missionLookup?: string;
   private lookup?: string;
   session: Session;

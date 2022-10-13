@@ -29,7 +29,7 @@ class _Client {
   static auth = async (
     access_key: string,
     secret_key: string,
-    scope: string = ""
+    scope = ""
   ) => {
     const session = await authenticate({
       access_key,

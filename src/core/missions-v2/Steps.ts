@@ -9,7 +9,7 @@ import {
   StepsListFilters,
 } from "./models/Steps.models";
 export class Steps {
-  static resource: string = "missions/steps";
+  static resource = "missions/steps";
   private missionLookup: string | undefined;
   private stageLookup: string | undefined;
 
