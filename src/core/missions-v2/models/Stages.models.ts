@@ -2,6 +2,7 @@ import { Datetime } from "../../../models/Datetimes";
 import { UUID } from "../../../models/UUID";
 import { StepsRetrieve } from "./Steps.models";
 import { ParamValuesType } from "./ParamValues.models";
+import { FiltersListType } from "../../../models/Filters";
 
 export declare type StagesType = {
   name: string;
@@ -16,3 +17,5 @@ export declare type StagesType = {
 export declare type StagesRetrieve = UUID & StagesType & Datetime;
 export declare type StagesUpdate = StagesType;
 export declare type StagesCreate = StagesType;
+
+export declare type StagesListFilters = FiltersListType;

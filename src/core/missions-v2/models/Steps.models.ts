@@ -1,4 +1,5 @@
 import { Datetime } from "../../../models/Datetimes";
+import { FiltersListType } from "../../../models/Filters";
 import { UUID } from "../../../models/UUID";
 
 export declare type StepsType = {
@@ -12,3 +13,5 @@ export declare type StepsType = {
 export declare type StepsRetrieve = UUID & StepsType & Datetime;
 export declare type StepsCreate = StepsType;
 export declare type StepsUpdate = StepsType;
+
+export declare type StepsListFilters = FiltersListType;

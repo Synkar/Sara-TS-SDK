@@ -1,7 +1,13 @@
 import { Client } from "../..";
+import { PaginatedModel } from "../../models/PaginatedModel";
 import { ISession, Session } from "../../models/Session";
 import { getAll, get, post, patch, remove } from "../../utils/rest";
-import { TagsCreate, TagsRetrieve, TagsUpdate } from "./models/Tags.models";
+import {
+  TagsCreate,
+  TagsListFilters,
+  TagsRetrieve,
+  TagsUpdate,
+} from "./models/Tags.models";
 
 export namespace Sara {
   export namespace Missions {
@@ -17,13 +23,16 @@ export namespace Sara {
         }
       }
 
-      list = async (filters?: any): Promise<any> => {
+      list = async (filters?: TagsListFilters): Promise<PaginatedModel> => {
         return await getAll(this.resource, filters, this.session, "v2");
       };
-      retrieve = async (id: string, filters?: any): Promise<TagsRetrieve> => {
-        return await get(this.resource, id, filters, this.session, "v2");
+      retrieve = async (id: string): Promise<TagsRetrieve> => {
+        return await get(this.resource, id, null, this.session, "v2");
       };
-      update = async (id: string, payload: any): Promise<TagsUpdate> => {
+      update = async (
+        id: string,
+        payload: TagsUpdate
+      ): Promise<TagsRetrieve> => {
         return await patch(this.resource, id, payload, this.session, "v2");
       };
       create = async (payload: TagsCreate): Promise<TagsRetrieve> => {

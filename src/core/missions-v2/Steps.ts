@@ -1,7 +1,13 @@
 import { Client } from "../..";
+import { PaginatedModel } from "../../models/PaginatedModel";
 import { ISession, Session } from "../../models/Session";
 import { getAll, get, post, patch, remove } from "../../utils/rest";
-import { StepsRetrieve, StepsCreate, StepsUpdate } from "./models/Steps.models";
+import {
+  StepsRetrieve,
+  StepsCreate,
+  StepsUpdate,
+  StepsListFilters,
+} from "./models/Steps.models";
 export class Steps {
   static resource: string = "missions/steps";
   private missionLookup: string | undefined;
@@ -26,12 +32,12 @@ export class Steps {
     }
   }
 
-  list = async (filters?: any): Promise<any> => {
+  list = async (filters?: StepsListFilters): Promise<PaginatedModel> => {
     console.log("m, s:", this.missionLookup, this.stageLookup);
     return await Steps.list(filters, this.session);
   };
-  retrieve = async (id: string, filters?: any): Promise<StepsRetrieve> => {
-    return await get(Steps.resource, id, filters, this.session, "v2");
+  retrieve = async (id: string): Promise<StepsRetrieve> => {
+    return await get(Steps.resource, id, null, this.session, "v2");
   };
   update = async (id: string, payload: StepsUpdate): Promise<StepsRetrieve> => {
     return await patch(Steps.resource, id, payload, this.session, "v2");
@@ -42,7 +48,10 @@ export class Steps {
   remove = async (id: string): Promise<any> => {
     return await remove(Steps.resource, id, this.session, "v2");
   };
-  static list = async (filters?: any, session?: Session): Promise<any> => {
+  static list = async (
+    filters?: StepsListFilters,
+    session?: Session
+  ): Promise<PaginatedModel> => {
     if (!session) {
       session = Client.session;
     }

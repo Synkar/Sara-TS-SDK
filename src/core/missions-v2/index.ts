@@ -1,8 +1,10 @@
 import { Client } from "../..";
+import { PaginatedModel } from "../../models/PaginatedModel";
 import { ISession, Session } from "../../models/Session";
 import { getAll, get, post, patch } from "../../utils/rest";
 import {
   MissionsCreate,
+  MissionsListFilters,
   MissionsRetrieve,
   MissionsUpdate,
 } from "./models/Missions.models";
@@ -25,7 +27,10 @@ export class Missions {
     }
   }
 
-  list = async (robot_id: string, filters?: any): Promise<any> => {
+  list = async (
+    robot_id: string,
+    filters?: MissionsListFilters
+  ): Promise<PaginatedModel> => {
     if (!filters) filters = {};
     filters["robot_id"] = robot_id;
     return await getAll(this.resource, filters, this.session, "v2");
@@ -33,7 +38,7 @@ export class Missions {
 
   listPaginated = async function* (
     robot_id: string,
-    filters?: any
+    filters?: MissionsListFilters
   ): AsyncGenerator<MissionsRetrieve[]> {
     if (!filters) filters = {};
     let page: number = filters.page || 1;
@@ -49,8 +54,8 @@ export class Missions {
     }
   };
 
-  retrieve = async (id: string, filters?: any): Promise<MissionsRetrieve> => {
-    return await get(this.resource, id, filters, this.session, "v2");
+  retrieve = async (id: string): Promise<MissionsRetrieve> => {
+    return await get(this.resource, id, null, this.session, "v2");
   };
   update = async (
     id: string,

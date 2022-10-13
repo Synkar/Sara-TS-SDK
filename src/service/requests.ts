@@ -29,11 +29,11 @@ import { handleExceptions, UnknownErrorException } from "../models/Exceptions";
  */
 export const fetch = async (
   method: any,
-  path: String,
+  path: string,
   payload: any = null,
   query: string = "",
   session: Session = null,
-  version: String = "v1"
+  version: string = "v1"
 ) => {
   let url = `${sdk.API_URL}/${version}/`;
   if (query !== "") {
@@ -49,13 +49,12 @@ export const fetch = async (
     session = Client.session;
   }
 
-  const access_time = new Date().getTime();
+  const accessTime = new Date().getTime();
 
-  if (access_time >= session.expires_in) session.refreshToken();
+  if (accessTime >= session.expires_in) session.refreshToken();
 
-  const bearer_token = `Bearer ${session.access_token}`;
+  const bearerToken = `Bearer ${session.access_token}`;
 
-  console.log(url);
   try {
     let request;
     if (payload) {
@@ -64,7 +63,7 @@ export const fetch = async (
           "Content-Type": "application/x-www-form-urlencoded",
           "User-Agent": agent,
           "Accept-Language": "en-US",
-          Authorization: bearer_token,
+          Authorization: bearerToken,
         },
         timeout: sdk.timeout,
       });
@@ -74,7 +73,7 @@ export const fetch = async (
           "Content-Type": "application/x-www-form-urlencoded",
           "User-Agent": agent,
           "Accept-Language": "en-US",
-          Authorization: bearer_token,
+          Authorization: bearerToken,
         },
         timeout: sdk.timeout,
       });

@@ -2,20 +2,20 @@
  * Paginated Model Interface
  */
 export interface IPaginatedModel {
-  count: Number;
-  next: Number;
-  previous: Number;
-  results: Array<any>;
+  count: number;
+  next: number;
+  previous: number;
+  results: any[];
 }
 
 /**
  * Paginated Model Class
  */
 export class PaginatedModel implements IPaginatedModel {
-  count: Number;
-  next: Number;
-  previous: Number;
-  results: Array<any>;
+  count: number;
+  next: number;
+  previous: number;
+  results: any[];
 
   /**
    * Creates a new PaginatedModel instance.
@@ -25,12 +25,7 @@ export class PaginatedModel implements IPaginatedModel {
    * @param previous - Previous page
    * @param results - Array of results
    */
-  constructor(
-    count: Number,
-    next: Number,
-    previous: Number,
-    results: Array<any>
-  ) {
+  constructor(count: number, next: number, previous: number, results: any[]) {
     this.count = count;
     this.next = next;
     this.previous = previous;

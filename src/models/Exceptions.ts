@@ -47,10 +47,15 @@ export class UnknownErrorException extends Error {
  *
  * @param data - Is the error object from the api (normally has detail or error as key).
  */
-export class SaraExceptions {
-  data: any;
 
-  constructor(data: any) {
+export declare type SaraExceptionsData = {
+  detail?: string;
+  error?: string;
+};
+export class SaraExceptions {
+  data: SaraExceptionsData;
+
+  constructor(data: SaraExceptionsData) {
     this.data = data;
   }
 }

@@ -1,8 +1,10 @@
 import { Client } from "../..";
+import { PaginatedModel } from "../../models/PaginatedModel";
 import { ISession, Session } from "../../models/Session";
 import { getAll, get, post, patch, remove } from "../../utils/rest";
 import {
   StagesCreate,
+  StagesListFilters,
   StagesRetrieve,
   StagesUpdate,
 } from "./models/Stages.models";
@@ -29,12 +31,12 @@ export class Stages {
     }
   }
 
-  list = async (filters?: any): Promise<any> => {
+  list = async (filters?: StagesListFilters): Promise<PaginatedModel> => {
     console.log("m, s:", this.missionLookup, this.lookup);
     return await Stages.list(filters, this.session);
   };
-  retrieve = async (id: string, filters?: any): Promise<StagesRetrieve> => {
-    return await get(Stages.resource, id, filters, this.session, "v2");
+  retrieve = async (id: string): Promise<StagesRetrieve> => {
+    return await get(Stages.resource, id, null, this.session, "v2");
   };
   update = async (
     id: string,
@@ -55,7 +57,10 @@ export class Stages {
 
   static Steps = _Steps;
 
-  static list = async (filters?: any, session?: Session): Promise<any> => {
+  static list = async (
+    filters?: StagesListFilters,
+    session?: Session
+  ): Promise<PaginatedModel> => {
     if (!session) {
       session = Client.session;
     }
