@@ -7,13 +7,17 @@ import { FiltersListType } from "../../../models/Filters";
 export declare type StagesType = {
   name: string;
   description: string;
-  stage_position: number;
-  init_step: number;
-  end_step: number;
   steps: StepsRetrieve[];
-  param_values: ParamValuesType[];
+  active?: boolean;
 };
 
+export declare type StagesForMission = UUID &
+  StagesType & {
+    stage_position: number;
+    init_step: number;
+    end_step: number;
+    param_values: ParamValuesType[];
+  };
 export declare type StagesRetrieve = UUID & StagesType & Datetime;
 export declare type StagesUpdate = StagesType;
 export declare type StagesCreate = StagesType;

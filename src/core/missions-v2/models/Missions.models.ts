@@ -1,6 +1,6 @@
 import { Datetime } from "../../../models/Datetimes";
 import { UUID } from "../../../models/UUID";
-import { StagesRetrieve } from "./Stages.models";
+import { StagesForMission } from "./Stages.models";
 
 export declare type MissionsType = {
   robot: string;
@@ -9,7 +9,7 @@ export declare type MissionsType = {
   assisted: boolean;
   loop: boolean;
   outcome: number;
-  stages: StagesRetrieve[];
+  stages: StagesForMission[];
   tags: string[];
 };
 

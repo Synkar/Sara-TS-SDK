@@ -145,7 +145,7 @@ mapping.image(
     document.getElementById("map-menu")!.style.display = "block";
     document.getElementById("mapping-video")!.srcObject = resolve.streams[0];
   },
-  (error: any) => {
+  (error: Error) => {
     console.error("error: ", error);
   }
 );

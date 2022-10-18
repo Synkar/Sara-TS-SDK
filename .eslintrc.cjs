@@ -6,6 +6,7 @@ module.exports = {
   rules: {
     "@typescript-eslint/no-namespace": "off",
     "no-useless-catch": "off",
+    "@typescript-eslint/no-non-null-assertion": "off",
   },
   ignorePatterns: ["dist/**/*"],
 };

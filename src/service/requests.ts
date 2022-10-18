@@ -2,7 +2,7 @@ import { AxiosError } from "axios";
 import { Client, sdk } from "..";
 import { ResponseModel } from "../models/ResponseModel";
 import { agent, Session } from "../models/Session";
-import { handleExceptions, UnknownErrorException } from "../models/Exceptions";
+import { handleExceptions } from "../models/Exceptions";
 
 /**
  * This is a helper function to make requests to the API.
@@ -16,7 +16,7 @@ import { handleExceptions, UnknownErrorException } from "../models/Exceptions";
  *
  * @returns A ResponseModel with the response from the API or an exception.
  *
- * @throws UnknownErrorException
+ * @throws handleExceptions
  *
  * @example
  *
@@ -34,7 +34,7 @@ export const fetch = async (
   query = "",
   session: Session = null,
   version = "v1"
-) => {
+): Promise<ResponseModel> => {
   let url = `${sdk.API_URL}/${version}/`;
   if (query !== "") {
     url += `${path}/?${query}`;

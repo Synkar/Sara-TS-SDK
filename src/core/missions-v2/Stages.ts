@@ -32,7 +32,6 @@ export class Stages {
   }
 
   list = async (filters?: StagesListFilters): Promise<PaginatedModel> => {
-    console.log("m, s:", this.missionLookup, this.lookup);
     return await Stages.list(filters, this.session);
   };
   retrieve = async (id: string): Promise<StagesRetrieve> => {
@@ -47,7 +46,7 @@ export class Stages {
   create = async (payload: StagesCreate): Promise<StagesRetrieve> => {
     return await post(Stages.resource, payload, this.session, "v2");
   };
-  remove = async (id: string): Promise<any> => {
+  remove = async (id: string): Promise<void> => {
     return await remove(Stages.resource, id, this.session, "v2");
   };
 

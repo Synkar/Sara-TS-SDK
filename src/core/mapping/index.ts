@@ -58,7 +58,7 @@ export class Mapping {
   track: RTCTrackEvent;
   dataChannel: RTCDataChannel;
   dataChannelOpened = false;
-  imageErrorCallback: any | undefined;
+  imageErrorCallback: (error: Error | string | Event) => void | undefined;
 
   responses: Record<string, ResponseMapping> = {
     start: {
@@ -127,7 +127,7 @@ export class Mapping {
       ],
     });
 
-    this.peerConnection.onicecandidate = (event: any) => {
+    this.peerConnection.onicecandidate = (event: RTCPeerConnectionIceEvent) => {
       if (event.candidate) {
         const candidate = {
           sdp_mline_index: event.candidate.sdpMLineIndex,
@@ -183,7 +183,7 @@ export class Mapping {
         this.imageErrorCallback(error);
       }
     };
-    this.signalingChannel.onmessage = (msg: any) => {
+    this.signalingChannel.onmessage = (msg: MessageEvent) => {
       if (!this.peerConnection) {
         return;
       }
@@ -204,13 +204,13 @@ export class Mapping {
                   })
                 );
               },
-              function (error: any) {
+              function (error: Error) {
                 console.warn("Create answer error:", error);
               }
             );
           },
-          function (event: any) {
-            console.error("onRemoteSdpError", event);
+          function (error: Error) {
+            console.error("onRemoteSdpError", error);
           }
         );
       } else if (dataJson.type === "ice_candidate") {
@@ -246,6 +246,7 @@ export class Mapping {
     this.dataChannel.onerror = (error) => {
       this.peerConnection.restartIce();
       this.dataChannelOpened = false;
+      console.log(error);
     };
 
     this.dataChannel.onmessage = (event) => {
@@ -291,11 +292,11 @@ export class Mapping {
    *
    * @returns A Promise that resolves when the connection is established
    *
-   * @example mapping.image((image: RTCTrackEvent) => {}, (error: any) => {})
+   * @example mapping.image((image: RTCTrackEvent) => {}, (error: Error) => {})
    */
   image = async function (
-    receiveCallback: any,
-    errorCallback: any,
+    receiveCallback: (track: RTCTrackEvent) => void,
+    errorCallback: (error: Error) => void,
     topic = "/slam/map_image"
   ): Promise<void> {
     this.imageErrorCallback = errorCallback;
@@ -303,7 +304,7 @@ export class Mapping {
       new Promise((_, reject) => {
         setTimeout(reject, 5000, "Connection timeout");
       }),
-      new Promise((resolve: any) => {
+      new Promise((resolve: (value: void) => void) => {
         const keep = setInterval(() => {
           if (this.peerConnection && this.keepAlive) {
             clearInterval(keep);
@@ -333,7 +334,7 @@ export class Mapping {
               new Promise((_, reject) => {
                 setTimeout(reject, 15 * 1000, "Track Timeout");
               }),
-              new Promise((resolve: any) => {
+              new Promise((resolve: (track: RTCTrackEvent) => void) => {
                 const keep = setInterval(() => {
                   if (this.track) {
                     clearInterval(keep);
@@ -345,12 +346,12 @@ export class Mapping {
               .then((track: RTCTrackEvent) => {
                 receiveCallback(track);
               })
-              .catch((error) => {
+              .catch((error: Error) => {
                 errorCallback(error);
               });
           });
       })
-      .catch((error) => {
+      .catch((error: Error) => {
         errorCallback(error);
       });
   };
@@ -364,7 +365,7 @@ export class Mapping {
       new Promise((_, reject) => {
         setTimeout(reject, 60 * 1000, "Data Channel Timeout");
       }),
-      new Promise((resolve: any) => {
+      new Promise((resolve: (msg: string) => void) => {
         const keep = setInterval(() => {
           if (this.dataChannelOpened) {
             clearInterval(keep);
@@ -427,7 +428,7 @@ export class Mapping {
       new Promise((_, reject) => {
         setTimeout(reject, 10 * 60 * 1000, `${action} action timeout`);
       }),
-      new Promise((resolve: any, reject: any) => {
+      new Promise((resolve: (response: any) => void) => {
         const keep = setInterval(() => {
           if (this.responses[action].done) {
             clearInterval(keep);

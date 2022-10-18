@@ -45,7 +45,7 @@ export class Steps {
   create = async (payload: StepsCreate): Promise<StepsRetrieve> => {
     return await post(Steps.resource, payload, this.session, "v2");
   };
-  remove = async (id: string): Promise<any> => {
+  remove = async (id: string): Promise<void> => {
     return await remove(Steps.resource, id, this.session, "v2");
   };
   static list = async (

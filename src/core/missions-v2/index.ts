@@ -11,6 +11,7 @@ import {
 
 import { Stages as _Stages } from "./Stages";
 import { Steps as _Steps } from "./Steps";
+import { Tags as _Tags } from "./Tags";
 export class Missions {
   private resource = "missions";
   private lookup?: string;
@@ -67,6 +68,47 @@ export class Missions {
     return await post(this.resource, payload, this.session, "v2");
   };
 
+  last = async (robot_id: string): Promise<MissionsRetrieve> => {
+    const filters = { robot_id: robot_id };
+    return await getAll(`${this.resource}/last`, filters, this.session, "v2");
+  };
+
+  retry = async (uuid: string): Promise<boolean> => {
+    return await post(
+      `${this.resource}/${uuid}/retry`,
+      null,
+      this.session,
+      "v2"
+    );
+  };
+
+  cancel = async (uuid: string): Promise<boolean> => {
+    return await post(
+      `${this.resource}/${uuid}/cancel`,
+      null,
+      this.session,
+      "v2"
+    );
+  };
+
+  pause = async (uuid: string): Promise<boolean> => {
+    return await post(
+      `${this.resource}/${uuid}/pause`,
+      null,
+      this.session,
+      "v2"
+    );
+  };
+
+  resume = async (uuid: string): Promise<boolean> => {
+    return await post(
+      `${this.resource}/${uuid}/resume`,
+      null,
+      this.session,
+      "v2"
+    );
+  };
+
   Stages = function (lookup?: string, session?: ISession) {
     return new _Stages(lookup, session, this.parent.lookup);
   } as any as { new (lookup?: string, session?: ISession): any };
@@ -75,12 +117,11 @@ export class Missions {
     return new _Steps(session, this.parent.lookup);
   } as any as { new (session?: ISession): any };
 
+  Tags = function (session?: ISession) {
+    return new _Tags(session, this.parent.lookup);
+  } as any as { new (session?: ISession): any };
+
   static Stages = _Stages;
   static Steps = _Steps;
+  static Tags = _Tags;
 }
-
-/*
-export * from "./Stages";
-export * from "./Steps";
-export * from "./Tags";
-*/
