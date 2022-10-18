@@ -1,11 +1,12 @@
 import { Session } from "../models/Session";
 import { fetch } from "../service/requests";
 import axios from "axios";
+import { FiltersListTypeAll } from "../models/Filters";
 
 export const get = async (
   resource: string,
   id: string,
-  filters?: any,
+  filters?: FiltersListTypeAll,
   session?: Session,
   version?: string
 ) => {
@@ -24,7 +25,7 @@ export const get = async (
 
 export const getAll = async (
   resource: string,
-  filters?: any,
+  filters?: FiltersListTypeAll,
   session?: Session,
   version?: string
 ) => {

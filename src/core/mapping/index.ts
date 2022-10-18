@@ -32,7 +32,7 @@ enum Status {
 type ResponseMapping = {
   type: Type;
   status: Status;
-  response: any | undefined;
+  response: string | object | undefined;
   error: Error | undefined;
   done: boolean;
   running: boolean;
@@ -195,7 +195,7 @@ export class Mapping {
           new RTCSessionDescription(dataJson),
           function () {
             _peerConnection.createAnswer(
-              function (sessionDescription: any) {
+              function (sessionDescription: RTCSessionDescription) {
                 _peerConnection.setLocalDescription(sessionDescription);
                 _signalingChannel.send(
                   JSON.stringify({
@@ -428,7 +428,7 @@ export class Mapping {
       new Promise((_, reject) => {
         setTimeout(reject, 10 * 60 * 1000, `${action} action timeout`);
       }),
-      new Promise((resolve: (response: any) => void) => {
+      new Promise((resolve: (response: string | object) => void) => {
         const keep = setInterval(() => {
           if (this.responses[action].done) {
             clearInterval(keep);

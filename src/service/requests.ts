@@ -1,4 +1,4 @@
-import { AxiosError } from "axios";
+import { AxiosError, AxiosInstance } from "axios";
 import { Client, sdk } from "..";
 import { ResponseModel } from "../models/ResponseModel";
 import { agent, Session } from "../models/Session";
@@ -28,7 +28,12 @@ import { handleExceptions } from "../models/Exceptions";
  * );
  */
 export const fetch = async (
-  method: any,
+  method:
+    | AxiosInstance["post"]
+    | AxiosInstance["get"]
+    | AxiosInstance["patch"]
+    | AxiosInstance["put"]
+    | AxiosInstance["delete"],
   path: string,
   payload: any = null,
   query = "",

@@ -1,4 +1,5 @@
 import { Datetime } from "../../../models/Datetimes";
+import { FiltersListType } from "../../../models/Filters";
 import { UUID } from "../../../models/UUID";
 import { StagesForMission } from "./Stages.models";
 
@@ -17,8 +18,6 @@ export declare type MissionsRetrieve = UUID & MissionsType & Datetime;
 export declare type MissionsCreate = MissionsType;
 export declare type MissionsUpdate = MissionsType;
 
-export declare type MissionsListFilters = {
-  page?: number;
-  limit?: number;
+export declare type MissionsListFilters = FiltersListType & {
   robot_id?: string;
 };

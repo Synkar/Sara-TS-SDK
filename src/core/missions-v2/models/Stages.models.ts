@@ -1,13 +1,16 @@
 import { Datetime } from "../../../models/Datetimes";
 import { UUID } from "../../../models/UUID";
-import { StepsRetrieve } from "./Steps.models";
+import {
+  StepsForStagesCreation,
+  StepsRetrieveForMission,
+} from "./Steps.models";
 import { ParamValuesType } from "./ParamValues.models";
 import { FiltersListType } from "../../../models/Filters";
 
 export declare type StagesType = {
   name: string;
   description: string;
-  steps: StepsRetrieve[];
+  steps: StepsRetrieveForMission[];
   active?: boolean;
 };
 
@@ -19,7 +22,11 @@ export declare type StagesForMission = UUID &
     param_values: ParamValuesType[];
   };
 export declare type StagesRetrieve = UUID & StagesType & Datetime;
-export declare type StagesUpdate = StagesType;
-export declare type StagesCreate = StagesType;
+export declare type StagesUpdate = StagesType & {
+  steps: StepsForStagesCreation[];
+};
+export declare type StagesCreate = StagesType & {
+  steps: StepsForStagesCreation[];
+};
 
 export declare type StagesListFilters = FiltersListType;
