@@ -3,7 +3,6 @@ import { Client, sdk } from "..";
 import { ResponseModel } from "../models/ResponseModel";
 import { agent, Session } from "../models/Session";
 import { handleExceptions } from "../models/Exceptions";
-import { JSONValue } from "../models/JSON";
 
 /**
  * This is a helper function to make requests to the API.

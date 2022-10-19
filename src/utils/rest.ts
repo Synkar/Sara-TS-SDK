@@ -2,7 +2,6 @@ import { Session } from "../models/Session";
 import { fetch } from "../service/requests";
 import axios from "axios";
 import { FiltersListTypeAll } from "../models/Filters";
-import { JSONValue } from "../models/JSON";
 
 export const get = async (
   resource: string,
