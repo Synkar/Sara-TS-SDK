@@ -24,7 +24,9 @@ export class Tags {
     }
   }
 
-  list = async (filters?: TagsListFilters): Promise<PaginatedModel> => {
+  list = async (
+    filters?: TagsListFilters
+  ): Promise<PaginatedModel<TagsRetrieve>> => {
     return await getAll(this.resource, filters, this.session, "v2");
   };
   retrieve = async (id: string): Promise<TagsRetrieve> => {

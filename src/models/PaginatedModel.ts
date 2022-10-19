@@ -1,21 +1,21 @@
 /**
  * Paginated Model Interface
  */
-export interface IPaginatedModel {
+export interface IPaginatedModel<T> {
   count: number;
   next: number;
   previous: number;
-  results: any[];
+  results: T[];
 }
 
 /**
  * Paginated Model Class
  */
-export class PaginatedModel implements IPaginatedModel {
+export class PaginatedModel<T> implements IPaginatedModel<T> {
   count: number;
   next: number;
   previous: number;
-  results: any[];
+  results: T[];
 
   /**
    * Creates a new PaginatedModel instance.
@@ -25,7 +25,7 @@ export class PaginatedModel implements IPaginatedModel {
    * @param previous - Previous page
    * @param results - Array of results
    */
-  constructor(count: number, next: number, previous: number, results: any[]) {
+  constructor(count: number, next: number, previous: number, results: T[]) {
     this.count = count;
     this.next = next;
     this.previous = previous;

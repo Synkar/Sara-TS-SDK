@@ -8,6 +8,7 @@ import {
   MissionsRetrieve,
   MissionsUpdate,
 } from "./models/Missions.models";
+import { StagesRetrieve } from "./models/Stages.models";
 
 import { Stages as _Stages } from "./Stages";
 import { Steps as _Steps } from "./Steps";
@@ -31,7 +32,7 @@ export class Missions {
   list = async (
     robot_id: string,
     filters?: MissionsListFilters
-  ): Promise<PaginatedModel> => {
+  ): Promise<PaginatedModel<StagesRetrieve>> => {
     if (!filters) filters = {};
     filters["robot_id"] = robot_id;
     return await getAll(this.resource, filters, this.session, "v2");

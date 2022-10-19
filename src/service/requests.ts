@@ -3,6 +3,7 @@ import { Client, sdk } from "..";
 import { ResponseModel } from "../models/ResponseModel";
 import { agent, Session } from "../models/Session";
 import { handleExceptions } from "../models/Exceptions";
+import { JSONValue } from "../models/JSON";
 
 /**
  * This is a helper function to make requests to the API.
@@ -27,7 +28,7 @@ import { handleExceptions } from "../models/Exceptions";
  *  "iam/users"
  * );
  */
-export const fetch = async (
+export const fetch = async <T>(
   method:
     | AxiosInstance["post"]
     | AxiosInstance["get"]
@@ -35,11 +36,11 @@ export const fetch = async (
     | AxiosInstance["put"]
     | AxiosInstance["delete"],
   path: string,
-  payload: any = null,
+  payload: T = null,
   query = "",
   session: Session = null,
   version = "v1"
-): Promise<ResponseModel> => {
+) => {
   let url = `${sdk.API_URL}/${version}/`;
   if (query !== "") {
     url += `${path}/?${query}`;

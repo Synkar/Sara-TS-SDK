@@ -31,7 +31,9 @@ export class Stages {
     }
   }
 
-  list = async (filters?: StagesListFilters): Promise<PaginatedModel> => {
+  list = async (
+    filters?: StagesListFilters
+  ): Promise<PaginatedModel<StagesRetrieve>> => {
     return await Stages.list(filters, this.session);
   };
   retrieve = async (id: string): Promise<StagesRetrieve> => {
@@ -59,7 +61,7 @@ export class Stages {
   static list = async (
     filters?: StagesListFilters,
     session?: Session
-  ): Promise<PaginatedModel> => {
+  ): Promise<PaginatedModel<StagesRetrieve>> => {
     if (!session) {
       session = Client.session;
     }

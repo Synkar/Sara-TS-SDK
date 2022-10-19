@@ -35,9 +35,9 @@ export const getAll = async (
   return json.data;
 };
 
-export const post = async (
+export const post = async <T>(
   resource: string,
-  payload: JSONValue,
+  payload: T,
   session?: Session,
   version?: string
 ) => {
@@ -46,10 +46,10 @@ export const post = async (
   return json.data;
 };
 
-export const patch = async (
+export const patch = async <T>(
   resource: string,
   id: string,
-  payload: JSONValue,
+  payload: T,
   session?: Session,
   version?: string
 ) => {
@@ -69,10 +69,10 @@ export const remove = async (
   return json.data;
 };
 
-export const put = async (
+export const put = async <T>(
   resource: string,
   id: string,
-  payload: JSONValue,
+  payload: T,
   session?: Session,
   version?: string
 ) => {
