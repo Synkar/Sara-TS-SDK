@@ -2,6 +2,7 @@ import { Session } from "../models/Session";
 import { fetch } from "../service/requests";
 import axios from "axios";
 import { FiltersListTypeAll } from "../models/Filters";
+import { JSONValue } from "../models/JSON";
 
 export const get = async (
   resource: string,
@@ -11,16 +12,12 @@ export const get = async (
   version?: string
 ) => {
   const path = `${resource}/${id}`;
-  try {
-    let query = "";
-    if (filters) {
-      query = new URLSearchParams(filters).toString();
-    }
-    const json = await fetch(axios.get, path, null, query, session, version);
-    return json.data;
-  } catch (error) {
-    throw error;
+  let query = "";
+  if (filters) {
+    query = new URLSearchParams(filters).toString();
   }
+  const json = await fetch(axios.get, path, null, query, session, version);
+  return json.data;
 };
 
 export const getAll = async (
@@ -30,54 +27,35 @@ export const getAll = async (
   version?: string
 ) => {
   const path = `${resource}`;
-  try {
-    let query = "";
-    if (filters) {
-      query = new URLSearchParams(filters).toString();
-    }
-    const json = await fetch(axios.get, path, null, query, session, version);
-    return json.data;
-  } catch (error) {
-    throw error;
+  let query = "";
+  if (filters) {
+    query = new URLSearchParams(filters).toString();
   }
+  const json = await fetch(axios.get, path, null, query, session, version);
+  return json.data;
 };
 
 export const post = async (
   resource: string,
-  payload: any,
+  payload: JSONValue,
   session?: Session,
   version?: string
 ) => {
   const path = `${resource}`;
-  try {
-    const json = await fetch(axios.post, path, payload, null, session, version);
-    return json.data;
-  } catch (error) {
-    throw error;
-  }
+  const json = await fetch(axios.post, path, payload, null, session, version);
+  return json.data;
 };
 
 export const patch = async (
   resource: string,
   id: string,
-  payload: any,
+  payload: JSONValue,
   session?: Session,
   version?: string
 ) => {
   const path = `${resource}/${id}`;
-  try {
-    const json = await fetch(
-      axios.patch,
-      path,
-      payload,
-      null,
-      session,
-      version
-    );
-    return json.data;
-  } catch (error) {
-    throw error;
-  }
+  const json = await fetch(axios.patch, path, payload, null, session, version);
+  return json.data;
 };
 
 export const remove = async (
@@ -87,26 +65,18 @@ export const remove = async (
   version?: string
 ) => {
   const path = `${resource}/${id}`;
-  try {
-    const json = await fetch(axios.delete, path, null, null, session, version);
-    return json.data;
-  } catch (error) {
-    throw error;
-  }
+  const json = await fetch(axios.delete, path, null, null, session, version);
+  return json.data;
 };
 
 export const put = async (
   resource: string,
   id: string,
-  payload: any,
+  payload: JSONValue,
   session?: Session,
   version?: string
 ) => {
   const path = `${resource}/${id}`;
-  try {
-    const json = await fetch(axios.put, path, payload, null, session, version);
-    return json.data;
-  } catch (error) {
-    throw error;
-  }
+  const json = await fetch(axios.put, path, payload, null, session, version);
+  return json.data;
 };

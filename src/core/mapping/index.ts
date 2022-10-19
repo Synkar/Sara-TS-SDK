@@ -1,5 +1,6 @@
 import { Session, ISession } from "../../models/Session";
 import { Client } from "../..";
+import { JSONValue } from "../../models/JSON";
 
 /**
  * Type of the mapping process
@@ -38,12 +39,23 @@ type ResponseMapping = {
   running: boolean;
 };
 
+type startArgs = JSONValue;
+
+type stopArgs = {
+  mapId: string;
+} & JSONValue;
+
+type swapArgs = {
+  mapId: string;
+  clear: boolean;
+} & JSONValue;
+
 /**
  * Request of the mapping process
  */
 type RequestMapping = {
   type: Type;
-  args_json?: any;
+  args_json?: startArgs | stopArgs | swapArgs;
 };
 
 /**
@@ -100,7 +112,7 @@ export class Mapping {
   constructor(robot: string, session?: ISession) {
     this.robot = robot;
     if (session) {
-      this.session = new Session(session!);
+      this.session = new Session(session);
     } else {
       this.session = Client.session;
     }
@@ -411,7 +423,10 @@ export class Mapping {
    *
    * @returns A Promise that returns the response of the action or the error
    */
-  private sendAction = async (type: Type, args_json: any) => {
+  private sendAction = async (
+    type: Type,
+    args_json: startArgs | stopArgs | swapArgs
+  ) => {
     const action: string = Type[type].toLowerCase();
     if (this.responses[action].done || this.responses[action].running) {
       throw new Error("Action is already running");

@@ -26,7 +26,7 @@ export class Steps {
       stageLookup ? "stages/" + stageLookup + "/" : ""
     }steps`;
     if (session) {
-      this.session = new Session(session!);
+      this.session = new Session(session);
     } else {
       this.session = Client.session;
     }

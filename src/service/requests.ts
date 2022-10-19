@@ -48,7 +48,7 @@ export const fetch = async (
   }
 
   if (session) {
-    session = new Session(session!);
+    session = new Session(session);
     if (!session.access_token) await session.refreshToken();
   } else {
     session = Client.session;

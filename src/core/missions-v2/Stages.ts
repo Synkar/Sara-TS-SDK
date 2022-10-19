@@ -25,7 +25,7 @@ export class Stages {
     this.Steps.prototype.parent = this;
     this.missionLookup = missionLookup;
     if (session) {
-      this.session = new Session(session!);
+      this.session = new Session(session);
     } else {
       this.session = Client.session;
     }

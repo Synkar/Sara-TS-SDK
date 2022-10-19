@@ -18,7 +18,7 @@ export class Tags {
       this.resource = `missions/${missionLookup}/tags`;
     }
     if (session) {
-      this.session = new Session(session!);
+      this.session = new Session(session);
     } else {
       this.session = Client.session;
     }

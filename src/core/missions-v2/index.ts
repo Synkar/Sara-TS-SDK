@@ -22,7 +22,7 @@ export class Missions {
     this.Stages.prototype.parent = this;
     this.Steps.prototype.parent = this;
     if (session) {
-      this.session = new Session(session!);
+      this.session = new Session(session);
     } else {
       this.session = Client.session;
     }
@@ -42,10 +42,10 @@ export class Missions {
     filters?: MissionsListFilters
   ): AsyncGenerator<MissionsRetrieve[]> {
     if (!filters) filters = {};
-    let page: number = filters.page || 1;
+    let page: number = parseInt(filters.page) || 1;
 
     while (true) {
-      filters.page = page;
+      filters.page = String(page);
       const json = await this.list(robot_id, filters);
       yield json.results || [];
       if (!json.next) {

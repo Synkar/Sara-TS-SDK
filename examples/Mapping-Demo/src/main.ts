@@ -22,7 +22,8 @@ let runningType: Type | undefined = undefined;
 
 // Defining the log function to log the messages on the screen
 const log = (message: string) => {
-  document.getElementById("logs")!.innerHTML = message;
+  const logs = document.getElementById("logs");
+  if (logs) logs.innerHTML = message;
 };
 
 // Defining the start button function to start the mapping process.
@@ -35,7 +36,8 @@ const onStart = async () => {
     .then((response) => {
       console.log("Finished start command", response);
       setTimeout(() => {
-        document.getElementById("mapping-video")!.style.display = "block";
+        const mapping_video = document.getElementById("mapping-video");
+        if (mapping_video) mapping_video.style.display = "block";
         log(
           "Robot finished start mapping. Now you can teleop robot and stop mapping when you want."
         );
@@ -57,7 +59,8 @@ const onStop = async () => {
     .stop(mapId)
     .then((response) => {
       console.log("Finished stop command", response);
-      document.getElementById("mapping-video")!.style.display = "none";
+      const mapping_video = document.getElementById("mapping-video");
+      if (mapping_video) mapping_video.style.display = "none";
       log(
         "Robot finished stop mapping. Now you can teleop robot and stop mapping when you want."
       );
@@ -107,7 +110,9 @@ const onCancel = async () => {
 };
 
 // Add the elements to the DOM
-document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
+const app = document.querySelector<HTMLDivElement>("#app");
+if (app) {
+  app.innerHTML = `
   <h1>Sara Mapping Demo</h1>
   <div>
     <div id="map-menu" style="display: none">
@@ -128,12 +133,17 @@ document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
     ></video>
   </div>
 `;
+}
 
 // Setting the event listeners for the buttons
-document.querySelector<HTMLButtonElement>("#start")!.onclick = onStart;
-document.querySelector<HTMLButtonElement>("#stop")!.onclick = onStop;
-document.querySelector<HTMLButtonElement>("#swap")!.onclick = onSwap;
-document.querySelector<HTMLButtonElement>("#cancel")!.onclick = onCancel;
+const start = <HTMLButtonElement>document.getElementById("start");
+if (start) start.addEventListener("click", onStart);
+const stop = <HTMLButtonElement>document.getElementById("stop");
+if (stop) stop.addEventListener("click", onStop);
+const cancel = <HTMLButtonElement>document.getElementById("cancel");
+if (cancel) cancel.addEventListener("click", onCancel);
+const swap = <HTMLButtonElement>document.getElementById("swap");
+if (swap) swap.addEventListener("click", onSwap);
 
 /*
   Connecting to the robot and getting the video stream from the robot
@@ -142,8 +152,10 @@ document.querySelector<HTMLButtonElement>("#cancel")!.onclick = onCancel;
 mapping.image(
   (resolve: RTCTrackEvent) => {
     log("Web Terminal connected to robot.");
-    document.getElementById("map-menu")!.style.display = "block";
-    document.getElementById("mapping-video")!.srcObject = resolve.streams[0];
+    const map_menu = document.getElementById("map-menu");
+    if (map_menu) map_menu.style.display = "block";
+    const video = <HTMLVideoElement>document.getElementById("mapping-video");
+    if (video) video.srcObject = resolve.streams[0];
   },
   (error: Error) => {
     console.error("error: ", error);
