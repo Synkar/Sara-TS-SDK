@@ -48,7 +48,7 @@ export class Stages {
   create = async (payload: StagesCreate): Promise<StagesRetrieve> => {
     return await post(Stages.resource, payload, this.session, "v2");
   };
-  remove = async (id: string): Promise<void> => {
+  remove = async (id: string): Promise<boolean> => {
     return await remove(Stages.resource, id, this.session, "v2");
   };
 

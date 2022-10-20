@@ -7,7 +7,7 @@ export declare type ParamsType = UUID & {
   property: string;
   is_variable: boolean;
   is_metric: boolean;
-  value?: string;
+  value?: string | boolean | number;
   value_type: string;
   map_value?: string;
   metadata?: string;

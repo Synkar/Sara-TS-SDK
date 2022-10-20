@@ -3,8 +3,8 @@
  */
 export interface IPaginatedModel<T> {
   count: number;
-  next: number;
-  previous: number;
+  next: number | null;
+  previous: number | null;
   results: T[];
 }
 
@@ -13,8 +13,8 @@ export interface IPaginatedModel<T> {
  */
 export class PaginatedModel<T> implements IPaginatedModel<T> {
   count: number;
-  next: number;
-  previous: number;
+  next: number | null;
+  previous: number | null;
   results: T[];
 
   /**
@@ -25,7 +25,12 @@ export class PaginatedModel<T> implements IPaginatedModel<T> {
    * @param previous - Previous page
    * @param results - Array of results
    */
-  constructor(count: number, next: number, previous: number, results: T[]) {
+  constructor(
+    count: number,
+    next: number | null,
+    previous: number | null,
+    results: T[]
+  ) {
     this.count = count;
     this.next = next;
     this.previous = previous;

@@ -15,6 +15,16 @@ export declare type MissionsType = {
 };
 
 export declare type MissionsRetrieve = UUID & MissionsType & Datetime;
+
+export declare type MissionsList = UUID & {
+  robot: string;
+  current_step: number;
+  status: number;
+  assisted: boolean;
+  loop: boolean;
+  outcome: number;
+  tags: string[];
+} & Datetime;
 export declare type MissionsCreate = MissionsType;
 export declare type MissionsUpdate = MissionsType;
 

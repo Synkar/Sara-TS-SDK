@@ -4,11 +4,11 @@ import { ISession, Session } from "../../models/Session";
 import { getAll, get, post, patch } from "../../utils/rest";
 import {
   MissionsCreate,
+  MissionsList,
   MissionsListFilters,
   MissionsRetrieve,
   MissionsUpdate,
 } from "./models/Missions.models";
-import { StagesRetrieve } from "./models/Stages.models";
 
 import { Stages as _Stages } from "./Stages";
 import { Steps as _Steps } from "./Steps";
@@ -32,7 +32,7 @@ export class Missions {
   list = async (
     robot_id: string,
     filters?: MissionsListFilters
-  ): Promise<PaginatedModel<StagesRetrieve>> => {
+  ): Promise<PaginatedModel<MissionsList>> => {
     if (!filters) filters = {};
     filters["robot_id"] = robot_id;
     return await getAll(this.resource, filters, this.session, "v2");
@@ -41,7 +41,7 @@ export class Missions {
   listPaginated = async function* (
     robot_id: string,
     filters?: MissionsListFilters
-  ): AsyncGenerator<MissionsRetrieve[]> {
+  ): AsyncGenerator<MissionsList[]> {
     if (!filters) filters = {};
     let page: number = parseInt(filters.page) || 1;
 
@@ -75,12 +75,7 @@ export class Missions {
   };
 
   retry = async (uuid: string): Promise<boolean> => {
-    return await post(
-      `${this.resource}/${uuid}/retry`,
-      null,
-      this.session,
-      "v2"
-    );
+    return await post(`${this.resource}/${uuid}/retry`, {}, this.session, "v2");
   };
 
   cancel = async (uuid: string): Promise<boolean> => {

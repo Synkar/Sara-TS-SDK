@@ -2,6 +2,7 @@ import { Session } from "../models/Session";
 import { fetch } from "../service/requests";
 import axios from "axios";
 import { FiltersListTypeAll } from "../models/Filters";
+import { ResponseModel } from "../models/ResponseModel";
 
 export const get = async (
   resource: string,
@@ -16,7 +17,7 @@ export const get = async (
     query = new URLSearchParams(filters).toString();
   }
   const json = await fetch(axios.get, path, null, query, session, version);
-  return json.data;
+  return handleData(json);
 };
 
 export const getAll = async (
@@ -31,7 +32,7 @@ export const getAll = async (
     query = new URLSearchParams(filters).toString();
   }
   const json = await fetch(axios.get, path, null, query, session, version);
-  return json.data;
+  return handleData(json);
 };
 
 export const post = async <T>(
@@ -42,7 +43,7 @@ export const post = async <T>(
 ) => {
   const path = `${resource}`;
   const json = await fetch(axios.post, path, payload, null, session, version);
-  return json.data;
+  return handleData(json);
 };
 
 export const patch = async <T>(
@@ -54,7 +55,7 @@ export const patch = async <T>(
 ) => {
   const path = `${resource}/${id}`;
   const json = await fetch(axios.patch, path, payload, null, session, version);
-  return json.data;
+  return handleData(json);
 };
 
 export const remove = async (
@@ -65,7 +66,7 @@ export const remove = async (
 ) => {
   const path = `${resource}/${id}`;
   const json = await fetch(axios.delete, path, null, null, session, version);
-  return json.data;
+  return handleData(json);
 };
 
 export const put = async <T>(
@@ -77,5 +78,19 @@ export const put = async <T>(
 ) => {
   const path = `${resource}/${id}`;
   const json = await fetch(axios.put, path, payload, null, session, version);
-  return json.data;
+  return handleData(json);
+};
+
+const handleData = <T>(result: ResponseModel<T>): boolean | T => {
+  console.log(result);
+  if (result) {
+    if (result.data) return result.data;
+    else {
+      if (result.status >= 200 && result.status < 300) {
+        return true;
+      } else return false;
+    }
+  } else {
+    return false;
+  }
 };

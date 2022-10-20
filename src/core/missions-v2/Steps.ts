@@ -7,6 +7,7 @@ import {
   StepsCreate,
   StepsUpdate,
   StepsListFilters,
+  StepsList,
 } from "./models/Steps.models";
 export class Steps {
   static resource = "missions/steps";
@@ -34,7 +35,7 @@ export class Steps {
 
   list = async (
     filters?: StepsListFilters
-  ): Promise<PaginatedModel<StepsRetrieve>> => {
+  ): Promise<PaginatedModel<StepsList>> => {
     console.log("m, s:", this.missionLookup, this.stageLookup);
     return await Steps.list(filters, this.session);
   };
@@ -47,7 +48,7 @@ export class Steps {
   create = async (payload: StepsCreate): Promise<StepsRetrieve> => {
     return await post(Steps.resource, payload, this.session, "v2");
   };
-  remove = async (id: string): Promise<void> => {
+  remove = async (id: string): Promise<boolean> => {
     return await remove(Steps.resource, id, this.session, "v2");
   };
   static list = async (
