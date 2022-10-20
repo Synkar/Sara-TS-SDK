@@ -6,5 +6,5 @@ module.exports = {
   rules: {
     "@typescript-eslint/no-namespace": "off",
   },
-  ignorePatterns: ["dist/**/*"],
+  ignorePatterns: ["dist/**/*", "tests/**/*"],
 };
