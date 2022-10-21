@@ -36,12 +36,12 @@ export const fetch = async <T>(
     | AxiosInstance["delete"],
   path: string,
   payload: T = null,
-  query = "",
+  query: string | null = null,
   session: Session = null,
   version = "v1"
 ) => {
   let url = `${sdk.API_URL}/${version}/`;
-  if (query !== "") {
+  if (query !== "" && query !== null) {
     url += `${path}/?${query}`;
   } else {
     url += `${path}/`;
@@ -60,10 +60,22 @@ export const fetch = async <T>(
 
   const bearerToken = `Bearer ${session.access_token}`;
 
+  console.log(payload);
+
   try {
     let request;
     if (payload) {
-      request = method(url, payload, {
+      let data = new FormData();
+
+      for (let key in payload) {
+        if (typeof payload[key] === "object") {
+          data.append(key, JSON.stringify(payload[key]));
+        } else {
+          data.append(key, String(payload[key]));
+        }
+      }
+
+      request = method(url, data, {
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
           "User-Agent": agent,
