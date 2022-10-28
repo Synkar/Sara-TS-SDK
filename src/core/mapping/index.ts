@@ -2,15 +2,17 @@ import { Session, ISession } from "../../models/Session";
 import { Client } from "../..";
 
 /**
- * TODO: identificar o melhor lugar para por esse tipo
+ * Type of the mapping process
  */
-
 export enum Type {
   START = 0, // 0
   STOP = 1, // 1
   SWAP = 2, // 2
 }
 
+/**
+ * Status of the robot mission (mapping)
+ */
 enum Status {
   PENDING = 0,
   ACTIVE = 1,
@@ -24,6 +26,9 @@ enum Status {
   LOST = 9,
 }
 
+/**
+ * Response of the mapping process
+ */
 type ResponseMapping = {
   type: Type;
   status: Status;
@@ -33,11 +38,17 @@ type ResponseMapping = {
   running: boolean;
 };
 
+/**
+ * Request of the mapping process
+ */
 type RequestMapping = {
   type: Type;
   args_json?: Object;
 };
 export namespace Sara {
+  /**
+   * Mapping class
+   */
   export class Mapping {
     robot: string;
     session: Session;
@@ -76,6 +87,16 @@ export namespace Sara {
       },
     };
 
+    /**
+     * Constructor of the Mapping class
+     * @param robot - Id of the robot
+     * @param session - User session to connect to the robot
+     *
+     * @returns Mapping class
+     *
+     * @example
+     * const mapping = new Mapping("144cdc28-9126-4f59-b32b-307b2ae43fb3");
+     */
     constructor(robot: string, session?: ISession) {
       this.robot = robot;
       if (session) {
@@ -88,6 +109,10 @@ export namespace Sara {
       this.initDataChannel();
     }
 
+    /**
+     * Create the PeerConnection and set the event listeners
+     * @returns void
+     */
     private initPeerConnection = () => {
       this.peerConnection = new RTCPeerConnection({
         iceServers: [
@@ -124,6 +149,10 @@ export namespace Sara {
       };
     };
 
+    /**
+     * Connect to the WebSocket signaling channel
+     * @returns void
+     */
     private connectSignaling = async () => {
       const url = `wss://s83w778yf3.execute-api.us-east-1.amazonaws.com/v1?token=${this.session.access_token}&robotId=${this.robot}`;
       this.signalingChannel = new WebSocket(url);
@@ -207,6 +236,10 @@ export namespace Sara {
       };
     };
 
+    /**
+     * Create the DataChannel and set the event listeners
+     * @returns void
+     */
     private initDataChannel = () => {
       this.dataChannel =
         this.peerConnection.createDataChannel("bridge-ros-webrtc");
@@ -322,6 +355,10 @@ export namespace Sara {
         });
     };
 
+    /**
+     * Check if DataChannel is opened
+     * @returns A Promise that resolves when the connection is established or rejects if the connection is closed
+     */
     private checkDataChannelOpened = async () =>
       Promise.race([
         new Promise((_, reject) => {
@@ -337,6 +374,13 @@ export namespace Sara {
         }),
       ]);
 
+    /**
+     * Serialize the args_json
+     * @param requestMapping - The requestMapping object
+     *
+     * @returns An object with the serialized args_json and type
+     *
+     */
     private serializeRequestMapping = (requestMapping: RequestMapping) => {
       return {
         type: requestMapping.type,
@@ -344,6 +388,12 @@ export namespace Sara {
       };
     };
 
+    /**
+     * Send a request to the robot
+     * @param requestMapping - The requestMapping object
+     *
+     * @returns void
+     */
     private sendRequestTopicMessage = (requestMapping: RequestMapping) => {
       this.dataChannel.send(
         JSON.stringify({
@@ -353,6 +403,13 @@ export namespace Sara {
       );
     };
 
+    /**
+     * Send a action of mapping to the robot
+     * @param type - The type of action
+     * @param args_json - The args_json of action
+     *
+     * @returns A Promise that returns the response of the action or the error
+     */
     private sendAction = async (type: Type, args_json: Object) => {
       const action: string = Type[type].toLowerCase();
       if (this.responses[action].done || this.responses[action].running) {

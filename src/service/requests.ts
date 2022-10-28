@@ -1,9 +1,34 @@
-import { AxiosInstance } from "axios";
-import { sdk } from "..";
+import { AxiosError } from "axios";
+import { Client, sdk } from "..";
+import { ResponseModel } from "../models/ResponseModel";
 import { agent, Session } from "../models/Session";
+import { handleExceptions, UnknownErrorException } from "../models/Exceptions";
 
+/**
+ * This is a helper function to make requests to the API.
+ *
+ * @param method - The Axios function to use on the request.
+ * @param path - The path to make the request to.
+ * @param payload - The data to send on the request.
+ * @param query - The query to send on the request.
+ * @param session - The session to use on the request.
+ * @param version - The version of the API to use.
+ *
+ * @returns A ResponseModel with the response from the API or an exception.
+ *
+ * @throws UnknownErrorException
+ *
+ * @example
+ *
+ * import axios from "axios";
+ *
+ * const response = await request(
+ *  axios.get,
+ *  "iam/users"
+ * );
+ */
 export const fetch = async (
-  method: AxiosInstance,
+  method: any,
   path: String,
   payload: any = null,
   query: string = "",
@@ -17,8 +42,11 @@ export const fetch = async (
     url += `${path}/`;
   }
 
-  if (session === null) {
-    //session = new Session(sdk.DEFAULT_SESSION);
+  if (session) {
+    session = new Session(session!);
+    if (!session.access_token) await session.refreshToken();
+  } else {
+    session = Client.session;
   }
 
   const access_time = new Date().getTime();
@@ -27,22 +55,38 @@ export const fetch = async (
 
   const bearer_token = `Bearer ${session.access_token}`;
 
-  const request = method({
-    url,
-    data: payload,
-    headers: {
-      "Access-Time": access_time,
-      "Content-Type": "application/x-www-form-urlencoded",
-      "User-Agent": agent,
-      "Accept-Language": "en-US",
-      Authorization: bearer_token,
-    },
-    timeout: sdk.timeout,
-  });
+  try {
+    let request;
+    if (payload) {
+      request = method(url, payload, {
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+          "User-Agent": agent,
+          "Accept-Language": "en-US",
+          Authorization: bearer_token,
+        },
+        timeout: sdk.timeout,
+      });
+    } else {
+      request = method(url, {
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+          "User-Agent": agent,
+          "Accept-Language": "en-US",
+          Authorization: bearer_token,
+        },
+        timeout: sdk.timeout,
+      });
+    }
 
-  // TODO: handle errors (not implemented)
-
-  // TODO: use responseHandler (need to be implemented)
-
-  return await request;
+    const result = await request;
+    if (result) {
+      return new ResponseModel(result.status, result.data);
+    }
+    return new UnknownErrorException("Unknown error");
+  } catch (e) {
+    const error: AxiosError = e;
+    const errorHandled = handleExceptions(error);
+    return errorHandled;
+  }
 };

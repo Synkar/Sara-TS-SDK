@@ -1,6 +1,11 @@
-import axios, { AxiosResponse } from "axios";
-import { Client, sdk } from "../";
+import axios, { AxiosError, AxiosResponse } from "axios";
+import { sdk } from "../";
+import { handleExceptions } from "./Exceptions";
+import { ResponseModel } from "./ResponseModel";
 
+/**
+ * Session Model Interface
+ */
 export interface ISession {
   access_key: string;
   secret_key: string;
@@ -13,38 +18,63 @@ export interface ISession {
 
 export const agent = `Typescript-Sara-SDK`;
 
+/**
+ * Session Authentication Function
+ * @param session - Session Interface
+ *
+ * @returns A new Session authenticated.
+ *
+ * @throws BadRequestException
+ * @throws UnauthorizedException
+ * @throws ForbiddenException
+ * @throws InternalServerErrorException
+ * @throws UnknownErrorException
+ *
+ * @example
+ * const session = await authenticate({
+ *  access_key: "access_key",
+ *  secret_key: "secret_key",
+ * });
+ */
 export const authenticate = async (session: ISession) => {
   const auth_url = `${sdk.AUTH_URL}?client_id=${session.access_key}`;
   const body = `grant_type=client_credentials&scope=${session.scope}`;
 
   const auth = `${session.access_key}:${session.secret_key}`;
 
-  const request: Promise<AxiosResponse> = axios
-    .post(auth_url, body, {
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-        "User-Agent": agent,
-        "Accept-Language": "en-US",
-        Authorization: `Basic ${btoa(auth)}`,
-      },
-      timeout: sdk.timeout,
-    })
-    .then((response) => {
-      return response;
-    })
-    .catch((error) => {
-      // TODO: Handle error (not implemented)
-      return error;
-    });
+  try {
+    const request: Promise<AxiosResponse> = axios
+      .post(auth_url, body, {
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+          "User-Agent": agent,
+          "Accept-Language": "en-US",
+          Authorization: `Basic ${btoa(auth)}`,
+        },
+        timeout: sdk.timeout,
+      })
+      .then((response) => {
+        return response;
+      })
+      .catch((e) => {
+        throw e;
+      });
 
-  // TODO: use responseHandler (need to be implemented)
-  const response = await request;
+    const result = await request;
 
-  // TODO: set session (not implemented)
+    const response = new ResponseModel(result.status, result.data);
 
-  return new Session({ ...session, ...response.data });
+    return new Session({ ...session, ...response.data });
+  } catch (e) {
+    const error: AxiosError = e;
+    const errorHandled = handleExceptions(error);
+    return errorHandled;
+  }
 };
 
+/**
+ * Session Model Class
+ */
 export class Session implements ISession {
   access_key: string;
   secret_key: string;
@@ -54,6 +84,11 @@ export class Session implements ISession {
   expires_in?: number;
   token_type?: string;
 
+  /**
+   * Creates a new Session instance.
+   *
+   * @param session - Session Interface
+   */
   constructor(session: ISession) {
     this.access_key = session.access_key;
     this.secret_key = session.secret_key;
@@ -64,10 +99,19 @@ export class Session implements ISession {
     this.token_type = session.token_type;
   }
 
+  /**
+   * Refresh the access token.
+   *
+   * @returns A Session re-authenticated.
+   */
   async refreshToken() {
-    const response = await authenticate(this);
-    this.access_token = response.access_token;
-    this.expires_in = response.expires_in;
-    return response;
+    try {
+      const response = await authenticate(this);
+      this.access_token = response.access_token;
+      this.expires_in = response.expires_in;
+      return response;
+    } catch (e) {
+      return e;
+    }
   }
 }
