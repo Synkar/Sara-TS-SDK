@@ -1,10 +1,6 @@
-import * as dotenv from "dotenv";
-
-dotenv.config();
-
 import { authenticate, Session } from "./models/Session";
 
-export * from "./core";
+import { Missions as _Missions, Mapping as _Mapping } from "./core";
 
 /**
  * Define some constants to the sdk.
@@ -17,9 +13,9 @@ export const sdk = {
 };
 
 /**
- * Client Class to manage the session.
+ * _Client Class to manage the session.
  */
-export class Client {
+class _Client {
   static session: Session;
 
   /**
@@ -33,7 +29,7 @@ export class Client {
   static auth = async (
     access_key: string,
     secret_key: string,
-    scope: string = ""
+    scope = ""
   ) => {
     const session = await authenticate({
       access_key,
@@ -42,8 +38,15 @@ export class Client {
       attemps: 0,
     });
 
-    Client.session = session;
+    _Client.session = session;
 
     return session;
   };
 }
+
+export namespace Sara {
+  export const Missions = _Missions;
+  export const Mapping = _Mapping;
+  export const auth = _Client.auth;
+}
+export const Client = _Client;

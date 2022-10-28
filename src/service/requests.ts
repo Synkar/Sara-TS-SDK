@@ -1,8 +1,8 @@
-import { AxiosError } from "axios";
+import { AxiosError, AxiosInstance } from "axios";
 import { Client, sdk } from "..";
 import { ResponseModel } from "../models/ResponseModel";
 import { agent, Session } from "../models/Session";
-import { handleExceptions, UnknownErrorException } from "../models/Exceptions";
+import { handleExceptions } from "../models/Exceptions";
 
 /**
  * This is a helper function to make requests to the API.
@@ -16,7 +16,7 @@ import { handleExceptions, UnknownErrorException } from "../models/Exceptions";
  *
  * @returns A ResponseModel with the response from the API or an exception.
  *
- * @throws UnknownErrorException
+ * @throws handleExceptions
  *
  * @example
  *
@@ -27,43 +27,60 @@ import { handleExceptions, UnknownErrorException } from "../models/Exceptions";
  *  "iam/users"
  * );
  */
-export const fetch = async (
-  method: any,
-  path: String,
-  payload: any = null,
-  query: string = "",
+export const fetch = async <T>(
+  method:
+    | AxiosInstance["post"]
+    | AxiosInstance["get"]
+    | AxiosInstance["patch"]
+    | AxiosInstance["put"]
+    | AxiosInstance["delete"],
+  path: string,
+  payload: T = null,
+  query: string | null = null,
   session: Session = null,
-  version: String = "v1"
+  version = "v1"
 ) => {
   let url = `${sdk.API_URL}/${version}/`;
-  if (query !== "") {
+  if (query !== "" && query !== null) {
     url += `${path}/?${query}`;
   } else {
     url += `${path}/`;
   }
 
   if (session) {
-    session = new Session(session!);
+    session = new Session(session);
     if (!session.access_token) await session.refreshToken();
   } else {
     session = Client.session;
   }
 
-  const access_time = new Date().getTime();
+  const accessTime = new Date().getTime();
 
-  if (access_time >= session.expires_in) session.refreshToken();
+  if (accessTime >= session.expires_in) session.refreshToken();
 
-  const bearer_token = `Bearer ${session.access_token}`;
+  const bearerToken = `Bearer ${session.access_token}`;
+
+  console.log(payload);
 
   try {
     let request;
     if (payload) {
-      request = method(url, payload, {
+      let data = new FormData();
+
+      for (let key in payload) {
+        if (typeof payload[key] === "object") {
+          data.append(key, JSON.stringify(payload[key]));
+        } else {
+          data.append(key, String(payload[key]));
+        }
+      }
+
+      request = method(url, data, {
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
           "User-Agent": agent,
           "Accept-Language": "en-US",
-          Authorization: bearer_token,
+          Authorization: bearerToken,
         },
         timeout: sdk.timeout,
       });
@@ -73,7 +90,7 @@ export const fetch = async (
           "Content-Type": "application/x-www-form-urlencoded",
           "User-Agent": agent,
           "Accept-Language": "en-US",
-          Authorization: bearer_token,
+          Authorization: bearerToken,
         },
         timeout: sdk.timeout,
       });
@@ -83,7 +100,6 @@ export const fetch = async (
     if (result) {
       return new ResponseModel(result.status, result.data);
     }
-    return new UnknownErrorException("Unknown error");
   } catch (e) {
     const error: AxiosError = e;
     const errorHandled = handleExceptions(error);

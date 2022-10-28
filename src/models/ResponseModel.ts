@@ -1,17 +1,17 @@
 /**
  * Default Response Model Interface
  */
-export interface IResponseModel {
+export interface IResponseModel<T> {
   status: number;
-  data: any;
+  data: T;
 }
 
 /**
  * Default Response Model Class
  */
-export class ResponseModel implements IResponseModel {
+export class ResponseModel<T> implements IResponseModel<T> {
   status: number;
-  data: any;
+  data: T;
 
   /**
    * Creates a new ResponseModel instance.
@@ -19,7 +19,7 @@ export class ResponseModel implements IResponseModel {
    * @param status - Response status code
    * @param data - Response data
    */
-  constructor(status: number, data: any) {
+  constructor(status: number, data: T) {
     this.status = status;
     this.data = data;
   }
