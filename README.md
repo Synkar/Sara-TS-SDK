@@ -60,7 +60,6 @@ Project is _in progress_.
 New modules:
 - SRS
 - IAM
-- Missions
 - Telemetry
 - Teleop
 
