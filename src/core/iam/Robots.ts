@@ -45,7 +45,7 @@ export class Robots {
     return await get(this.resource, id, null, this.session);
   };
 
-  create = async (payload: any): Promise<RetrieveRobot> => {
+  create = async (payload: RobotType): Promise<RetrieveRobot> => {
     return await post(this.resource, payload, this.session);
   };
 
