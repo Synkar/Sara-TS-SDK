@@ -1,7 +1,7 @@
 import { Client } from "../..";
 import { ISession, Session } from "../../models/Session";
 import { getAll } from "../../utils/rest";
-import { IamDetail, IamSlugs } from "./models/Iam.models";
+import { DjangoDetail, IamSlugs } from "./models/Iam.models";
 
 import { Robots as _Robots } from "./Robots";
 import { Fleets as _Fleets } from "./Fleets";
@@ -28,7 +28,7 @@ export class IAM {
       scope: String(scope),
       resource,
     };
-    const response: IamDetail = await getAll(
+    const response: DjangoDetail = await getAll(
       `${this.resource}/has-permission`,
       filters,
       this.session

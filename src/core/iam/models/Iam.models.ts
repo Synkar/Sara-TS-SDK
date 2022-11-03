@@ -1,4 +1,4 @@
-export declare type IamDetail = {
+export declare type DjangoDetail = {
   detail: boolean;
 };
 
