@@ -4,6 +4,7 @@ import { getAll } from "../../utils/rest";
 import { IamDetail, IamSlugs } from "./models/Iam.models";
 
 import { Robots as _Robots } from "./Robots";
+import { Fleets as _Fleets } from "./Fleets";
 
 export class IAM {
   private resource = "iam";
@@ -43,5 +44,10 @@ export class IAM {
     return new _Robots(session);
   } as any as { new (session?: ISession): any };
 
+  Fleets = function (session?: ISession) {
+    return new _Fleets(session);
+  } as any as { new (session?: ISession): any };
+
   static Robots = _Robots;
+  static Fleets = _Fleets;
 }
