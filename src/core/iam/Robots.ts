@@ -60,7 +60,7 @@ export class Robots {
   attachLocality = async (id: string, locality: string): Promise<void> => {
     return await post(
       `${this.resource}/${id}/attachLocality`,
-      locality,
+      { locality },
       this.session
     );
   };
@@ -68,7 +68,8 @@ export class Robots {
   detachLocality = async (id: string, locality: string): Promise<void> => {
     return await remove(
       `${this.resource}/${id}/attachLocality`,
-      locality,
+      null,
+      { locality },
       this.session
     );
   };
