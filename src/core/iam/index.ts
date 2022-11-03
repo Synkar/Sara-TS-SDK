@@ -2,6 +2,7 @@ import { Client } from "../..";
 import { ISession, Session } from "../../models/Session";
 import { getAll } from "../../utils/rest";
 import { IamDetail, IamSlugs } from "./models/Iam.models";
+
 import { Robots as _Robots } from "./Robots";
 
 export class IAM {
@@ -37,6 +38,10 @@ export class IAM {
   slugs = async (pk: string): Promise<IamSlugs> => {
     return await getAll(`${this.resource}/slugs`, { pk }, this.session);
   };
+
+  Robots = function (session?: ISession) {
+    return new _Robots(session);
+  } as any as { new (session?: ISession): any };
 
   static Robots = _Robots;
 }

@@ -1,6 +1,7 @@
 import { Datetime } from "../../../models/Datetimes";
 import { UUID } from "../../../models/UUID";
 import { FleetType } from "./Fleet.models";
+import { Location } from "./Location.models";
 
 declare type FleetOnRobot = UUID & FleetType;
 
@@ -10,9 +11,17 @@ export declare type RobotType = {
 };
 
 declare type RobotWithFleet = RobotType & {
-  fleets?: FleetOnRobot[];
+  fleets?: FleetOnRobot[] | null;
 };
 
-export declare type RetrieveRobot = UUID & RobotWithFleet & Datetime;
+declare type RobotLocation = {
+  location: Location | null;
+};
+
+export declare type RetrieveRobot = UUID &
+  RobotWithFleet &
+  RobotLocation &
+  Datetime;
+
 export declare type CreateRobot = RobotType;
 export declare type UpdateRobot = RobotType;
