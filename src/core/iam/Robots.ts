@@ -3,7 +3,7 @@ import { FiltersListType } from "../../models/Filters";
 import { PaginatedModel } from "../../models/PaginatedModel";
 import { ISession, Session } from "../../models/Session";
 import { getAll, get, patch, post, remove } from "../../utils/rest";
-import { RetrieveRobot, UpdateRobot } from "./models/Robot.models";
+import { RetrieveRobot, RobotType, UpdateRobot } from "./models/Robot.models";
 
 export class Robots {
   private resource = "iam/robots";
