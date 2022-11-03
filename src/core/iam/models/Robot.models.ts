@@ -1,6 +1,6 @@
 import { Datetime } from "../../../models/Datetimes";
 import { UUID } from "../../../models/UUID";
-import { FleetType } from "./Fleet";
+import { FleetType } from "./Fleet.models";
 
 declare type FleetOnRobot = UUID & FleetType;
 
@@ -16,11 +16,3 @@ declare type RobotWithFleet = RobotType & {
 export declare type RetrieveRobot = UUID & RobotWithFleet & Datetime;
 export declare type CreateRobot = RobotType;
 export declare type UpdateRobot = RobotType;
-
-export interface IRobot {
-  retrieve: (uuid: string) => Promise<RetrieveRobot>;
-  create: (robot: CreateRobot) => Promise<RetrieveRobot>;
-  update: (uuid: string, robot: UpdateRobot) => Promise<RetrieveRobot>;
-  delete: (uuid: string) => Promise<RetrieveRobot>;
-  list: () => Promise<RetrieveRobot[]>;
-}

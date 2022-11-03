@@ -1,7 +1,7 @@
 import { Datetime } from "../../../models/Datetimes";
 import { UUID } from "../../../models/UUID";
-import { ClientType } from "./Client";
-import { RobotType } from "./Robot";
+import { ClientType } from "./Client.models";
+import { RobotType } from "./Robot.models";
 
 export declare type FleetType = {
   name: string;
