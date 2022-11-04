@@ -17,7 +17,7 @@ export class Services {
     }
   }
 
-  list = async (): Promise<ServicesRetrieve> => {
+  list = async (): Promise<ServicesRetrieve[]> => {
     return await get(this.resource, null, null, this.session);
   };
 

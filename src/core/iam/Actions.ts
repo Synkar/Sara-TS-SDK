@@ -17,7 +17,7 @@ export class Actions {
     }
   }
 
-  list = async (filters?: FiltersListType): Promise<ActionRetrieve> => {
+  list = async (filters?: FiltersListType): Promise<ActionRetrieve[]> => {
     if (!filters) filters = {};
     return await getAll(this.resource, filters, this.session);
   };
