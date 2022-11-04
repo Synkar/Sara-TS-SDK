@@ -17,28 +17,9 @@ export class Actions {
     }
   }
 
-  list = async (
-    filters?: FiltersListType
-  ): Promise<PaginatedModel<ActionRetrieve>> => {
+  list = async (filters?: FiltersListType): Promise<ActionRetrieve> => {
     if (!filters) filters = {};
     return await getAll(this.resource, filters, this.session);
-  };
-
-  listPaginated = async function* (
-    filters?: FiltersListType
-  ): AsyncGenerator<ActionRetrieve[]> {
-    if (!filters) filters = {};
-    let page: number = parseInt(filters.page) || 1;
-
-    while (true) {
-      filters.page = String(page);
-      const json: PaginatedModel<ActionRetrieve> = await this.list(filters);
-      yield json.results || [];
-      if (!json.next) {
-        break;
-      }
-      page++;
-    }
   };
 
   create = async (payload: ActionRetrieve): Promise<ActionRetrieve> => {

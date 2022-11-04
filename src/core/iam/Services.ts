@@ -17,25 +17,8 @@ export class Services {
     }
   }
 
-  list = async (): Promise<PaginatedModel<ServicesRetrieve>> => {
+  list = async (): Promise<ServicesRetrieve> => {
     return await get(this.resource, null, null, this.session);
-  };
-
-  listPaginated = async function* (
-    filters?: FiltersListType
-  ): AsyncGenerator<ServicesRetrieve[]> {
-    if (!filters) filters = {};
-    let page: number = parseInt(filters.page) || 1;
-
-    while (true) {
-      filters.page = String(page);
-      const json: PaginatedModel<ServicesRetrieve> = await this.list(filters);
-      yield json.results || [];
-      if (!json.next) {
-        break;
-      }
-      page++;
-    }
   };
 
   retrieve = async (id: string): Promise<ServicesRetrieve> => {
