@@ -11,3 +11,7 @@ export declare type ClientForUsers = UUID & {
   name: string;
   slug: string;
 };
+
+export declare type ClientForGroups = UUID & {
+  name: string;
+};

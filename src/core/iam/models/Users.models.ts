@@ -1,6 +1,6 @@
 import { UUID } from "../../../models/UUID";
 import { ClientForUsers, ClientType } from "./Client.models";
-import { GroupsRetrieve } from "./Groups.models";
+import { GroupsForUsers } from "./Groups.models";
 
 declare type DateTimeUser = {
   last_login: string;
@@ -17,7 +17,7 @@ export declare type UsersType = {
 };
 
 export declare type UsersWithGroupsAndClients = UsersType & {
-  groups: GroupsRetrieve[];
+  groups: GroupsForUsers[];
   clients: ClientForUsers[];
 } & DateTimeUser;
 
