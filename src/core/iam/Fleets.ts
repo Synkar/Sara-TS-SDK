@@ -3,7 +3,12 @@ import { FiltersListType } from "../../models/Filters";
 import PaginatedModel from "../../models/PaginatedModel";
 import { ISession, Session } from "../../models/Session";
 import { getAll, get, post, patch, remove } from "../../utils/rest";
-import { FleetRetrieve, FleetType, FleetUpdate } from "./models/Fleet.models";
+import {
+  FleetCreate,
+  FleetRetrieve,
+  FleetType,
+  FleetUpdate,
+} from "./models/Fleet.models";
 
 export class Fleets {
   private resource = "iam/fleets";
@@ -45,7 +50,7 @@ export class Fleets {
     return await get(this.resource, id, null, this.session);
   };
 
-  create = async (payload: FleetType): Promise<FleetRetrieve> => {
+  create = async (payload: FleetCreate): Promise<FleetRetrieve> => {
     return await post(this.resource, payload, this.session);
   };
 

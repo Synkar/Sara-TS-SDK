@@ -18,10 +18,10 @@ declare type RobotLocation = {
   location: Location | null;
 };
 
-export declare type RetrieveRobot = UUID &
+export declare type RobotRetrieve = UUID &
   RobotWithFleet &
   RobotLocation &
   Datetime;
 
-export declare type CreateRobot = RobotType;
-export declare type UpdateRobot = Partial<RobotType>;
+export declare type RobotCreate = RobotType;
+export declare type RobotUpdate = Partial<RobotType>;

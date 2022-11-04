@@ -3,7 +3,12 @@ import { FiltersListType } from "../../models/Filters";
 import { PaginatedModel } from "../../models/PaginatedModel";
 import { ISession, Session } from "../../models/Session";
 import { getAll, get, patch, post, remove } from "../../utils/rest";
-import { RetrieveRobot, RobotType, UpdateRobot } from "./models/Robot.models";
+import {
+  RobotCreate,
+  RobotRetrieve,
+  RobotType,
+  RobotUpdate,
+} from "./models/Robot.models";
 
 export class Robots {
   private resource = "iam/robots";
@@ -19,20 +24,20 @@ export class Robots {
 
   list = async (
     filters?: FiltersListType
-  ): Promise<PaginatedModel<RetrieveRobot>> => {
+  ): Promise<PaginatedModel<RobotRetrieve>> => {
     if (!filters) filters = {};
     return await getAll(this.resource, filters, this.session);
   };
 
   listPaginated = async function* (
     filters?: FiltersListType
-  ): AsyncGenerator<RetrieveRobot[]> {
+  ): AsyncGenerator<RobotRetrieve[]> {
     if (!filters) filters = {};
     let page: number = parseInt(filters.page) || 1;
 
     while (true) {
       filters.page = String(page);
-      const json: PaginatedModel<RetrieveRobot> = await this.list(filters);
+      const json: PaginatedModel<RobotRetrieve> = await this.list(filters);
       yield json.results || [];
       if (!json.next) {
         break;
@@ -41,15 +46,15 @@ export class Robots {
     }
   };
 
-  retrieve = async (id: string): Promise<RetrieveRobot> => {
+  retrieve = async (id: string): Promise<RobotRetrieve> => {
     return await get(this.resource, id, null, this.session);
   };
 
-  create = async (payload: RobotType): Promise<RetrieveRobot> => {
+  create = async (payload: RobotCreate): Promise<RobotRetrieve> => {
     return await post(this.resource, payload, this.session);
   };
 
-  update = async (id: string, payload: UpdateRobot): Promise<RetrieveRobot> => {
+  update = async (id: string, payload: RobotUpdate): Promise<RobotRetrieve> => {
     return await patch(this.resource, id, payload, this.session);
   };
 
