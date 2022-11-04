@@ -1,6 +1,10 @@
 import { authenticate, Session } from "./models/Session";
 
-import { Missions as _Missions, Mapping as _Mapping } from "./core";
+import {
+  Missions as _Missions,
+  Mapping as _Mapping,
+  IAM as _IAM,
+} from "./core";
 
 /**
  * Define some constants to the sdk.
@@ -26,11 +30,7 @@ class _Client {
    * @param scope - The scope to authenticate.
    * @returns A Session authenticated.
    */
-  static auth = async (
-    access_key: string,
-    secret_key: string,
-    scope = ""
-  ) => {
+  static auth = async (access_key: string, secret_key: string, scope = "") => {
     const session = await authenticate({
       access_key,
       secret_key,
@@ -47,6 +47,7 @@ class _Client {
 export namespace Sara {
   export const Missions = _Missions;
   export const Mapping = _Mapping;
+  export const IAM = _IAM;
   export const auth = _Client.auth;
 }
 export const Client = _Client;
