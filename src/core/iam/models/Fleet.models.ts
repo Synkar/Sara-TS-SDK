@@ -16,4 +16,4 @@ export declare type RetrieveFleet = UUID &
   };
 
 export declare type CreateFleet = FleetType;
-export declare type UpdateFleet = FleetType;
+export declare type UpdateFleet = Partial<FleetType>;

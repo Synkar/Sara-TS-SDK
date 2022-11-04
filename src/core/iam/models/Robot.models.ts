@@ -24,4 +24,4 @@ export declare type RetrieveRobot = UUID &
   Datetime;
 
 export declare type CreateRobot = RobotType;
-export declare type UpdateRobot = RobotType;
+export declare type UpdateRobot = Partial<RobotType>;
