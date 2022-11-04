@@ -8,12 +8,12 @@ export declare type FleetType = {
   description?: string;
 };
 
-export declare type RetrieveFleet = UUID &
+export declare type FleetRetrieve = UUID &
   FleetType &
   Datetime & {
     client: ClientType;
     robots?: [UUID & RobotType & Datetime];
   };
 
-export declare type CreateFleet = FleetType;
-export declare type UpdateFleet = Partial<FleetType>;
+export declare type FleetCreate = FleetType;
+export declare type FleetUpdate = Partial<FleetType>;

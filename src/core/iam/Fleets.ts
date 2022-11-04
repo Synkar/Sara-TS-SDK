@@ -3,7 +3,7 @@ import { FiltersListType } from "../../models/Filters";
 import PaginatedModel from "../../models/PaginatedModel";
 import { ISession, Session } from "../../models/Session";
 import { getAll, get, post, patch, remove } from "../../utils/rest";
-import { RetrieveFleet, FleetType, UpdateFleet } from "./models/Fleet.models";
+import { FleetRetrieve, FleetType, FleetUpdate } from "./models/Fleet.models";
 
 export class Fleets {
   private resource = "iam/fleets";
@@ -19,20 +19,20 @@ export class Fleets {
 
   list = async (
     filters?: FiltersListType
-  ): Promise<PaginatedModel<RetrieveFleet>> => {
+  ): Promise<PaginatedModel<FleetRetrieve>> => {
     if (!filters) filters = {};
     return await getAll(this.resource, filters, this.session);
   };
 
   listPaginated = async function* (
     filters?: FiltersListType
-  ): AsyncGenerator<RetrieveFleet[]> {
+  ): AsyncGenerator<FleetRetrieve[]> {
     if (!filters) filters = {};
     let page: number = parseInt(filters.page) || 1;
 
     while (true) {
       filters.page = String(page);
-      const json: PaginatedModel<RetrieveFleet> = await this.list(filters);
+      const json: PaginatedModel<FleetRetrieve> = await this.list(filters);
       yield json.results || [];
       if (!json.next) {
         break;
@@ -41,15 +41,15 @@ export class Fleets {
     }
   };
 
-  retrieve = async (id: string): Promise<RetrieveFleet> => {
+  retrieve = async (id: string): Promise<FleetRetrieve> => {
     return await get(this.resource, id, null, this.session);
   };
 
-  create = async (payload: FleetType): Promise<RetrieveFleet> => {
+  create = async (payload: FleetType): Promise<FleetRetrieve> => {
     return await post(this.resource, payload, this.session);
   };
 
-  update = async (id: string, payload: UpdateFleet): Promise<RetrieveFleet> => {
+  update = async (id: string, payload: FleetUpdate): Promise<FleetRetrieve> => {
     return await patch(this.resource, id, payload, this.session);
   };
 
