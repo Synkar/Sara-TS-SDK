@@ -1,5 +1,6 @@
 import { Datetime } from "../../../models/Datetimes";
 import { UUID } from "../../../models/UUID";
+import { DateTimeUser, UsersType } from "./Users.models";
 
 export declare type ClientType = {
   name: string;
@@ -15,3 +16,11 @@ export declare type ClientForUsers = UUID & {
 export declare type ClientForGroups = UUID & {
   name: string;
 };
+
+export declare type ClientsRetrieve = UUID &
+  ClientType & {
+    owner?: UUID & UsersType & DateTimeUser;
+  } & Datetime;
+
+export declare type ClientsCreate = ClientType;
+export declare type ClientsUpdate = Partial<ClientsCreate>;

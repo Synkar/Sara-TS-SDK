@@ -2,7 +2,7 @@ import { UUID } from "../../../models/UUID";
 import { ClientForUsers, ClientType } from "./Client.models";
 import { GroupsForUsers } from "./Groups.models";
 
-declare type DateTimeUser = {
+export declare type DateTimeUser = {
   last_login: string;
   datetime_joined: string;
   datetime_updated: string;
