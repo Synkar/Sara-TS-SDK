@@ -1,7 +1,7 @@
 import { Client } from "../..";
 import { ISession, Session } from "../../models/Session";
 import { post } from "../../utils/rest";
-import { MetricsType } from "./models/metrics.module";
+import { MetricsType } from "./models/metrics.models";
 
 export class Metrics {
   private measurement: MetricsType["measurement"];
