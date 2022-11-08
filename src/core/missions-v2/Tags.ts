@@ -38,7 +38,7 @@ export class Tags {
   create = async (payload: TagsCreate): Promise<TagsRetrieve> => {
     return await post(this.resource, payload, this.session, "v2");
   };
-  remove = async (id: string): Promise<void> => {
-    return await remove(this.resource, id, this.session, "v2");
+  delete = async (id: string): Promise<void> => {
+    return await remove(this.resource, id, null, this.session, "v2");
   };
 }
