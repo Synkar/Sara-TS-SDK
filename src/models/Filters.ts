@@ -6,4 +6,11 @@ export declare type FiltersListType = {
   limit?: string;
 };
 
-export declare type FiltersListTypeAll = FiltersListType | MissionsListFilters;
+export declare type FiltersGeneric = {
+  [key: string]: string;
+};
+
+export declare type FiltersListTypeAll =
+  | FiltersListType
+  | MissionsListFilters
+  | FiltersGeneric;
