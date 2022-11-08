@@ -3,7 +3,7 @@ import { ISession, Session } from "../../models/Session";
 import { post } from "../../utils/rest";
 import { MetricsType } from "./models/metrics.module";
 
-export class Missions {
+export class Metrics {
   private measurement: MetricsType["measurement"];
   private resource = "metrics/";
   session: Session;
