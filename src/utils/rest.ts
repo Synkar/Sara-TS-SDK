@@ -58,14 +58,15 @@ export const patch = async <T>(
   return handleData(json);
 };
 
-export const remove = async (
+export const remove = async <T>(
   resource: string,
-  id: string,
+  id?: string,
+  payload?: T,
   session?: Session,
   version?: string
 ) => {
-  const path = `${resource}/${id}`;
-  const json = await fetch(axios.delete, path, null, null, session, version);
+  const path = `${resource}/${id ? id : ""}`;
+  const json = await fetch(axios.delete, path, payload, null, session, version);
   return handleData(json);
 };
 
