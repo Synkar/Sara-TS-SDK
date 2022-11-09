@@ -6,6 +6,7 @@ import {
   IAM as _IAM,
   SRS as _SRS,
   Telemetry as _Telemetry,
+  Metrics as _Metrics,
 } from "./core";
 
 /**
@@ -52,6 +53,7 @@ export namespace Sara {
   export const IAM = _IAM;
   export const SRS = _SRS;
   export const Telemetry = _Telemetry;
+  export const Metrics = _Metrics;
   export const auth = _Client.auth;
 }
 export const Client = _Client;
