@@ -1,5 +1,11 @@
 import { Session } from "../models/Session";
-import { fetch } from "../service/requests";
+import {
+  fetch,
+  fileDownload,
+  fileUpload,
+  payloadDownload,
+  payloadUpload,
+} from "../service/requests";
 import axios from "axios";
 import { FiltersListTypeAll } from "../models/Filters";
 import { ResponseModel } from "../models/ResponseModel";
@@ -82,8 +88,69 @@ export const put = async <T>(
   return handleData(json);
 };
 
+export const upload = async <T>(
+  resource: string,
+  payload: payloadUpload,
+  session?: Session,
+  version?: string
+) => {
+  const json = await fileUpload(
+    resource,
+    {
+      headers: {
+        "Access-Control-Request-Method": "POST",
+      },
+    },
+    payload,
+    session,
+    version
+  );
+  return json;
+};
+
+export const downloadLink = async (
+  resource: string,
+  payload: payloadDownload,
+  session?: Session,
+  version?: string
+) => {
+  const json = await fileDownload(
+    resource,
+    {
+      headers: {
+        "Access-Control-Request-Method": "GET",
+      },
+    },
+    payload,
+    false,
+    session,
+    version
+  );
+  return handleData(json);
+};
+
+export const download = async (
+  resource: string,
+  payload: payloadDownload,
+  session?: Session,
+  version?: string
+) => {
+  const json = await fileDownload(
+    resource,
+    {
+      headers: {
+        "Access-Control-Request-Method": "GET",
+      },
+    },
+    payload,
+    true,
+    session,
+    version
+  );
+  return handleData(json);
+};
+
 const handleData = <T>(result: ResponseModel<T>): boolean | T => {
-  console.log(result);
   if (result) {
     if (result.data) return result.data;
     else {
