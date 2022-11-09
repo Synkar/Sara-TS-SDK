@@ -52,3 +52,5 @@ export declare type BucketsListFilters = FiltersListType & {
   name?: string;
   locality?: string;
 };
+
+export declare type BucketDownload = string;

@@ -26,10 +26,10 @@ export class Activities {
     return await Activities.list(this.session);
   };
   retrieve = async (id: string): Promise<ActivitiesRetrieve> => {
-    return await get(Activities.resource, id, null, this.session, "v1");
+    return await get(Activities.resource, id, null, this.session);
   };
   create = async (payload: ActivitiesCreate): Promise<ActivitiesRetrieve> => {
-    return await post(Activities.resource, payload, this.session, "v1");
+    return await post(Activities.resource, payload, this.session);
   };
 
   static list = async (
@@ -38,6 +38,6 @@ export class Activities {
     if (!session) {
       session = Client.session;
     }
-    return await getAll(Activities.resource, null, session, "v1");
+    return await getAll(Activities.resource, null, session);
   };
 }

@@ -10,6 +10,8 @@ import {
   RelationshipsListFilters,
 } from "./models/Relationships.models";
 
+import { Activities as _Activities } from "./Activities";
+
 export class Relationships {
   static resource = "srs/relationships";
   private lookup?: string;
@@ -30,21 +32,21 @@ export class Relationships {
     return await Relationships.list(filters, this.session);
   };
   retrieve = async (id: string): Promise<RealationshipsRetrieve> => {
-    return await get(Relationships.resource, id, null, this.session, "v1");
+    return await get(Relationships.resource, id, null, this.session);
   };
   update = async (
     id: string,
     payload: RealationshipsUpdate
   ): Promise<RealationshipsRetrieve> => {
-    return await patch(Relationships.resource, id, payload, this.session, "v1");
+    return await patch(Relationships.resource, id, payload, this.session);
   };
   create = async (
     payload: RealationshipsCreate
   ): Promise<RealationshipsRetrieve> => {
-    return await post(Relationships.resource, payload, this.session, "v1");
+    return await post(Relationships.resource, payload, this.session);
   };
   remove = async (id: string): Promise<boolean> => {
-    return await remove(Relationships.resource, id, this.session, "v1");
+    return await remove(Relationships.resource, id, null, this.session);
   };
 
   static list = async (
@@ -54,6 +56,12 @@ export class Relationships {
     if (!session) {
       session = Client.session;
     }
-    return await getAll(Relationships.resource, filters, session, "v1");
+    return await getAll(Relationships.resource, filters, session);
   };
+
+  Activities = function (lookup?: string, session?: ISession) {
+    return new _Activities(lookup, session);
+  } as any as { new (lookup?: string, session?: ISession): any };
+
+  static Activities = _Activities;
 }
