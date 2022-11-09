@@ -7,6 +7,7 @@ import {
   SRS as _SRS,
   Telemetry as _Telemetry,
   Metrics as _Metrics,
+  Webhooks as _Webhooks,
 } from "./core";
 
 /**
@@ -54,6 +55,7 @@ export namespace Sara {
   export const SRS = _SRS;
   export const Telemetry = _Telemetry;
   export const Metrics = _Metrics;
+  export const Webhooks = _Webhooks;
   export const auth = _Client.auth;
 }
 export const Client = _Client;
