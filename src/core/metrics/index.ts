@@ -18,7 +18,7 @@ export class Metrics {
 
   retrieve = async (payload: MetricsType): Promise<MetricsType> => {
     return await post(
-      this.resource + this.measurement,
+      this.resource + payload.measurement,
       payload,
       this.session,
       "v1"

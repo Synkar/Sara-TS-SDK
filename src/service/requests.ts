@@ -61,6 +61,23 @@ export const fetch = async <T>(
 
   const bearerToken = `Bearer ${session.access_token}`;
 
+  //workaround for metrics not supporting FormData
+  if (path.split("/")[0] === "metrics") {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        "User-Agent": agent,
+        "Accept-Language": "en-US",
+        Authorization: bearerToken,
+      },
+    };
+    const request = method(url, payload, config);
+    const result = await request;
+    if (result) {
+      return new ResponseModel(result.status, result.data);
+    }
+  }
+
   try {
     let request;
     if (payload) {
