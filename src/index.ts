@@ -4,6 +4,7 @@ import {
   Missions as _Missions,
   Mapping as _Mapping,
   IAM as _IAM,
+  SRS as _SRS,
   Telemetry as _Telemetry,
 } from "./core";
 
@@ -49,6 +50,7 @@ export namespace Sara {
   export const Missions = _Missions;
   export const Mapping = _Mapping;
   export const IAM = _IAM;
+  export const SRS = _SRS;
   export const Telemetry = _Telemetry;
   export const auth = _Client.auth;
 }
