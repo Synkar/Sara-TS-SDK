@@ -26,14 +26,14 @@ export declare type FilesType = {
 
 export declare type RobotUuid = string;
 
-export declare type RealationshipsRetrieve = UUID &
+export declare type RelationshipsRetrieve = UUID &
   RelationshipsType & {
     files: FilesType[];
   } & Datetime;
 
 export declare type RelationshipsList = UUID & RelationshipsType & Datetime;
-export declare type RealationshipsCreate = RelationshipsType;
-export declare type RealationshipsUpdate = Partial<RelationshipsType>;
+export declare type RelationshipsCreate = RelationshipsType;
+export declare type RelationshipsUpdate = Partial<RelationshipsType>;
 
 export declare type RelationshipsListFilters = FiltersListType & {
   locality?: string;

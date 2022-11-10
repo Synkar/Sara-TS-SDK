@@ -8,13 +8,14 @@
     "build": "tsc",
     "serve": "ts-node src/index.ts",
     "dev": "nodemon",
-    "docs": "./node_modules/.bin/typedoc --out dist/docs src/index.ts"
+    "docs": "./node_modules/.bin/typedoc --out dist/docs src/index.ts",
+    "test": "npx jest"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@types/jest": "^29.0.3",
+    "@types/jest": "^29.2.2",
     "@types/node": "^18.7.17",
     "@types/webrtc": "0.0.32",
     "@types/websocket": "^1.0.5",
