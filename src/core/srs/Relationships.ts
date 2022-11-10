@@ -3,10 +3,10 @@ import { PaginatedModel } from "../../models/PaginatedModel";
 import { ISession, Session } from "../../models/Session";
 import { getAll, get, post, patch, remove } from "../../utils/rest";
 import {
-  RealationshipsCreate,
+  RelationshipsCreate,
   RelationshipsList,
-  RealationshipsRetrieve,
-  RealationshipsUpdate,
+  RelationshipsRetrieve,
+  RelationshipsUpdate,
   RelationshipsListFilters,
 } from "./models/Relationships.models";
 
@@ -31,18 +31,18 @@ export class Relationships {
   ): Promise<PaginatedModel<RelationshipsList>> => {
     return await Relationships.list(filters, this.session);
   };
-  retrieve = async (id: string): Promise<RealationshipsRetrieve> => {
+  retrieve = async (id: string): Promise<RelationshipsRetrieve> => {
     return await get(Relationships.resource, id, null, this.session);
   };
   update = async (
     id: string,
-    payload: RealationshipsUpdate
-  ): Promise<RealationshipsRetrieve> => {
+    payload: RelationshipsUpdate
+  ): Promise<RelationshipsRetrieve> => {
     return await patch(Relationships.resource, id, payload, this.session);
   };
   create = async (
-    payload: RealationshipsCreate
-  ): Promise<RealationshipsRetrieve> => {
+    payload: RelationshipsCreate
+  ): Promise<RelationshipsRetrieve> => {
     return await post(Relationships.resource, payload, this.session);
   };
   remove = async (id: string): Promise<boolean> => {
