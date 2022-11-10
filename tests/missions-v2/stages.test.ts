@@ -78,16 +78,16 @@ describe("testing missions-v2 module for Stages", () => {
     );
     expect(stages_update_mock).toBeDefined();
   });
-  test("Test Stages remove", async () => {
+  test("Test Stages delete", async () => {
     const stages = new Stages();
-    jest.spyOn(stages, "remove").mockReturnValue(
+    jest.spyOn(stages, "delete").mockReturnValue(
       new Promise((resolve: any) => {
         resolve();
       }).then(() => {
         return true;
       })
     );
-    const stages_delete_mock = await stages.remove(
+    const stages_delete_mock = await stages.delete(
       "e6075d21-0b68-4ee1-8e83-cbe44721cc38"
     );
     expect(stages_delete_mock).toBeDefined();
