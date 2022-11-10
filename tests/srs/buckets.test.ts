@@ -84,6 +84,23 @@ describe("testing buckets module", () => {
     );
     expect(buckets_delete_mock).toBeDefined();
   });
+
+  test("Test Buckets download link", async () => {
+    const buckets = new Buckets();
+    jest.spyOn(buckets, "downloadLink").mockReturnValue(
+      new Promise((resolve: any) => {
+        resolve();
+      }).then(() => {
+        return "https://test.com";
+      })
+    );
+
+    const buckets_download_link_mock = await buckets.downloadLink(
+      "e6075d21-0b68-4ee1-8e83-cbe44721cc38",
+      "test"
+    );
+    expect(buckets_download_link_mock).toEqual("https://test.com");
+  });
 });
 
 const dateNow = new Date();
