@@ -58,11 +58,11 @@ export class Fleets {
     return await patch(this.resource, id, payload, this.session);
   };
 
-  delete = async (id: string): Promise<void> => {
+  delete = async (id: string): Promise<boolean> => {
     return await remove(this.resource, id, this.session);
   };
 
-  attachRobot = async (id: string, robot: string): Promise<void> => {
+  attachRobot = async (id: string, robot: string): Promise<FleetRetrieve> => {
     return await post(
       `${this.resource}/${id}/attachRobot`,
       { robot },
@@ -70,7 +70,7 @@ export class Fleets {
     );
   };
 
-  detachRobot = async (id: string, robot: string): Promise<void> => {
+  detachRobot = async (id: string, robot: string): Promise<FleetRetrieve> => {
     return await remove(
       `${this.resource}/${id}/attachRobot`,
       null,

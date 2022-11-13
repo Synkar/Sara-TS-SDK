@@ -60,11 +60,14 @@ export class Groups {
     return await patch(this.resource, id, payload, this.session);
   };
 
-  delete = async (id: string): Promise<void> => {
+  delete = async (id: string): Promise<boolean> => {
     return await remove(this.resource, id, this.session);
   };
 
-  attachPolicy = async (id: string, policy: string): Promise<void> => {
+  attachPolicy = async (
+    id: string,
+    policy: string
+  ): Promise<GroupsRetrieve> => {
     return await post(
       `${this.resource}/${id}/attachPolicy/`,
       { policy },
@@ -72,7 +75,10 @@ export class Groups {
     );
   };
 
-  detachPolicy = async (id: string, policy: string): Promise<void> => {
+  detachPolicy = async (
+    id: string,
+    policy: string
+  ): Promise<GroupsRetrieve> => {
     return await remove(
       `${this.resource}/${id}/attachPolicy/`,
       null,
@@ -81,7 +87,7 @@ export class Groups {
     );
   };
 
-  attachUser = async (id: string, user: string): Promise<void> => {
+  attachUser = async (id: string, user: string): Promise<GroupsRetrieve> => {
     return await post(
       `${this.resource}/${id}/attachUserGroup/`,
       { user },
@@ -89,7 +95,7 @@ export class Groups {
     );
   };
 
-  detachUser = async (id: string, user: string): Promise<void> => {
+  detachUser = async (id: string, user: string): Promise<GroupsRetrieve> => {
     return await remove(
       `${this.resource}/${id}/attachUserGroup/`,
       null,
