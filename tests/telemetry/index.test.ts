@@ -18,11 +18,11 @@ describe("testing Telemetry module", () => {
         return returnDiagnosticList();
       })
     );
-    const diagnosticMock = await telemetry.diagnostics(
+    const diagnostic_mock = await telemetry.diagnostics(
       "68945b1c-ba9c-4855-a988-b395c014d37a",
       filtersMock
     );
-    expect(diagnosticMock).toBeDefined();
+    expect(diagnostic_mock).toBeDefined();
   });
   test("Test srs feedback", async () => {
     const telemetry = new Telemetry();
@@ -33,10 +33,10 @@ describe("testing Telemetry module", () => {
         return returnSrsFeedbackMock();
       })
     );
-    const mission_retrieve_mock = await telemetry.srsFeedback(
+    const srs_feedback_mock = await telemetry.srsFeedback(
       "U_a21685f7-aca5-4ac7-b93f-5ec711478858"
     );
-    expect(mission_retrieve_mock).toBeDefined();
+    expect(srs_feedback_mock).toBeDefined();
   });
 });
 
