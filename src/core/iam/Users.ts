@@ -54,7 +54,7 @@ export class Users {
     return await get(this.resource, id, null, this.session);
   };
 
-  delete = async (id: string): Promise<void> => {
+  delete = async (id: string): Promise<boolean> => {
     return await remove(this.resource, id, this.session);
   };
 
