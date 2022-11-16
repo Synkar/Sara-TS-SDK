@@ -3,7 +3,7 @@ import { FiltersListType } from "../../models/Filters";
 import PaginatedModel from "../../models/PaginatedModel";
 import { ISession, Session } from "../../models/Session";
 import { get, getAll, post } from "../../utils/rest";
-import { ActionRetrieve } from "./models/Actions.models";
+import { ActionRetrieve, ActionType } from "./models/Actions.models";
 
 export class Actions {
   private resource = "iam/actions";
@@ -22,7 +22,7 @@ export class Actions {
     return await getAll(this.resource, filters, this.session);
   };
 
-  create = async (payload: ActionRetrieve): Promise<ActionRetrieve> => {
+  create = async (payload: ActionType): Promise<ActionRetrieve> => {
     return await post(this.resource, payload, this.session);
   };
 

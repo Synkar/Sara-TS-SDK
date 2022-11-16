@@ -58,11 +58,14 @@ export class Robots {
     return await patch(this.resource, id, payload, this.session);
   };
 
-  delete = async (id: string): Promise<void> => {
+  delete = async (id: string): Promise<boolean> => {
     return await remove(this.resource, id, this.session);
   };
 
-  attachLocality = async (id: string, locality: string): Promise<void> => {
+  attachLocality = async (
+    id: string,
+    locality: string
+  ): Promise<RobotRetrieve> => {
     return await post(
       `${this.resource}/${id}/attachLocality`,
       { locality },
@@ -70,7 +73,10 @@ export class Robots {
     );
   };
 
-  detachLocality = async (id: string, locality: string): Promise<void> => {
+  detachLocality = async (
+    id: string,
+    locality: string
+  ): Promise<RobotRetrieve> => {
     return await remove(
       `${this.resource}/${id}/attachLocality`,
       null,
