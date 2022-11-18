@@ -7,12 +7,15 @@ First clone SARA Typescript SDK
 After install and build typescript
 
 > `cd Sara-TS-SDK`
+
 > `npm install`
+
 > `npm run build`
 
 In Mapping-Demo over examples directory install dependencies
 
 > `cd examples/Mapping-Demo`
+
 > `npm install`
 
 Change VITE envs in .env file.
