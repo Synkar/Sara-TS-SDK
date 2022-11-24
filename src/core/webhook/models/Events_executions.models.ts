@@ -13,4 +13,4 @@ export declare type EventUuid = string;
 export declare type EndpointUuid = string;
 export declare type RobotUuid = string;
 
-export declare type EventsExecutionsList = EventsExecutionType[];
+export declare type EventsExecutionsList = EventsExecutionType;

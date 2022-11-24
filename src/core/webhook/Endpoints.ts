@@ -47,7 +47,7 @@ export class Endpoints {
     return await patch(this.resource, id, data, this.session);
   };
 
-  delete = async (id: string): Promise<void> => {
+  delete = async (id: string): Promise<boolean> => {
     return await remove(this.resource, id, null, this.session);
   };
 
@@ -65,7 +65,7 @@ export class Endpoints {
   delete_relations = async (
     endpointUuid: string,
     relationUuid: string
-  ): Promise<void> => {
+  ): Promise<boolean> => {
     return await remove(
       `${this.resource}/${endpointUuid}/relations`,
       relationUuid,

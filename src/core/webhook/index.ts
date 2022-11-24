@@ -3,7 +3,7 @@ import { ISession, Session } from "../../models/Session";
 
 import { Endpoints as _Endpoints } from "./Endpoints";
 import { Topics as _Topics } from "./Topics";
-import { Events_executions as _Events_executions } from "./Events_executions";
+import { EventsExecutions as _EventsExecutions } from "./EventsExecutions";
 import { Events as _Events } from "./Events";
 
 export class Webhooks {
@@ -27,7 +27,7 @@ export class Webhooks {
   } as any as { new (session?: ISession): any };
 
   Events_executions = function (session?: ISession) {
-    return new _Events_executions(session);
+    return new _EventsExecutions(session);
   } as any as { new (session?: ISession): any };
 
   Events = function (session?: ISession) {
@@ -36,6 +36,6 @@ export class Webhooks {
 
   static Endpoints = _Endpoints;
   static Topics = _Topics;
-  static Events_executions = _Events_executions;
+  static Events_executions = _EventsExecutions;
   static Events = _Events;
 }

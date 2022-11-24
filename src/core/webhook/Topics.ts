@@ -30,7 +30,10 @@ export class Topics {
     return await post(this.resource, data, this.session);
   };
 
-  delete = async (service_name: string, action_name: string): Promise<void> => {
+  delete = async (
+    service_name: string,
+    action_name: string
+  ): Promise<boolean> => {
     return await remove(
       `${this.resource}/${service_name}/${action_name}`,
       null,
