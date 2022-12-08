@@ -1,0 +1,13 @@
+{
+  "$schema": "https://typedoc.org/schema.json",
+  "entryPoints": [
+    "./src/core/iam/index.ts",
+    "./src/core/mapping/index.ts",
+    "./src/core/metrics/index.ts",
+    "./src/core/missions-v2/index.ts",
+    "./src/core/srs/index.ts",
+    "./src/core/telemetry/index.ts",
+    "./src/core/webhook/index.ts"
+  ],
+  "out": "docs"
+}

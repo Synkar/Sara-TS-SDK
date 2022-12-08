@@ -24,7 +24,13 @@
 
 ## Features
 List the ready features here:
+- IAM
 - Mapping
+- Missions V2
+- Metrics
+- Telemetry
+- SRS
+- Webhook
 - Demo
 
 
@@ -58,13 +64,8 @@ Project is _in progress_.
 ## Next Improvement
 
 New modules:
-- SRS
-- IAM
-- Telemetry
-- Teleop
-
+- Websocket module
 To do:
-- Unit testing
 - E2E testing
 - Syntatic exceptions
 
