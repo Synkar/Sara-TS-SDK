@@ -6,6 +6,10 @@ import { DiagnosticsType } from "./models/Diagnostics.models";
 import { DiagnosticsFiltersType } from "./models/Filters.models";
 import { SrsFeedbackType } from "./models/SrsFeedback.models";
 
+export * from "./models/DiagnosticPaginatedModel";
+export * from "./models/Diagnostics.models";
+export * from "./models/Filters.models";
+export * from "./models/SrsFeedback.models";
 export class Telemetry {
   private resource = "telemetry";
   session: Session;

@@ -4,6 +4,7 @@ import { Session, ISession } from "../../models/Session";
 import { getAll, post, get, patch, remove } from "../../utils/rest";
 import { AppsRetrieve, AppsCreate, AppsUpdate } from "./models/Apps.models";
 
+export * from "./models/Apps.models";
 export class Apps {
   private resource = "iam/apps";
   session: Session;

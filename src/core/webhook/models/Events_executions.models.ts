@@ -1,3 +1,4 @@
+import { RobotUuid } from "../../iam/models/Robot.models";
 export declare type EventsExecutionType = {
   eventId: EventUuid;
   topic: string;
@@ -11,6 +12,5 @@ export declare type EventsExecutionType = {
 
 export declare type EventUuid = string;
 export declare type EndpointUuid = string;
-export declare type RobotUuid = string;
 
 export declare type EventsExecutionsList = EventsExecutionType;

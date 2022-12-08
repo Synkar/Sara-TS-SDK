@@ -8,6 +8,7 @@ import {
   ActivitiesCreate,
 } from "./models/Activities.models";
 
+export * from "./models/Activities.models";
 export class Activities {
   static resource = "srs/activities";
   private lookup?: string;

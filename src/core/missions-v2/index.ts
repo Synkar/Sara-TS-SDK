@@ -13,6 +13,12 @@ import {
 import { Stages as _Stages } from "./Stages";
 import { Steps as _Steps } from "./Steps";
 import { Tags as _Tags } from "./Tags";
+
+export * from "./Stages";
+export * from "./Steps";
+export * from "./Tags";
+export * from "./models/Missions.models";
+export * from "./models/ParamValues.models";
 export class Missions {
   private resource = "missions";
   private lookup?: string;

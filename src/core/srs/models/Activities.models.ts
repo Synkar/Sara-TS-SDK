@@ -1,5 +1,6 @@
 import { Datetime } from "../../../models/Datetimes";
 import { UUID } from "../../../models/UUID";
+import { RobotUuid } from "../../iam/models/Robot.models";
 
 export declare type ActivitiesType = {
   relationship: RelationshipUuid;
@@ -9,7 +10,6 @@ export declare type ActivitiesType = {
 };
 
 export declare type RelationshipUuid = string;
-export declare type RobotUuid = string;
 export declare type filesPath = string;
 
 export declare type ActivitiesList = UUID & ActivitiesType & Datetime;

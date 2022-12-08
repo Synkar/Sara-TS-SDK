@@ -10,6 +10,7 @@ import {
   RobotUpdate,
 } from "./models/Robot.models";
 
+export * from "./models/Robot.models";
 export class Robots {
   private resource = "iam/robots";
   session: Session;

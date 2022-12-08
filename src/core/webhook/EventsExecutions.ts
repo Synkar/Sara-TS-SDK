@@ -5,6 +5,7 @@ import { getAll } from "../../utils/rest";
 import { EventsExecutionsList } from "./models/Events_executions.models";
 import { WebhookPaginatedModel } from "./models/webhookPaginatedModel";
 
+export * from "./models/Events_executions.models";
 export class EventsExecutions {
   private resource = "webhooks/events-executions";
   session: Session;

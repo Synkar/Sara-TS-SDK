@@ -5,6 +5,8 @@ import { Activities as _Activities } from "./Activities";
 import { Relationships as _Relationships } from "./Relationships";
 import { Buckets as _Buckets } from "./Buckets";
 
+export * from "./Activities";
+export * from "./Buckets";
 export class SRS {
   private resource = "srs";
   private session: Session;

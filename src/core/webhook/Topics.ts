@@ -5,6 +5,7 @@ import { get, getAll, patch, post, remove } from "../../utils/rest";
 import { TopicsList, TopicsCreate, TopicsType } from "./models/Topics.models";
 import { WebhookPaginatedModel } from "./models/webhookPaginatedModel";
 
+export * from "./models/Topics.models";
 export class Topics {
   private resource = "webhook/topics";
   session: Session;

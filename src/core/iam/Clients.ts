@@ -8,6 +8,7 @@ import {
   ClientsUpdate,
 } from "./models/Client.models";
 
+export * from "./models/Client.models";
 export class Clients {
   private resource = "iam/clients";
   session: Session;

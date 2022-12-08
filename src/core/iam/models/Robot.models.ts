@@ -5,6 +5,7 @@ import { Location } from "./Location.models";
 
 declare type FleetOnRobot = UUID & FleetType;
 
+export declare type RobotUuid = string;
 export declare type RobotType = {
   name: string;
   description?: string;

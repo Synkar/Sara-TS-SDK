@@ -9,6 +9,7 @@ import {
   PoliciesUpdate,
 } from "./models/Policies.models";
 
+export * from "./models/Policies.models";
 export class Policies {
   private resource: "iam/policies";
   session: Session;

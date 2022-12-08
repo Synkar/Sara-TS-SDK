@@ -10,6 +10,7 @@ import {
   UsersUpdate,
 } from "./models/Users.models";
 
+export * from "./models/Users.models";
 export class Users {
   private resource = "iam/users";
   session: Session;

@@ -3,12 +3,9 @@ import { FiltersListType } from "../../models/Filters";
 import PaginatedModel from "../../models/PaginatedModel";
 import { ISession, Session } from "../../models/Session";
 import { getAll, get, post, patch, remove } from "../../utils/rest";
-import {
-  FleetCreate,
-  FleetRetrieve,
-  FleetType,
-  FleetUpdate,
-} from "./models/Fleet.models";
+import { FleetCreate, FleetRetrieve, FleetUpdate } from "./models/Fleet.models";
+
+export * from "./models/Fleet.models";
 
 export class Fleets {
   private resource = "iam/fleets";

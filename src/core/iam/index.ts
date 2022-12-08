@@ -13,6 +13,16 @@ import { Clients as _Clients } from "./Clients";
 import { Groups as _Groups } from "./Groups";
 import { Services as _Services } from "./Services";
 
+export * from "./Robots";
+export * from "./Fleets";
+export * from "./Users";
+export * from "./Policies";
+export * from "./Actions";
+export * from "./Apps";
+export * from "./Clients";
+export * from "./Groups";
+export * from "./Services";
+export * from "../../models/Session";
 export class IAM {
   private resource = "iam";
   session: Session;

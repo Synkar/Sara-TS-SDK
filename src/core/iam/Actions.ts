@@ -5,6 +5,7 @@ import { ISession, Session } from "../../models/Session";
 import { get, getAll, post } from "../../utils/rest";
 import { ActionRetrieve, ActionType } from "./models/Actions.models";
 
+export * from "./models/Actions.models";
 export class Actions {
   private resource = "iam/actions";
   session: Session;

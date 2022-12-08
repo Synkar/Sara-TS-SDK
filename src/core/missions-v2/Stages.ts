@@ -11,6 +11,8 @@ import {
 
 import { Steps as _Steps } from "./Steps";
 
+export * from "./models/Stages.models";
+export * from "./models/Params.models";
 export class Stages {
   static resource = "missions/stages";
   private missionLookup?: string;

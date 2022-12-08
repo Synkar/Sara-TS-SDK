@@ -13,6 +13,7 @@ import {
 } from "./models/Endpoints.models";
 import { WebhookPaginatedModel } from "./models/webhookPaginatedModel";
 
+export * from "./models/Endpoints.models";
 export class Endpoints {
   private resource = "webhook/endpoints";
   session: Session;

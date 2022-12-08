@@ -1,4 +1,5 @@
 import { Dates } from "./Dates.models";
+import { RobotUuid } from "../../iam/models/Robot.models";
 
 export declare type EndpointsType = {
   client: string;
@@ -14,7 +15,6 @@ export declare type RelationsType = {
   robot: RobotUuid;
 };
 export declare type EndpointUuid = string;
-export declare type RobotUuid = string;
 
 export declare type EndpointsRetrieve = EndpointsType & {
   secretKey: string;

@@ -9,6 +9,8 @@ import {
   StepsListFilters,
   StepsList,
 } from "./models/Steps.models";
+
+export * from "./models/Steps.models";
 export class Steps {
   static resource = "missions/steps";
   private missionLookup: string | undefined;

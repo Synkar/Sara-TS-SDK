@@ -6,6 +6,9 @@ import { Topics as _Topics } from "./Topics";
 import { EventsExecutions as _EventsExecutions } from "./EventsExecutions";
 import { Events as _Events } from "./Events";
 
+export * from "./Endpoints";
+export * from "./Topics";
+
 export class Webhooks {
   private resource = "webhook";
   session: Session;

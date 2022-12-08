@@ -9,6 +9,8 @@ import {
   GroupsUpdate,
 } from "./models/Groups.models";
 
+export * from "./models/Groups.models";
+
 export class Groups {
   private resource: "iam/groups";
   session: Session;

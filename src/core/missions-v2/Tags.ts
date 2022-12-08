@@ -9,6 +9,7 @@ import {
   TagsUpdate,
 } from "./models/Tags.models";
 
+export * from "./models/Tags.models";
 export class Tags {
   private resource = "missions/tags";
   session: Session;

@@ -12,6 +12,7 @@ import {
 
 import { Activities as _Activities } from "./Activities";
 
+export * from "./models/Relationships.models";
 export class Relationships {
   static resource = "srs/relationships";
   private lookup?: string;

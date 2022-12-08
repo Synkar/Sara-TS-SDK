@@ -5,6 +5,7 @@ import { ISession, Session } from "../../models/Session";
 import { get, post } from "../../utils/rest";
 import { ServicesCreate, ServicesRetrieve } from "./models/Services.models";
 
+export * from "./models/Services.models";
 export class Services {
   private resource = "iam/services";
   session: Session;

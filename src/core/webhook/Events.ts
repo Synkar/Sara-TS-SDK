@@ -3,6 +3,7 @@ import { ISession, Session } from "../../models/Session";
 import { get } from "../../utils/rest";
 import { EventsRetrieve } from "./models/Events.models";
 
+export * from "./models/Events.models";
 export class Events {
   private resource = "webhook/events";
   session: Session;
