@@ -12,6 +12,7 @@ import { Apps as _Apps } from "./Apps";
 import { Clients as _Clients } from "./Clients";
 import { Groups as _Groups } from "./Groups";
 import { Services as _Services } from "./Services";
+import { Localities as _Localities } from "./Localities";
 
 export * from "./Robots";
 export * from "./Fleets";
@@ -22,6 +23,7 @@ export * from "./Apps";
 export * from "./Clients";
 export * from "./Groups";
 export * from "./Services";
+export * from "./Localities";
 export * from "../../models/Session";
 export class IAM {
   private resource = "iam";
@@ -93,6 +95,10 @@ export class IAM {
     return new _Services(session);
   } as any as { new (session?: ISession): any };
 
+  Localities = function (session?: ISession) {
+    return new _Localities(session);
+  } as any as { new (session?: ISession): any };
+
   static Robots = _Robots;
   static Fleets = _Fleets;
   static Users = _Users;
@@ -102,4 +108,5 @@ export class IAM {
   static Clients = _Clients;
   static Groups = _Groups;
   static Services = _Services;
+  static Localities = _Localities;
 }
