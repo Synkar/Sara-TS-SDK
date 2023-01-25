@@ -49,7 +49,7 @@ export const authenticate = async (session: ISession) => {
           "Content-Type": "application/x-www-form-urlencoded",
           "User-Agent": agent,
           "Accept-Language": "en-US",
-          Authorization: `Basic ${btoa(auth)}`,
+          Authorization: `Basic ${Buffer.from(auth).toString("base64")}`,
         },
         timeout: sdk.timeout,
       })
