@@ -21,6 +21,14 @@ export declare type StagesForMission = UUID &
     end_step: number;
     param_values: ParamValuesForMission[];
   } & Datetime;
+
+export declare type StageForMissionCreate = {
+  uuid: string;
+  param_values: {
+    param: string;
+    step_value: string;
+  }[];
+};
 export declare type StagesRetrieve = UUID &
   StagesType & {
     steps: StepsRetrieveForMission[];

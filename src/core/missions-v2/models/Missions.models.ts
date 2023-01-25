@@ -1,7 +1,7 @@
 import { Datetime } from "../../../models/Datetimes";
 import { FiltersListType } from "../../../models/Filters";
 import { UUID } from "../../../models/UUID";
-import { StagesForMission } from "./Stages.models";
+import { StagesForMission, StageForMissionCreate } from "./Stages.models";
 
 export declare type MissionsType = {
   robot: string;
@@ -25,7 +25,15 @@ export declare type MissionsList = UUID & {
   outcome: number;
   tags: string[];
 } & Datetime;
-export declare type MissionsCreate = MissionsType;
+export declare type MissionsCreate = {
+  robot: string;
+  stages?: StageForMissionCreate[];
+  tags?: string[];
+  assisted?: boolean;
+  loop?: boolean;
+  client?: string;
+  launcher?: string;
+};
 export declare type MissionsUpdate = MissionsType;
 
 export declare type MissionsListFilters = FiltersListType & {
