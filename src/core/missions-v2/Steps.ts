@@ -38,7 +38,6 @@ export class Steps {
   list = async (
     filters?: StepsListFilters
   ): Promise<PaginatedModel<StepsList>> => {
-    console.log("m, s:", this.missionLookup, this.stageLookup);
     return await Steps.list(filters, this.session);
   };
   retrieve = async (id: string): Promise<StepsRetrieve> => {

@@ -4,6 +4,7 @@ import { ResponseModel } from "../models/ResponseModel";
 import { agent, Session } from "../models/Session";
 import { handleExceptions } from "../models/Exceptions";
 import { JSONValue } from "../models/JSON";
+import querystring = require("querystring");
 
 /**
  * This is a helper function to make requests to the API.
@@ -39,7 +40,8 @@ export const fetch = async <T>(
   payload: T = null,
   query: string | null = null,
   session: Session = null,
-  version = "v1"
+  version = "v1",
+  contentType = "application/x-www-form-urlencoded"
 ) => {
   let url = `${sdk.API_URL}/${version}/`;
   if (query !== "" && query !== null) {
@@ -80,10 +82,28 @@ export const fetch = async <T>(
 
   try {
     let request;
-    if (payload) {
-      let data = new FormData();
+    if (payload && contentType === "application/x-www-form-urlencoded") {
+      const data: any = {};
+      for (const key in payload) {
+        if (typeof payload[key] === "object") {
+          data[key] = JSON.stringify(payload[key]);
+        } else {
+          data[key] = String(payload[key]);
+        }
+      }
+      request = method(url, querystring.stringify(data), {
+        headers: {
+          "Content-Type": contentType,
+          "User-Agent": agent,
+          "Accept-Language": "en-US",
+          Authorization: bearerToken,
+        },
+        timeout: sdk.timeout,
+      });
+    } else if (payload && contentType === "multipart/form-data") {
+      const data = new FormData();
 
-      for (let key in payload) {
+      for (const key in payload) {
         if (typeof payload[key] === "object") {
           data.append(key, JSON.stringify(payload[key]));
         } else {
@@ -93,7 +113,7 @@ export const fetch = async <T>(
 
       request = method(url, data, {
         headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
+          "Content-Type": contentType,
           "User-Agent": agent,
           "Accept-Language": "en-US",
           Authorization: bearerToken,
@@ -117,6 +137,7 @@ export const fetch = async <T>(
       return new ResponseModel(result.status, result.data);
     }
   } catch (e) {
+    console.log(e);
     const error: AxiosError = e;
     const errorHandled = handleExceptions(error);
     return errorHandled;

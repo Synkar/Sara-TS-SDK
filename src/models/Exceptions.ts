@@ -73,7 +73,6 @@ export class SaraExceptions {
  *
  */
 export const handleExceptions = (error: AxiosError) => {
-  console.log(error);
   const saraException: SaraExceptions = new SaraExceptions(error.response.data);
   const msg = saraException.data.detail
     ? saraException.data.detail
