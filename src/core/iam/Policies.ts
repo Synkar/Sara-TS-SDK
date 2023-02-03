@@ -11,7 +11,7 @@ import {
 
 export * from "./models/Policies.models";
 export class Policies {
-  private resource: "iam/policies";
+  private resource = "iam/policies";
   session: Session;
 
   constructor(session?: ISession) {

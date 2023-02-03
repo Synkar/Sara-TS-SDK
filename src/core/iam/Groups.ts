@@ -12,7 +12,7 @@ import {
 export * from "./models/Groups.models";
 
 export class Groups {
-  private resource: "iam/groups";
+  private resource = "iam/groups";
   session: Session;
 
   constructor(session?: ISession) {
