@@ -48,9 +48,6 @@ export const fetch = async <T>(
     url += `${path}/`;
   }
 
-  console.log(path);
-  console.log(url);
-
   if (session) {
     session = new Session(session);
     if (!session.access_token) await session.refreshToken();
@@ -122,7 +119,6 @@ export const fetch = async <T>(
   } catch (e) {
     8;
     const error: AxiosError = e;
-    console.log(error.response.data);
     const errorHandled = handleExceptions(error);
     return errorHandled;
   }
