@@ -58,4 +58,5 @@ export namespace Sara {
   export const Webhooks = _Webhooks;
   export const auth = _Client.auth;
 }
+export * from "./core";
 export const Client = _Client;
