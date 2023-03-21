@@ -55,9 +55,9 @@ export const fetch = async <T>(
     session = Client.session;
   }
 
-  const accessTime = new Date().getTime();
+  const accessTime = new Date().getTime() / 1000;
 
-  if (accessTime >= session.expires_in) session.refreshToken();
+  if (accessTime >= session.expires_in) await session.refreshToken();
 
   const bearerToken = `Bearer ${session.access_token}`;
 

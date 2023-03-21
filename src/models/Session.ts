@@ -64,7 +64,11 @@ export const authenticate = async (session: ISession) => {
 
     const response = new ResponseModel(result.status, result.data);
 
-    return new Session({ ...session, ...response.data });
+    return new Session({
+      ...session,
+      ...response.data,
+      expires_in: new Date().getTime() / 1000 + response.data.expires_in,
+    });
   } catch (e) {
     const error: AxiosError = e;
     const errorHandled = handleExceptions(error);
