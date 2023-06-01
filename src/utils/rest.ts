@@ -12,12 +12,12 @@ import { ResponseModel } from "../models/ResponseModel";
 
 export const get = async (
   resource: string,
-  id: string,
+  id?: string,
   filters?: FiltersListTypeAll,
   session?: Session,
   version?: string
 ) => {
-  const path = `${resource}/${id}`;
+  const path = id ? `${resource}/${id}` : `${resource}`;
   let query = "";
   if (filters) {
     query = new URLSearchParams(filters).toString();
