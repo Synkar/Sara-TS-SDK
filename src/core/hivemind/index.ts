@@ -3,8 +3,8 @@ import { ISession, Session } from "../../models/Session";
 import { getAll } from "../../utils/rest";
 
 import { Localities as _Localities } from "./Localities";
-import { Operations, Operations as _Operations } from "./Operations";
-import { Requests, Requests as _Requests } from "./Requests";
+import { Operations as _Operations } from "./Operations";
+import { Requests as _Requests } from "./Requests";
 
 export * as HLocalities from "./Localities";
 export * from "./Operations";
@@ -23,15 +23,15 @@ export class Hivemind {
 
   Localities = function (session?: ISession) {
     return new _Localities(session);
-  } as any as { new (session?: ISession): Localities };
+  } as any as { new (session?: ISession): _Localities };
 
   Operations = function (session?: ISession) {
     return new _Operations(session);
-  } as any as { new (session?: ISession): Operations };
+  } as any as { new (session?: ISession): _Operations };
 
   Requests = function (session?: ISession) {
     return new _Requests(session);
-  } as any as { new (session?: ISession): Requests };
+  } as any as { new (session?: ISession): _Requests };
 
   static Localities = _Localities;
   static Operations = _Operations;
