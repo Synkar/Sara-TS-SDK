@@ -1,6 +1,5 @@
-import { Client, Localities } from "../..";
+import { Client } from "../..";
 import { ISession, Session } from "../../models/Session";
-import { getAll } from "../../utils/rest";
 
 import { Localities as _Localities } from "./Localities";
 import { Operations as _Operations } from "./Operations";

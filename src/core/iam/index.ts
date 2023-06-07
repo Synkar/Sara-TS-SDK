@@ -61,43 +61,43 @@ export class IAM {
 
   Robots = function (session?: ISession) {
     return new _Robots(session);
-  } as any as { new (session?: ISession): any };
+  } as any as { new (session?: ISession): _Robots };
 
   Fleets = function (session?: ISession) {
     return new _Fleets(session);
-  } as any as { new (session?: ISession): any };
+  } as any as { new (session?: ISession): _Fleets };
 
   Users = function (session?: ISession) {
     return new _Users(session);
-  } as any as { new (session?: ISession): any };
+  } as any as { new (session?: ISession): _Users };
 
   Policies = function (session?: ISession) {
     return new _Policies(session);
-  } as any as { new (session?: ISession): any };
+  } as any as { new (session?: ISession): _Policies };
 
   Actions = function (session?: ISession) {
     return new _Actions(session);
-  } as any as { new (session?: ISession): any };
+  } as any as { new (session?: ISession): _Actions };
 
   Apps = function (session?: ISession) {
     return new _Apps(session);
-  } as any as { new (session?: ISession): any };
+  } as any as { new (session?: ISession): _Apps };
 
   Clients = function (session?: ISession) {
     return new _Clients(session);
-  } as any as { new (session?: ISession): any };
+  } as any as { new (session?: ISession): _Clients };
 
   Groups = function (session?: ISession) {
     return new _Groups(session);
-  } as any as { new (session?: ISession): any };
+  } as any as { new (session?: ISession): _Groups };
 
   Services = function (session?: ISession) {
     return new _Services(session);
-  } as any as { new (session?: ISession): any };
+  } as any as { new (session?: ISession): _Services };
 
   Localities = function (session?: ISession) {
     return new _Localities(session);
-  } as any as { new (session?: ISession): any };
+  } as any as { new (session?: ISession): _Localities };
 
   static Robots = _Robots;
   static Fleets = _Fleets;
