@@ -21,15 +21,15 @@ export class SRS {
 
   Buckets = function (lookup?: string, session?: ISession) {
     return new _Buckets(lookup, session);
-  } as any as { new (lookup?: string, session?: ISession): any };
+  } as any as { new (lookup?: string, session?: ISession): _Buckets };
 
   Activities = function (lookup?: string, session?: ISession) {
     return new _Activities(lookup, session);
-  } as any as { new (lookup?: string, session?: ISession): any };
+  } as any as { new (lookup?: string, session?: ISession): _Activities };
 
   Relationships = function (lookup?: string, session?: ISession) {
     return new _Relationships(lookup, session);
-  } as any as { new (lookup?: string, session?: ISession): any };
+  } as any as { new (lookup?: string, session?: ISession): _Relationships };
 
   static Buckets = _Buckets;
   static Activities = _Activities;

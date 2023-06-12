@@ -113,15 +113,15 @@ export class Missions {
 
   Stages = function (lookup?: string, session?: ISession) {
     return new _Stages(lookup, session, this.parent.lookup);
-  } as any as { new (lookup?: string, session?: ISession): any };
+  } as any as { new (lookup?: string, session?: ISession): _Stages };
 
   Steps = function (session?: ISession) {
     return new _Steps(session, this.parent.lookup);
-  } as any as { new (session?: ISession): any };
+  } as any as { new (session?: ISession): _Steps };
 
   Tags = function (session?: ISession) {
     return new _Tags(session, this.parent.lookup);
-  } as any as { new (session?: ISession): any };
+  } as any as { new (session?: ISession): _Tags };
 
   static Stages = _Stages;
   static Steps = _Steps;

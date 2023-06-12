@@ -14,3 +14,9 @@ export declare type FiltersListTypeAll =
   | FiltersListType
   | MissionsListFilters
   | FiltersGeneric;
+
+export declare type FiltersListSlugType = {
+  slug?: string;
+  page?: string;
+  limit?: string;
+};

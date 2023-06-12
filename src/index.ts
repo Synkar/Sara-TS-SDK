@@ -8,6 +8,7 @@ import {
   Telemetry as _Telemetry,
   Metrics as _Metrics,
   Webhooks as _Webhooks,
+  Hivemind as _Hivemind,
 } from "./core";
 
 /**
@@ -56,6 +57,7 @@ export namespace Sara {
   export const Telemetry = _Telemetry;
   export const Metrics = _Metrics;
   export const Webhooks = _Webhooks;
+  export const Hivemind = _Hivemind;
   export const auth = _Client.auth;
 }
 export * from "./core";
