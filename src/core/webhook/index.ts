@@ -23,19 +23,19 @@ export class Webhooks {
 
   Endpoints = function (session?: ISession) {
     return new _Endpoints(session);
-  } as any as { new (session?: ISession): any };
+  } as any as { new (session?: ISession): _Endpoints };
 
   Topics = function (session?: ISession) {
     return new _Topics(session);
-  } as any as { new (session?: ISession): any };
+  } as any as { new (session?: ISession): _Topics };
 
   Events_executions = function (session?: ISession) {
     return new _EventsExecutions(session);
-  } as any as { new (session?: ISession): any };
+  } as any as { new (session?: ISession): _EventsExecutions };
 
   Events = function (session?: ISession) {
     return new _Events(session);
-  } as any as { new (session?: ISession): any };
+  } as any as { new (session?: ISession): _Events };
 
   static Endpoints = _Endpoints;
   static Topics = _Topics;
