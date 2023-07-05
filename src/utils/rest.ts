@@ -9,6 +9,7 @@ import {
 import axios from "axios";
 import { FiltersListTypeAll } from "../models/Filters";
 import { ResponseModel } from "../models/ResponseModel";
+import { BodyParser } from "../models/BodyParser";
 
 export const get = async (
   resource: string,
@@ -45,10 +46,19 @@ export const post = async <T>(
   resource: string,
   payload: T,
   session?: Session,
-  version?: string
+  version?: string,
+  bodyParser?: BodyParser
 ) => {
   const path = `${resource}`;
-  const json = await fetch(axios.post, path, payload, null, session, version);
+  const json = await fetch(
+    axios.post,
+    path,
+    payload,
+    null,
+    session,
+    version,
+    bodyParser
+  );
   return handleData(json);
 };
 
@@ -57,10 +67,19 @@ export const patch = async <T>(
   id: string,
   payload: T,
   session?: Session,
-  version?: string
+  version?: string,
+  bodyParser?: BodyParser
 ) => {
   const path = `${resource}/${id}`;
-  const json = await fetch(axios.patch, path, payload, null, session, version);
+  const json = await fetch(
+    axios.patch,
+    path,
+    payload,
+    null,
+    session,
+    version,
+    bodyParser
+  );
   return handleData(json);
 };
 
@@ -81,10 +100,19 @@ export const put = async <T>(
   id: string,
   payload: T,
   session?: Session,
-  version?: string
+  version?: string,
+  bodyParser?: BodyParser
 ) => {
   const path = `${resource}/${id}`;
-  const json = await fetch(axios.put, path, payload, null, session, version);
+  const json = await fetch(
+    axios.put,
+    path,
+    payload,
+    null,
+    session,
+    version,
+    bodyParser
+  );
   return handleData(json);
 };
 

@@ -9,7 +9,10 @@ import {
   Metrics as _Metrics,
   Webhooks as _Webhooks,
   Hivemind as _Hivemind,
+  Toolbox as _Toolbox,
 } from "./core";
+
+import { BodyParser as _BodyParser } from "./models/BodyParser";
 
 /**
  * Define some constants to the sdk.
@@ -58,6 +61,8 @@ export namespace Sara {
   export const Metrics = _Metrics;
   export const Webhooks = _Webhooks;
   export const Hivemind = _Hivemind;
+  export const Toolbox = _Toolbox;
+  export const BodyParser = _BodyParser;
   export const auth = _Client.auth;
 }
 export * from "./core";

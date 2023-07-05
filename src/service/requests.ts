@@ -4,6 +4,7 @@ import { ResponseModel } from "../models/ResponseModel";
 import { agent, Session } from "../models/Session";
 import { handleExceptions } from "../models/Exceptions";
 import { JSONValue } from "../models/JSON";
+import { BodyParser } from "../models/BodyParser";
 
 /**
  * This is a helper function to make requests to the API.
@@ -39,7 +40,8 @@ export const fetch = async <T>(
   payload: T = null,
   query: string | null = null,
   session: Session = null,
-  version = "v1"
+  version = "v1",
+  bodyParser: BodyParser = BodyParser.FORM_DATA
 ) => {
   let url = `${sdk.API_URL}/${version}/`;
   if (query !== "" && query !== null) {
@@ -81,25 +83,38 @@ export const fetch = async <T>(
   try {
     let request;
     if (payload) {
-      const data = new FormData();
+      if (bodyParser === BodyParser.FORM_DATA) {
+        const data = new FormData();
 
-      for (const key in payload) {
-        if (typeof payload[key] === "object") {
-          data.append(key, JSON.stringify(payload[key]));
-        } else {
-          data.append(key, String(payload[key]));
+        for (const key in payload) {
+          if (typeof payload[key] === "object") {
+            data.append(key, JSON.stringify(payload[key]));
+          } else {
+            data.append(key, String(payload[key]));
+          }
         }
-      }
 
-      request = method(url, data, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          "User-Agent": agent,
-          "Accept-Language": "en-US",
-          Authorization: bearerToken,
-        },
-        timeout: sdk.timeout,
-      });
+        request = method(url, data, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            "User-Agent": agent,
+            "Accept-Language": "en-US",
+            Authorization: bearerToken,
+          },
+          timeout: sdk.timeout,
+        });
+      } else if (bodyParser === BodyParser.JSON) {
+        const data = JSON.stringify(payload);
+        request = method(url, data, {
+          headers: {
+            "Content-Type": "application/json",
+            "User-Agent": agent,
+            "Accept-Language": "en-US",
+            Authorization: bearerToken,
+          },
+          timeout: sdk.timeout,
+        });
+      }
     } else {
       request = method(url, {
         headers: {
@@ -117,7 +132,6 @@ export const fetch = async <T>(
       return new ResponseModel(result.status, result.data);
     }
   } catch (e) {
-    8;
     const error: AxiosError = e;
     const errorHandled = handleExceptions(error);
     return errorHandled;
