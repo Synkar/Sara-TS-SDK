@@ -1,5 +1,6 @@
 import { config } from "dotenv";
 import { Sara } from "sara-sdk-ts";
+import { connectIo } from "./socket";
 
 config();
 
@@ -25,7 +26,7 @@ if (tools.count > 0) {
 const newTool = await Tools.create({
   name: "My tool",
   description: "My tool description",
-  scriptUrl: "http://router.fission.svc.cluster.local/call-elevator",
+  scriptUrl: "http://router.fission.svc.cluster.local/test",
   paramKeys: [
     {
       name: "param1",
@@ -115,16 +116,33 @@ try {
     if (executions.count > 0) {
       const id = executions.results[0].uuid;
 
-      // Update Execution
+      // run execution
 
-      await Executions.update(id, {
-        status: Sara.Toolbox.Status.SUCCEEDED,
+      let succeed = false;
+      await connectIo(id, (data) => {
+        console.log(data);
+        if (
+          data.service === "toolbox" &&
+          data.action === "changeStatus" &&
+          data.data === "SUCCEEDED"
+        ) {
+          succeed = true;
+        }
       });
 
-      // delete execution
+      await Executions.run(id);
+
+      await new Promise((resolve) => {
+        setInterval(() => {
+          if (succeed) {
+            resolve(null);
+          }
+        }, 500);
+      });
 
       const execution = await Executions.retrieve(id);
       console.log("retrieve execution", execution);
+      // delete execution
       await Executions.delete(id);
     }
   }

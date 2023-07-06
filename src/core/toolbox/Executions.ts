@@ -74,6 +74,10 @@ export class Executions {
     );
   };
 
+  run = async (id: string): Promise<void> => {
+    await post(Executions.resource + "/" + id + "/run", {}, this.session);
+  };
+
   update = async (
     id: string,
     payload: ExecutionUpdate

@@ -31,20 +31,22 @@ List the ready features here:
 - Telemetry
 - SRS
 - Webhook
-- Demo
+- Hivemind
+- Toolbox
+- Demos (Examples)
 
 
 ## Setup
 SARA Typescript SDK can be installed via npm.
 
-> `npm install sara-ts-sdk`
+> `npm install sara-sdk-ts`
 
 Or you can install in your package by adding:
 > `npm install https://github.com/Synkar/SARA-TS-SDK`
 
 
 ## Usage
-For usage is simple. You will need to import sara-ts-sdk in you JS/TS project.
+For usage is simple. You will need to import sara-sdk-ts in you JS/TS project.
 
 > `import { Sara, Client as SaraClient } from "sara-sdk-ts";`
 
