@@ -12,6 +12,7 @@ export class Toolbox {
   session: Session;
 
   constructor(session?: ISession) {
+    this.InstanceTools.prototype.parent = this;
     if (session) {
       this.session = new Session(session);
     } else {
