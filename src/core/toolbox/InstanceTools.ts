@@ -95,7 +95,11 @@ export class InstanceTools {
   };
 
   Executions = function (lookup?: string, session?: ISession) {
-    return new _Executions(lookup, session, this.parent?.lookup);
+    return new _Executions(
+      lookup,
+      session,
+      this.parent && this.parent.lookup ? this.parent.lookup : undefined
+    );
   } as any as { new (lookup?: string, session?: ISession): _Executions };
 
   static Executions = _Executions;

@@ -29,7 +29,11 @@ export class Toolbox {
   } as any as { new (lookup?: string, session?: ISession): _Groups };
 
   InstanceTools = function (lookup?: string, session?: ISession) {
-    return new _InstanceTools(lookup, session, this.parent?.lookup);
+    return new _InstanceTools(
+      lookup,
+      session,
+      this.parent && this.parent.lookup ? this.parent.lookup : undefined
+    );
   } as any as { new (looup?: string, session?: ISession): _InstanceTools };
 
   static Tools = _Tools;

@@ -84,7 +84,11 @@ export class Tools {
   };
 
   InstanceTools = function (lookup?: string, session?: ISession) {
-    return new _InstanceTools(lookup, session, this.parent.lookup);
+    return new _InstanceTools(
+      lookup,
+      session,
+      this.parent && this.parent.lookup ? this.parent.lookup : undefined
+    );
   } as any as { new (lookup?: string, session?: ISession): _InstanceTools };
 
   static InstanceTools = _InstanceTools;
