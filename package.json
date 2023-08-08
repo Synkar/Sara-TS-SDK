@@ -1,6 +1,6 @@
 {
   "name": "sara-sdk-ts",
-  "version": "1.2.4",
+  "version": "1.2.5",
   "description": "",
   "main": "dist/index.js",
   "declaration": "dist/index.d.ts",

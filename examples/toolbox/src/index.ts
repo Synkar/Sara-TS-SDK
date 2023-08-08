@@ -8,7 +8,6 @@ await Sara.auth(
   process.env.SARA_ACCESS_KEY as string,
   process.env.SARA_SECRET_KEY as string
 );
-
 const toolbox = new Sara.Toolbox();
 const Tools = new toolbox.Tools();
 // Listing and retrieving tools

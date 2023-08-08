@@ -87,25 +87,20 @@ export class Missions {
   cancel = async (uuid: string): Promise<boolean> => {
     return await post(
       `${this.resource}/${uuid}/cancel`,
-      null,
+      {},
       this.session,
       "v2"
     );
   };
 
   pause = async (uuid: string): Promise<boolean> => {
-    return await post(
-      `${this.resource}/${uuid}/pause`,
-      null,
-      this.session,
-      "v2"
-    );
+    return await post(`${this.resource}/${uuid}/pause`, {}, this.session, "v2");
   };
 
   resume = async (uuid: string): Promise<boolean> => {
     return await post(
       `${this.resource}/${uuid}/resume`,
-      null,
+      {},
       this.session,
       "v2"
     );
