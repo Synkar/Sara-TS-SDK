@@ -9,13 +9,11 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@esbuild-plugins/node-globals-polyfill": "^0.1.1"
+    "@esbuild-plugins/node-globals-polyfill": "^0.1.1",
+    "sara-sdk-ts": "^1.2.5"
   },
   "devDependencies": {
     "typescript": "^4.6.4",
     "vite": "^3.1.0"
-  },
-  "optionalDependencies": {
-    "sara-sdk-ts": "file:../../"
   }
 }

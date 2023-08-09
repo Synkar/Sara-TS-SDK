@@ -1,9 +1,8 @@
 import "./style.css";
 
 // Importing the SDK and the clientSDK
-import { Sara } from "sara-sdk-ts";
+import { Sara, Type } from "sara-sdk-ts";
 
-import { Type } from "sara-sdk-ts/src/core/mapping/";
 const access_key = import.meta.env.VITE_SARA_ACCESS_KEY;
 const secret_key = import.meta.env.VITE_SARA_SECRET_KEY;
 const robot_id = import.meta.env.VITE_SARA_ROBOT_ID;
