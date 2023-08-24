@@ -62,8 +62,16 @@ export class Missions {
     }
   };
 
-  retrieve = async (id: string): Promise<MissionsRetrieve> => {
-    return await get(this.resource, id, null, this.session, "v2");
+  retrieve = async (id: string, client?: string): Promise<MissionsRetrieve> => {
+    return await get(
+      this.resource,
+      id,
+      {
+        client: client,
+      },
+      this.session,
+      "v2"
+    );
   };
   update = async (
     id: string,
