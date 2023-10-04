@@ -31,7 +31,7 @@ export declare type RobotRetrieve = UUID &
   RobotLocatity &
   Datetime;
 
-export declare type RobotsClient = {
+export declare type RobotClient = {
   uuid: string;
   name: string;
   slug: string;

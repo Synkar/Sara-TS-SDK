@@ -4,11 +4,10 @@ import { PaginatedModel } from "../../models/PaginatedModel";
 import { ISession, Session } from "../../models/Session";
 import { getAll, get, patch, post, remove } from "../../utils/rest";
 import {
+  RobotClient,
   RobotCreate,
   RobotRetrieve,
-  RobotType,
   RobotUpdate,
-  RobotsClient,
 } from "./models/Robot.models";
 
 export * from "./models/Robot.models";
@@ -90,7 +89,7 @@ export class Robots {
   clients = async (
     id: string,
     filters: FiltersListType
-  ): Promise<PaginatedModel<RobotsClient>> => {
+  ): Promise<PaginatedModel<RobotClient>> => {
     return await get(
       `${this.resource}`,
       `${id}/clients`,
@@ -102,16 +101,13 @@ export class Robots {
   clientsPaginated = async function* (
     id: string,
     filters?: FiltersListType
-  ): AsyncGenerator<RobotsClient[]> {
+  ): AsyncGenerator<RobotClient[]> {
     if (!filters) filters = {};
     let page: number = parseInt(filters.page) || 1;
 
     while (true) {
       filters.page = String(page);
-      const json: PaginatedModel<RobotsClient> = await this.clients(
-        id,
-        filters
-      );
+      const json: PaginatedModel<RobotClient> = await this.clients(id, filters);
       yield json.results || [];
       if (!json.next) {
         break;
