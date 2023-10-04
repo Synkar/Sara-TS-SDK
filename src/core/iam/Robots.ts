@@ -98,4 +98,25 @@ export class Robots {
       this.session
     );
   };
+
+  clientsPaginated = async function* (
+    id: string,
+    filters?: FiltersListType
+  ): AsyncGenerator<RobotsClient[]> {
+    if (!filters) filters = {};
+    let page: number = parseInt(filters.page) || 1;
+
+    while (true) {
+      filters.page = String(page);
+      const json: PaginatedModel<RobotsClient> = await this.clients(
+        id,
+        filters
+      );
+      yield json.results || [];
+      if (!json.next) {
+        break;
+      }
+      page++;
+    }
+  };
 }
