@@ -8,6 +8,7 @@ import {
   RobotRetrieve,
   RobotType,
   RobotUpdate,
+  RobotsClient,
 } from "./models/Robot.models";
 
 export * from "./models/Robot.models";
@@ -82,6 +83,18 @@ export class Robots {
       `${this.resource}/${id}/attachLocality`,
       null,
       { locality },
+      this.session
+    );
+  };
+
+  clients = async (
+    id: string,
+    filters: FiltersListType
+  ): Promise<PaginatedModel<RobotsClient>> => {
+    return await get(
+      `${this.resource}`,
+      `${id}/clients`,
+      filters,
       this.session
     );
   };
