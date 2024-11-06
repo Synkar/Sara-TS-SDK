@@ -8,6 +8,7 @@ import { Requests as _Requests } from "./Requests";
 export * as HLocalities from "./Localities";
 export * from "./Operations";
 export * from "./Requests";
+export * from "./Landmarks";
 export class Hivemind {
   private resource = "hivemind";
   session: Session;
@@ -20,9 +21,9 @@ export class Hivemind {
     }
   }
 
-  Localities = function (session?: ISession) {
-    return new _Localities(session);
-  } as any as { new (session?: ISession): _Localities };
+  Localities = function (lookup?: string, session?: ISession) {
+    return new _Localities(lookup, session);
+  } as any as { new (lookup?: string, session?: ISession): _Localities };
 
   Operations = function (session?: ISession) {
     return new _Operations(session);

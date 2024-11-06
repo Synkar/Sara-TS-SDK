@@ -4,14 +4,15 @@ import { FiltersListSlugType } from "../../models/Filters";
 import { PaginatedModel } from "../../models/PaginatedModel";
 import {
   OperationList,
-  OperationsCreate,
-  OperationsRetrieve,
-  OperationsUpdate,
+  OperationCreate,
+  OperationRetrieve,
+  OperationUpdate,
   OperationRequestBodyRetrieve,
-  OperationsCreateResponse,
+  OperationCreateResponse,
 } from "./models/Operations.models";
 import { get, getAll, patch, post, remove } from "../../utils/rest";
 
+export * from "./models/Operations.models";
 export class Operations {
   private resource = "hivemind/operations";
   session: Session;
@@ -48,20 +49,20 @@ export class Operations {
     }
   };
 
-  retrieve = async (id: string): Promise<OperationsRetrieve> => {
+  retrieve = async (id: string): Promise<OperationRetrieve> => {
     return await get(this.resource, id, null, this.session);
   };
 
   create = async (
-    payload: OperationsCreate
-  ): Promise<OperationsCreateResponse> => {
+    payload: OperationCreate
+  ): Promise<OperationCreateResponse> => {
     return await post(this.resource, payload, this.session);
   };
 
   update = async (
     id: string,
-    payload: OperationsUpdate
-  ): Promise<OperationsRetrieve> => {
+    payload: OperationUpdate
+  ): Promise<OperationRetrieve> => {
     return await patch(this.resource, id, payload, this.session);
   };
 

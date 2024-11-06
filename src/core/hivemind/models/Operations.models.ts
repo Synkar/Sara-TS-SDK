@@ -1,7 +1,7 @@
 import { DatetimeTS } from "../../../models/Datetimes";
-import { LocalityRetrieve } from "./Localities.models";
+import { HLocalityRetrieve } from "./Localities.models";
 
-export declare type OperationsType = {
+export declare type OperationType = {
   uuid: string;
   name: string;
   description: string;
@@ -28,20 +28,20 @@ export declare type RequestBody = {
   };
 };
 
-export declare type OperationsCreate = Partial<OperationsType> & {
+export declare type OperationCreate = Partial<OperationType> & {
   name: string;
   uuid?: string;
   locality: string;
 };
 
-export declare type OperationsRetrieve = OperationsType & {
-  locality: LocalityRetrieve;
+export declare type OperationRetrieve = OperationType & {
+  locality: HLocalityRetrieve;
   localitySlug: string;
 } & DatetimeTS & {
     requestBody: RequestBody;
   };
 
-export declare type OperationsCreateResponse = OperationsType & {
+export declare type OperationCreateResponse = OperationType & {
   localitySlug: string;
 } & DatetimeTS;
 
@@ -52,7 +52,7 @@ export declare type OperationList = {
   localitySlug: string;
 } & DatetimeTS;
 
-export declare type OperationsUpdate = Partial<OperationsType> & {
+export declare type OperationUpdate = Partial<OperationType> & {
   locality: string;
 };
 

@@ -1,4 +1,4 @@
-export declare type RequestsType = {
+export declare type RequestType = {
   uuid: string;
   status: string;
   locality: string;
@@ -25,9 +25,9 @@ export declare type RequestsType = {
   createdAt: string;
 };
 
-export declare type RequestsRetrieve = RequestsType;
+export declare type RequestRetrieve = RequestType;
 
-export declare type RequestsList = {
+export declare type RequestList = {
   uuid: string;
   status: string;
   operation: {
@@ -37,7 +37,7 @@ export declare type RequestsList = {
   createdAt: string;
 };
 
-export declare type RequestsCreate = {
+export declare type RequestCreate = {
   operation: string;
   pickup: {
     params: {

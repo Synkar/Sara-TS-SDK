@@ -1,4 +1,4 @@
-export declare type LocalityType = {
+export declare type HLocalityType = {
   slug: string;
   robotCapacity: number;
   timestamps: number[][];
@@ -6,10 +6,10 @@ export declare type LocalityType = {
   depotLandmark: number;
 };
 
-export declare type LocalityRetrieve = LocalityType;
+export declare type HLocalityRetrieve = HLocalityType;
 
-export declare type LocalityCreate = Partial<LocalityType> & {
+export declare type HLocalityCreate = Partial<HLocalityType> & {
   slug: string;
 };
 
-export declare type LocalityUpdate = Partial<LocalityType>;
+export declare type HLocalityUpdate = Partial<HLocalityType>;
