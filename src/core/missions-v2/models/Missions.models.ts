@@ -12,6 +12,8 @@ export declare type MissionsType = {
   outcome: number;
   stages: StagesForMission[];
   tags: string[];
+  template_key?: string;
+  template_value?: string;
 };
 
 export declare type MissionsRetrieve = UUID & MissionsType & Datetime;
@@ -33,6 +35,8 @@ export declare type MissionsCreate = {
   loop?: boolean;
   client?: string;
   launcher?: string;
+  template_key?: string;
+  template_value?: string;
 };
 export declare type MissionsUpdate = MissionsType;
 
