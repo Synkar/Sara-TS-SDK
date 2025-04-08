@@ -24,14 +24,14 @@ export class Robots {
   }
 
   list = async (
-    filters?: FiltersListType
+    filters?: FiltersListType & { locality?: string }
   ): Promise<PaginatedModel<RobotRetrieve>> => {
     if (!filters) filters = {};
     return await getAll(this.resource, filters, this.session);
   };
 
   listPaginated = async function* (
-    filters?: FiltersListType
+    filters?: FiltersListType & { locality?: string }
   ): AsyncGenerator<RobotRetrieve[]> {
     if (!filters) filters = {};
     let page: number = parseInt(filters.page) || 1;
