@@ -38,7 +38,10 @@ export const agent = `Typescript-Sara-SDK`;
  */
 export const authenticate = async (session: ISession) => {
   const auth_url = `${sdk.AUTH_URL}?client_id=${session.access_key}`;
-  const body = `grant_type=client_credentials&scope=${session.scope}`;
+  let body = `grant_type=client_credentials`;
+  if (session.scope) {
+    body += `&scope=${session.scope}`;
+  }
 
   const auth = `${session.access_key}:${session.secret_key}`;
 

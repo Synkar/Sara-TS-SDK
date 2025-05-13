@@ -19,8 +19,9 @@ import { BodyParser as _BodyParser } from "./models/BodyParser";
  */
 export const sdk = {
   API_URL: "https://sara.synkar.com",
-  AUTH_URL: "https://auth.sara.synkar.com/oauth2/token",
-  version: "1.0.0",
+  AUTH_URL:
+    "https://auth2.sara.synkar.com/realms/sara/protocol/openid-connect/token",
+  version: "1.1.0",
   timeout: 15000,
 };
 
