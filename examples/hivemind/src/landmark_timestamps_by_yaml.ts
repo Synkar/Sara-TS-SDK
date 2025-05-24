@@ -29,10 +29,6 @@ if (!params.yamlFile) {
   throw new Error("You must pass --yamlFile=${yamlFile}!");
 }
 
-if (!params.locality) {
-  throw new Error("You must pass --locality=${locality_slug}!");
-}
-
 let elevatorTag = 40;
 let elevatorTimestamp = 50;
 
@@ -68,15 +64,15 @@ try {
 }
 
 const landmarksPaginated = new new hivemind.Localities(
-  params.locality
+  robotData.locality
 ).Landmarks().listPaginated();
 
 const landmarksTotal = (
-  await new new hivemind.Localities(params.locality).Landmarks().list()
+  await new new hivemind.Localities(robotData.locality).Landmarks().list()
 ).count;
 
 console.log(
-  `Found ${landmarksTotal} landmarks in ${params.locality} in hivemind`
+  `Found ${landmarksTotal} landmarks in ${robotData.locality} in hivemind`
 );
 
 let landmarks: LandmarkType[] = [];
