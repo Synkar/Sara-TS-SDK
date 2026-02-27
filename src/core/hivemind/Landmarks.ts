@@ -16,6 +16,8 @@ export class Landmarks {
   private resource: string;
   session: Session;
 
+  private version: string = "v1";
+
   constructor(localityLookup: string, session?: ISession) {
     this.resource = `hivemind/localities/${localityLookup}/landmarks`;
     if (session) {
@@ -25,15 +27,20 @@ export class Landmarks {
     }
   }
 
+  changeVersion = (version: string) => {
+    this.version = version;
+    return this;
+  };
+
   list = async (
-    filters?: FiltersListType
+    filters?: FiltersListType,
   ): Promise<PaginatedModel<LandmarkRetrieve>> => {
     if (!filters) filters = {};
-    return await getAll(this.resource, filters, this.session);
+    return await getAll(this.resource, filters, this.session, this.version);
   };
 
   listPaginated = async function* (
-    filters?: FiltersListType
+    filters?: FiltersListType,
   ): AsyncGenerator<LandmarkRetrieve[]> {
     if (!filters) filters = {};
     let page: number = parseInt(filters.page) || 1;
@@ -50,28 +57,40 @@ export class Landmarks {
   };
 
   retrieve = async (id: string): Promise<LandmarkRetrieve> => {
-    return await get(this.resource, id, null, this.session);
+    return await get(this.resource, id, null, this.session, this.version);
   };
 
   create = async (payload: LandmarkCreate): Promise<LandmarkRetrieve> => {
-    return await post(this.resource, payload, this.session);
+    return await post(
+      this.resource,
+      payload,
+      this.session,
+      this.version,
+      BodyParser.JSON,
+    );
   };
 
   update = async (
     id: string,
-    payload: LandmarkUpdate
+    payload: LandmarkUpdate,
   ): Promise<LandmarkRetrieve> => {
     return await patch(
       this.resource,
       id,
       payload,
       this.session,
-      "v1",
-      BodyParser.JSON
+      this.version,
+      BodyParser.JSON,
     );
   };
 
   delete = async (id: string): Promise<boolean> => {
-    return await remove(this.resource, id, this.session);
+    return await remove(
+      this.resource,
+      id,
+      this.session,
+      undefined,
+      this.version,
+    );
   };
 }

@@ -4,6 +4,7 @@ export declare type HLocalityType = {
   timestamps: number[][];
   landmarks: number[];
   depotLandmark: number;
+  floors: { [key: string]: string | number | boolean };
 };
 
 export declare type HLocalityRetrieve = HLocalityType;

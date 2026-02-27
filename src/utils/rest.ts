@@ -16,7 +16,7 @@ export const get = async (
   id?: string,
   filters?: FiltersListTypeAll,
   session?: Session,
-  version?: string
+  version?: string,
 ) => {
   const path = id ? `${resource}/${id}` : `${resource}`;
   let query = "";
@@ -31,7 +31,7 @@ export const getAll = async (
   resource: string,
   filters?: FiltersListTypeAll,
   session?: Session,
-  version?: string
+  version?: string,
 ) => {
   const path = `${resource}`;
   let query = "";
@@ -47,7 +47,7 @@ export const post = async <T>(
   payload: T,
   session?: Session,
   version?: string,
-  bodyParser?: BodyParser
+  bodyParser?: BodyParser,
 ) => {
   const path = `${resource}`;
   const json = await fetch(
@@ -57,7 +57,7 @@ export const post = async <T>(
     null,
     session,
     version,
-    bodyParser
+    bodyParser,
   );
   return handleData(json);
 };
@@ -68,7 +68,7 @@ export const patch = async <T>(
   payload: T,
   session?: Session,
   version?: string,
-  bodyParser?: BodyParser
+  bodyParser?: BodyParser,
 ) => {
   const path = `${resource}/${id}`;
   const json = await fetch(
@@ -78,7 +78,7 @@ export const patch = async <T>(
     null,
     session,
     version,
-    bodyParser
+    bodyParser,
   );
   return handleData(json);
 };
@@ -88,7 +88,7 @@ export const remove = async <T>(
   id?: string,
   payload?: T,
   session?: Session,
-  version?: string
+  version?: string,
 ) => {
   const path = `${resource}/${id ? id : ""}`;
   const json = await fetch(axios.delete, path, payload, null, session, version);
@@ -101,7 +101,7 @@ export const put = async <T>(
   payload: T,
   session?: Session,
   version?: string,
-  bodyParser?: BodyParser
+  bodyParser?: BodyParser,
 ) => {
   const path = `${resource}/${id}`;
   const json = await fetch(
@@ -111,7 +111,7 @@ export const put = async <T>(
     null,
     session,
     version,
-    bodyParser
+    bodyParser,
   );
   return handleData(json);
 };
@@ -120,7 +120,7 @@ export const upload = async <T>(
   resource: string,
   payload: payloadUpload,
   session?: Session,
-  version?: string
+  version?: string,
 ) => {
   const json = await fileUpload(
     resource,
@@ -131,7 +131,7 @@ export const upload = async <T>(
     },
     payload,
     session,
-    version
+    version,
   );
   return json;
 };
@@ -140,7 +140,7 @@ export const downloadLink = async (
   resource: string,
   payload: payloadDownload,
   session?: Session,
-  version?: string
+  version?: string,
 ) => {
   const json = await fileDownload(
     resource,
@@ -152,7 +152,7 @@ export const downloadLink = async (
     payload,
     false,
     session,
-    version
+    version,
   );
   return handleData(json);
 };
@@ -161,7 +161,7 @@ export const download = async (
   resource: string,
   payload: payloadDownload,
   session?: Session,
-  version?: string
+  version?: string,
 ) => {
   const json = await fileDownload(
     resource,
@@ -173,7 +173,7 @@ export const download = async (
     payload,
     true,
     session,
-    version
+    version,
   );
   return handleData(json);
 };

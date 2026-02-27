@@ -41,7 +41,7 @@ export const fetch = async <T>(
   query: string | null = null,
   session: Session = null,
   version = "v1",
-  bodyParser: BodyParser = BodyParser.FORM_DATA
+  bodyParser: BodyParser = BodyParser.FORM_DATA,
 ) => {
   let url = `${sdk.API_URL}/${version}/`;
   if (query !== "" && query !== null) {
@@ -79,6 +79,8 @@ export const fetch = async <T>(
       return new ResponseModel(result.status, result.data);
     }
   }
+
+  console.log(payload, bodyParser);
 
   try {
     let request;
@@ -159,7 +161,7 @@ export const fileUpload = async (
   config: configType,
   payload: payloadUpload,
   session: Session = null,
-  version = "v1"
+  version = "v1",
 ) => {
   let url = `${sdk.API_URL}/${version}/${path}/${payload.uuid}/upload/?key=${payload.fileName}`;
 
@@ -228,7 +230,7 @@ export const fileDownload = async (
   payload: payloadDownload,
   download: boolean = false,
   session: Session = null,
-  version = "v1"
+  version = "v1",
 ) => {
   let url = `${sdk.API_URL}/${version}/${path}/${payload.uuid}/download/?key=${payload.key}`;
 
