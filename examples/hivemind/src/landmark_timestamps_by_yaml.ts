@@ -7,7 +7,7 @@ config();
 
 await Sara.auth(
   process.env.SARA_ACCESS_KEY as string,
-  process.env.SARA_SECRET_KEY as string
+  process.env.SARA_SECRET_KEY as string,
 );
 
 const hivemind = new Sara.Hivemind();
@@ -31,6 +31,8 @@ if (!params.yamlFile) {
 
 let elevatorTag = 40;
 let elevatorTimestamp = 50;
+
+let sameLandmarkTimestamp = 60;
 
 if (params.elevatorTag) {
   elevatorTag = parseInt(params.elevatorTag);
@@ -63,16 +65,18 @@ try {
   process.exit(1);
 }
 
-const landmarksPaginated = new new hivemind.Localities(
-  robotData.locality
-).Landmarks().listPaginated();
+const landmarksService = new new hivemind.Localities(
+  robotData.locality,
+).Landmarks();
 
-const landmarksTotal = (
-  await new new hivemind.Localities(robotData.locality).Landmarks().list()
-).count;
+landmarksService.changeVersion("hml");
+
+const landmarksPaginated = landmarksService.listPaginated();
+
+const landmarksTotal = (await landmarksService.list()).count;
 
 console.log(
-  `Found ${landmarksTotal} landmarks in ${robotData.locality} in hivemind`
+  `Found ${landmarksTotal} landmarks in ${robotData.locality} in hivemind`,
 );
 
 let landmarks: LandmarkType[] = [];
@@ -85,6 +89,14 @@ for await (const landmarksPage of landmarksPaginated) {
   console.log(`Captured ${percent.toFixed(2)}%`);
   landmarks = [...landmarks, ...landmarksPage];
 }
+
+console.log("Order of landmarks in SARA Hivemind:");
+
+for (const landmark of landmarks) {
+  console.log(landmark.name);
+}
+
+console.log("----");
 
 const landmarksLength = landmarks.length;
 
@@ -100,7 +112,7 @@ for (let i = 0; i < landmarksLength; i++) {
   timestamps.push([]);
   for (let j = 0; j < landmarksLength; j++) {
     if (i === j) {
-      timestamps[i].push(0);
+      timestamps[i].push(sameLandmarkTimestamp);
     } else {
       const landmarkFromTag = landmarks[i].tag;
       const landmarkFromFloor = landmarks[i].floor;
@@ -152,18 +164,19 @@ for (let i = 0; i < landmarksLength; i++) {
               timestamps[i].push(totalTimestamp);
             } else {
               console.warn(
-                `No timestamp found for landmarks ${landmarkFromTag} and ${landmarkToTag} on floors ${landmarkFromFloor} and ${landmarkToFloor}`
+                `No timestamp found for landmarks ${landmarkFromTag} and ${landmarkToTag} on floors ${landmarkFromFloor} and ${landmarkToFloor}`,
               );
               timestamps[i].push(0);
             }
           } else {
             console.warn(
-              `No landmark elevator found for ${elevatorTag} on floors ${landmarkFromFloor} or ${landmarkToFloor}`
+              `No landmark elevator found for ${elevatorTag} on floors ${landmarkFromFloor} or ${landmarkToFloor}`,
             );
             timestamps[i].push(0);
           }
         } else {
           // If the landmarks are on the same floor, we assume a direct connection
+
           const timestamp =
             robotFloors.get(landmarkFromFloor)?.timestamps[landmarkFromIndex][
               landmarkToIndex
@@ -172,7 +185,7 @@ for (let i = 0; i < landmarksLength; i++) {
             timestamps[i].push(timestamp);
           } else {
             console.warn(
-              `No timestamp found for landmarks ${landmarkFromTag} and ${landmarkToTag} on floor ${landmarkFromFloor}`
+              `No timestamp found for landmarks ${landmarkFromTag} and ${landmarkToTag} on floor ${landmarkFromFloor}`,
             );
             timestamps[i].push(0);
           }
@@ -187,5 +200,5 @@ for (let i = 0; i < landmarksLength; i++) {
 console.log(
   "[\n" +
     timestamps.map((timestamp) => " " + JSON.stringify(timestamp)).join(",\n") +
-    "\n]"
+    "\n]",
 );

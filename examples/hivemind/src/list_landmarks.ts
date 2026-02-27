@@ -3,10 +3,13 @@ import { LandmarkType, Sara } from "sara-sdk-ts";
 import * as fs from "fs";
 
 config();
+console.log(`SARA :${process.env.SARA_ACCESS_KEY}`);
 
-await Sara.auth(
-  process.env.SARA_ACCESS_KEY as string,
-  process.env.SARA_SECRET_KEY as string
+console.log(
+  await Sara.auth(
+    process.env.SARA_ACCESS_KEY as string,
+    process.env.SARA_SECRET_KEY as string
+  )
 );
 
 const hivemind = new Sara.Hivemind();
